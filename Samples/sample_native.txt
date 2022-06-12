@@ -1,0 +1,7 @@
+<controller>
+message = 'hello';
+x = 45;
+char = 'c';
+ID = 'myText';
+y=10;
+r=98;
