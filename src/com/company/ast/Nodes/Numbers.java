@@ -7,7 +7,7 @@ public class Numbers extends ArrayList {
     int value;
     String numberName;
 
-
+     int nabeel;
 
     public int getValue() {
         return value;
