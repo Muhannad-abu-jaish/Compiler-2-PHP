@@ -1,0 +1,32 @@
+<controller>
+message = 'hello';  done
+x = 45;  done
+char = 'c';   done
+ID = 'myText';
+x = textInput.Content;
+print(getData(ID));
+print("fwef");
+print(x);
+text = getData(ID);
+ID2 = 'myButton';    done
+button = getData(ID2);
+button.onClick(){
+text.Color = 'Red',
+text.Content = 'Hi',
+button.Width = '150dp',
+button.Background = 'Blue'
+};
+//HI
+x = y + 4 + y / 8 * 5 -5 ;
+x++;
+x+=5;
+x-=10;
+x/=y;
+x*=2;
+x=0;
+print(x);
+ID3 = 'myTextInput'; done
+textInput = getData(ID3);
+
+
+
