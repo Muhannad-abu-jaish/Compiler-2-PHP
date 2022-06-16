@@ -1,4 +1,4 @@
-// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

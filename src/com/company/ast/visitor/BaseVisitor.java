@@ -1,8 +1,6 @@
 package com.company.ast.visitor;
 
-import com.company.ast.Nodes.Code_attribuite;
-import com.company.ast.Nodes.Program;
-import com.company.ast.Nodes.Variables;
+import com.company.ast.Nodes.*;
 import generated.PARSERCONTROLLER;
 import generated.PARSERCONTROLLERBaseVisitor;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -30,9 +28,14 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         Code_attribuite code_attribuite=new Code_attribuite();
 
         Variables variables=new Variables();
-
-        code_attribuite.setVariables( visitVariables(ctx.variables()));
-
+        if(ctx.variables()!=null)
+        {
+            code_attribuite.setVariables(visitVariables(ctx.variables()));
+        }
+        if(ctx.on_click()!=null)
+        {
+            code_attribuite.setClicking(visitOn_click(ctx.on_click()));
+        }
         return code_attribuite;
     }
 
@@ -42,53 +45,89 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public Object visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
-        return super.visitOn_click(ctx);
+    public Clicking visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
+        Clicking clicking = new Clicking();
+        clicking.setClick(ctx.CHARS().getText());
+        ArrayList<Attribute_click> attribute_clicks = new ArrayList<>();
+        for(int i =0 ;i<ctx.click_attribute().size();i++){
+              attribute_clicks.add(visitClick_attribute(ctx.click_attribute(i)));
+        }
+        clicking.setAttribute_clickList(attribute_clicks);
+        return clicking;
     }
 
     @Override
-    public Object visitClick_attribute(PARSERCONTROLLER.Click_attributeContext ctx) {
-        return super.visitClick_attribute(ctx);
+    public Attribute_click visitClick_attribute(PARSERCONTROLLER.Click_attributeContext ctx) {
+        Attribute_click attribute_click = new Attribute_click();
+        if(ctx.text()!=null)
+        {
+            attribute_click.setText(visitText(ctx.text()));
+            attribute_click.setName_attribute(ctx.text().CHARS().getText());
+        }
+       if(ctx.button()!=null)
+       {
+           attribute_click.setName_attribute(ctx.button().CHARS().getText());
+           attribute_click.setButton(visitButton(ctx.button()));
+       }
+       return attribute_click;
     }
 
     @Override
-    public Object visitText(PARSERCONTROLLER.TextContext ctx) {
-        return super.visitText(ctx);
+    public Text visitText(PARSERCONTROLLER.TextContext ctx) {
+        Text text = new Text();
+        text.setName_text(ctx.CHARS().getText());
+        text.setText_attribute(visitText_attribute(ctx.text_attribute()));
+        return  text;
     }
 
     @Override
-    public Object visitText_attribute(PARSERCONTROLLER.Text_attributeContext ctx) {
-        return super.visitText_attribute(ctx);
+    public Text_Attribute visitText_attribute(PARSERCONTROLLER.Text_attributeContext ctx) {
+      Text_Attribute text_attribute = new Text_Attribute();
+     if(ctx.color()!=null)
+      text_attribute.setColor(visitColor(ctx.color()));
+     if(ctx.content()!=null)
+      text_attribute.setContent(visitContent(ctx.content()));
+      return text_attribute;
     }
 
     @Override
-    public Object visitContent(PARSERCONTROLLER.ContentContext ctx) {
-        return super.visitContent(ctx);
+    public String visitContent(PARSERCONTROLLER.ContentContext ctx) {
+            return ctx.CHARS().getText();
     }
 
     @Override
-    public Object visitColor(PARSERCONTROLLER.ColorContext ctx) {
-        return super.visitColor(ctx);
+    public String visitColor(PARSERCONTROLLER.ColorContext ctx) {
+          return ctx.COLORS().getText();
     }
 
     @Override
-    public Object visitButton(PARSERCONTROLLER.ButtonContext ctx) {
-        return super.visitButton(ctx);
+    public Button visitButton(PARSERCONTROLLER.ButtonContext ctx) {
+        Button button = new Button();
+        button.setName_button(ctx.CHARS().getText());
+        button.setButton_attribute(visitButton_attribute(ctx.button_attribute()));
+        return button;
     }
 
     @Override
-    public Object visitButton_attribute(PARSERCONTROLLER.Button_attributeContext ctx) {
-        return super.visitButton_attribute(ctx);
+    public Button_Attribute visitButton_attribute(PARSERCONTROLLER.Button_attributeContext ctx) {
+        Button_Attribute button_attribute = new Button_Attribute();
+        if(ctx.width()!=null)
+        button_attribute.setWidth(visitWidth(ctx.width()));
+        if(ctx.background()!=null)
+        button_attribute.setBackground(visitBackground(ctx.background()));
+        return button_attribute;
     }
 
     @Override
-    public Object visitWidth(PARSERCONTROLLER.WidthContext ctx) {
-        return super.visitWidth(ctx);
+    public String visitWidth(PARSERCONTROLLER.WidthContext ctx) {
+
+        return ctx.SIZES().getText();
     }
 
     @Override
-    public Object visitBackground(PARSERCONTROLLER.BackgroundContext ctx) {
-        return super.visitBackground(ctx);
+    public String visitBackground(PARSERCONTROLLER.BackgroundContext ctx) {
+
+        return ctx.COLORS().getText();
     }
 
     @Override

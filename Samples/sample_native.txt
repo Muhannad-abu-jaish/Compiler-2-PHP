@@ -1,7 +1,7 @@
 <controller>
-message = 'hello';
-x = 45;
-char = 'c';
-ID = 'myText';
-y=10;
-r=98;
+button.onClick(){
+text.Color = 'Red',
+text.Content = 'Hi',
+button.Width = '150dp',
+button.Background = 'Blue'
+};
