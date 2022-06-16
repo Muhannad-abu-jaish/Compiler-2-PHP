@@ -14,7 +14,12 @@ OPENTEXT: '(';
 CLOSETEXT: ')';
 SUMS : '++';
 MINUSS : '--';
-
+OR:'||';
+AND : '&&';
+EQUALEQUAL : '==';
+NOT : '!';
+IF : 'if';
+ELSE : 'else';
 DOUBLE_QUOTE : '"';
 SIZES : [0-9]+'px' | [0-9]+'rem' | [0-9]+'dp';
 COMMA : ',' ;

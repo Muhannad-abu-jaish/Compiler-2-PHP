@@ -27,6 +27,46 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 */
 	void exitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#if_statment}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_statment(PARSERCONTROLLER.If_statmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#if_statment}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_statment(PARSERCONTROLLER.If_statmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#logical_sympol}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#logical_sympol}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#operation_if}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperation_if(PARSERCONTROLLER.Operation_ifContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#operation_if}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperation_if(PARSERCONTROLLER.Operation_ifContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#else_statment}.
+	 * @param ctx the parse tree
+	 */
+	void enterElse_statment(PARSERCONTROLLER.Else_statmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#else_statment}.
+	 * @param ctx the parse tree
+	 */
+	void exitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PARSERCONTROLLER#comment}.
 	 * @param ctx the parse tree
 	 */

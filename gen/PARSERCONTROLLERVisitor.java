@@ -22,6 +22,30 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#if_statment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#logical_sympol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#operation_if}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperation_if(PARSERCONTROLLER.Operation_ifContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#else_statment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#comment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

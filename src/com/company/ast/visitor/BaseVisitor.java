@@ -12,6 +12,26 @@ import java.util.ArrayList;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
+    public Object visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
+        return super.visitIf_statment(ctx);
+    }
+
+    @Override
+    public Object visitLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx) {
+        return super.visitLogical_sympol(ctx);
+    }
+
+    @Override
+    public Object visitOperation_if(PARSERCONTROLLER.Operation_ifContext ctx) {
+        return super.visitOperation_if(ctx);
+    }
+
+    @Override
+    public Object visitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx) {
+        return super.visitElse_statment(ctx);
+    }
+
+    @Override
     public Program visitProgram(PARSERCONTROLLER.ProgramContext ctx) {
         Program program = new Program();
         ArrayList<Code_attribuite>code_attribuites = new ArrayList<>();

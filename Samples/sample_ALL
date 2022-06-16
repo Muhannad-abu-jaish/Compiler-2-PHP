@@ -7,6 +7,18 @@ x = textInput.Content;
 print(getData(ID));
 print("fwef");
 print(x);
+if(x=="hello"){
+print(x);
+}
+else if (x=="hi"){
+print("Hi");
+}
+else{
+print("Else");
+}
+if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
+x=4;
+}
 text = getData(ID);
 ID2 = 'myButton';    done
 button = getData(ID2);

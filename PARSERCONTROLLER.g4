@@ -3,7 +3,13 @@ options {tokenVocab = LEXERCONTROLLER;}
 
 
 program: TAG_OPEN CONTROLLER TAG_CLOSE code_attribute+ ;
-code_attribute : variables | on_click |  print  | comment;
+code_attribute : variables | on_click |  print  | comment | if_statment | else_statment ;
+if_statment : ELSE? IF OPENTEXT CHARS operation_if ((NUMBER|CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE))
+(logical_sympol (NUMBER|CHARS|) operation_if ((NUMBER|CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)))* CLOSETEXT CURLYOPEN
+ code_attribute+ CURLYCLOSE ;
+ logical_sympol : OR | AND;
+operation_if : EQUALEQUAL|TAG_CLOSE|TAG_OPEN|TAG_CLOSE EQUAL|TAG_OPEN EQUAL|NOT EQUAL;
+else_statment : ELSE CURLYOPEN code_attribute+ CURLYCLOSE ;
 comment: COMMENT CHARS;
 on_click : CHARS DOT ON_CLICK OPENTEXT CLOSETEXT CURLYOPEN (click_attribute COMMA)* click_attribute COMMA? CURLYCLOSE SEMICOLON;
 click_attribute : text | button;
