@@ -1,16 +1,16 @@
 <controller>
-message = 'hello';  done
-x = 45;  done
-char = 'c';   done
+message = 'hello';
+x = 45;
+char = 'c';
 ID = 'myText';
 x = textInput.Content;
 print(getData(ID));
 print("fwef");
 print(x);
-if(x=="hello"){
+if(x=='hello'){
 print(x);
 }
-else if (x=="hi"){
+else if (x=='hi'){
 print("Hi");
 }
 else{
@@ -19,8 +19,11 @@ print("Else");
 if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
 x=4;
 }
+for(i=0 i<5;i++){
+
+}
 text = getData(ID);
-ID2 = 'myButton';    done
+ID2 = 'myButton';
 button = getData(ID2);
 button.onClick(){
 text.Color = 'Red',
@@ -37,7 +40,7 @@ x/=y;
 x*=2;
 x=0;
 print(x);
-ID3 = 'myTextInput'; done
+ID3 = 'myTextInput';
 textInput = getData(ID3);
 
 

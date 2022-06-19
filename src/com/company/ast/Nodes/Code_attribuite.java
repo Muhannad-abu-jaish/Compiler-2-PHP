@@ -6,6 +6,15 @@ public class Code_attribuite {
 
     Variables variables=new Variables();
     Clicking clicking = new Clicking();
+    If_Statement if_statement = new If_Statement();
+
+    public If_Statement getIf_statement() {
+        return if_statement;
+    }
+
+    public void setIf_statement(If_Statement if_statement) {
+        this.if_statement = if_statement;
+    }
 
     public Clicking getClicking() {
         return clicking;

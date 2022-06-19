@@ -12,23 +12,86 @@ import java.util.ArrayList;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
-    public Object visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
-        return super.visitIf_statment(ctx);
+    public If_Statement visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
+        If_Statement if_statement = new If_Statement();
+        ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
+        for(int i = 0;i<ctx.code_attribute().size();i++)
+        {
+            code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
+        }
+        if_statement.setCode_attributes(code_attributes);
+        if(ctx.ELSE()!=null){
+            if_statement.setName_statement(ctx.IF().getText()+ctx.ELSE().getText());
+        }
+        else if(ctx.IF()!=null) {
+            if_statement.setName_statement(ctx.IF().getText());
+        }
+        if(ctx.CHARS(0)!=null||ctx.NUMBER(0)!=null) {
+            if (ctx.CHARS(0) != null) {
+                if_statement.setVariable_one(ctx.CHARS(0).getText());
+            } else {
+                if_statement.setVariable_one(ctx.NUMBER(0).getText());
+            }
+        }
+        if(ctx.CHARS(1)!=null||ctx.NUMBER(1)!=null) {
+            if (ctx.CHARS(1) != null) {
+                if_statement.setVariable_one(ctx.CHARS(1).getText());
+            } else {
+                if_statement.setVariable_one(ctx.NUMBER(0).getText());
+            }
+        }
+        ArrayList<OperationIF>operationIFS = new ArrayList<>();
+        for(int i=0;i<ctx.operation_if().size();i++){
+            operationIFS.add(visitOperation_if(ctx.operation_if(i)));
+        }
+        if_statement.setOperationIFS(operationIFS);
+        ArrayList<Logic_symbol>logic_symbols = new ArrayList<>();
+        for(int i = 0 ; i<ctx.logical_sympol().size();i++){
+            logic_symbols.add(visitLogical_sympol(ctx.logical_sympol(i)));
+        }
+        if_statement.setLogic_symbol(logic_symbols);
+        return if_statement;
     }
 
     @Override
-    public Object visitLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx) {
-        return super.visitLogical_sympol(ctx);
+    public Logic_symbol visitLogical_sympol(PARSERCONTROLLER.Logical_sympolContext ctx) {
+        Logic_symbol logic_symbol = new Logic_symbol();
+        if(ctx.OR()!=null) {
+            logic_symbol.setSymbol(ctx.OR().getText());
+        }else{
+            logic_symbol.setSymbol(ctx.AND().getText());
+        }
+        return logic_symbol;
     }
 
     @Override
-    public Object visitOperation_if(PARSERCONTROLLER.Operation_ifContext ctx) {
-        return super.visitOperation_if(ctx);
+    public OperationIF visitOperation_if(PARSERCONTROLLER.Operation_ifContext ctx) {
+       OperationIF operationIF  = new OperationIF();
+       if(ctx.TAG_CLOSE()!=null){
+           operationIF.setOperation(ctx.TAG_CLOSE().getText());
+       }else if (ctx.TAG_OPEN()!=null){
+          operationIF.setOperation(ctx.TAG_OPEN().getText());
+        }else if(ctx.NOT_EQUAL()!=null){
+           operationIF.setOperation(ctx.NOT_EQUAL().getText());
+       }else if (ctx.EQUALEQUAL()!=null){
+           operationIF.setOperation(ctx.EQUALEQUAL().getText());
+       }else if (ctx.TAG_CLOSE_EQUAL()!=null){
+           operationIF.setOperation(ctx.TAG_CLOSE_EQUAL().getText());
+       }else if (ctx.TAG_OPEN_EQUAL()!=null) {
+           operationIF.setOperation(ctx.TAG_OPEN_EQUAL().getText());
+       }
+       return operationIF;
     }
-
     @Override
-    public Object visitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx) {
-        return super.visitElse_statment(ctx);
+    public Else_statement visitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx) {
+        Else_statement else_statement = new Else_statement();
+        ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
+        for(int i = 0;i<ctx.code_attribute().size();i++)
+        {
+            code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
+        }
+        else_statement.setCode_attributes(code_attributes);
+        return else_statement;
     }
 
     @Override
