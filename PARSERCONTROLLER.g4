@@ -3,7 +3,8 @@ options {tokenVocab = LEXERCONTROLLER;}
 
 
 program: TAG_OPEN CONTROLLER TAG_CLOSE code_attribute+ ;
-code_attribute : variables | on_click |  print  | comment | if_statment | else_statment ;
+code_attribute : variables | on_click |  print  | comment | if_statment | else_statment |for_statement;
+for_statement : FOR OPENTEXT CHARS EQUAL (CHARS) SEMICOLON CHARS operation_if (CHARS) SEMICOLON CLOSETEXT;//بدها تزبيط
 if_statment : ELSE? IF OPENTEXT (NUMBER|CHARS) operation_if ((NUMBER|CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE))
 (logical_sympol (NUMBER|CHARS|) operation_if ((NUMBER|CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)))* CLOSETEXT CURLYOPEN
  code_attribute+ CURLYCLOSE ;
@@ -26,7 +27,7 @@ printattribute : getdata | print_text | CHARS;
 getdata : GET_DATA OPENTEXT CHARS CLOSETEXT;
 print_text : DOUBLE_QUOTE CHARS DOUBLE_QUOTE;
 variables : variable_number |  variable_text | variable_get | textinput ;
-variable_number : CHARS EQUAL  (NUMBER | CHARS) (number_attribute (NUMBER | CHARS))* SEMICOLON| adding_one | minus_one | fast_math;
+variable_number : CHARS EQUAL  CHARS (number_attribute CHARS)* SEMICOLON| adding_one | minus_one | fast_math;
 fast_math:  CHARS number_attribute EQUAL (NUMBER | CHARS) SEMICOLON;
 adding_one : CHARS SUMS SEMICOLON ;
 minus_one : CHARS MINUSS SEMICOLON;

@@ -15,8 +15,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public If_Statement visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
         If_Statement if_statement = new If_Statement();
         ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
-        for(int i = 0;i<ctx.code_attribute().size();i++)
-        {
+        for(int i = 0;i<ctx.code_attribute().size();i++) {
             code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
         }
         if_statement.setCode_attributes(code_attributes);
