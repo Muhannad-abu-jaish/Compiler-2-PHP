@@ -2,12 +2,11 @@ package com.company.ast.Nodes;
 
 import java.util.ArrayList;
 
-public class Numbers extends ArrayList {
+public class Numbers  {
 
     int value;
     String numberName;
 
-     int nabeel;
 
     public int getValue() {
         return value;

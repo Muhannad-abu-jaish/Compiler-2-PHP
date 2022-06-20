@@ -174,27 +174,11 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public Variables visitVariables(PARSERCONTROLLER.VariablesContext ctx) {
         Variables variables = new Variables();
 
-
              if (ctx.variable_number()!=null)
             variables = visitVariable_number(ctx.variable_number());
 
             else if (!ctx.variable_text().getText().isEmpty())
                 variables = visitVariable_text(ctx.variable_text());
-
-
-
-
-
-        /*try {
-            String nameText = ctx.variable_text().CHARS(0).toString();
-            String valueText = ctx.variable_text().CHARS(1).toString();
-            variables.setName(nameText);
-            variables.setValue(valueText);
-        }catch (NullPointerException e)
-        {
-            e.printStackTrace();
-        }*/
-
 
         return variables;
     }
@@ -203,49 +187,152 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public Variables visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variables variables = new Variables();
 
+
         if (ctx!=null)
         {
-            String nameNumber = ctx.CHARS(0).getText().toString() ;
-            String valueNumber = ctx.NUMBER(0).getText().toString()  ;
-            variables.setName(nameNumber);
-            variables.setValue(valueNumber);
-            return variables;
+
+            if(ctx.adding_one()!=null)
+                variables = visitAdding_one(ctx.adding_one());
+
+
+            else if (ctx.minus_one()!=null)
+                variables = visitMinus_one(ctx.minus_one());
+
+            else if (ctx.fast_math()!=null)
+                variables.setFast_math(visitFast_math(ctx.fast_math()));
+
+            else if (ctx.CHARS()!=null)
+            {
+                String nameNumber = ctx.CHARS(0).getText();
+                ArrayList<String> valueNumber =new ArrayList<>();
+                ArrayList<String> number_attribute_operation = new ArrayList<>();
+
+                if (ctx.number_attribute()!=null) {
+
+                    for(int i = 0 ; i<ctx.number_attribute().size() ; i++)
+                    {
+                        number_attribute_operation.add(visitNumber_attribute(ctx.number_attribute(i)));
+                    }
+
+                }
+               for(int i=1;i<ctx.CHARS().size();i++){
+                   System.out.println("is : "+ctx.CHARS(i).getText());
+                   valueNumber.add(ctx.CHARS(i).getText());
+                }
+
+
+                variables.setName(nameNumber);
+                variables.setValue(valueNumber);
+                variables.setOperation(number_attribute_operation);
+
+                return variables;
+
+            }
+
+
+
+
         }
+
         return variables;
     }
 
     @Override
-    public Object visitFast_math(PARSERCONTROLLER.Fast_mathContext ctx) {
-        return super.visitFast_math(ctx);
+    public Fast_math visitFast_math(PARSERCONTROLLER.Fast_mathContext ctx) {
+        Fast_math fast_math = new Fast_math();
+
+        if (ctx.CHARS()!=null)
+            fast_math.setName(ctx.CHARS().getText());
+
+        if (ctx.SUM_EQUAL()!=null)
+            fast_math.setOperation(ctx.SUM_EQUAL().getText());
+
+        else if (ctx.MINUS_EQUAL()!=null)
+            fast_math.setOperation(ctx.MINUS_EQUAL().getText());
+
+        else if(ctx.DIVID_EQUAL()!=null)
+            fast_math.setOperation(ctx.DIVID_EQUAL().getText());
+
+        else if (ctx.MULTIPLY_EQUAL()!=null)
+            fast_math.setOperation(ctx.MULTIPLY_EQUAL().getText());
+
+        if (ctx.NUMBER()!=null)
+        {
+            System.out.println("here number : "+ctx.NUMBER().getText());
+            fast_math.setNumber(ctx.NUMBER().getText());
+        }
+        return fast_math;
+
     }
 
     @Override
-    public Object visitAdding_one(PARSERCONTROLLER.Adding_oneContext ctx) {
-        return super.visitAdding_one(ctx);
+    public Variables visitAdding_one(PARSERCONTROLLER.Adding_oneContext ctx) {
+        Variables variables = new Variables();
+
+
+        if(ctx.CHARS()!=null)
+            variables.setName(ctx.CHARS().getText());
+
+        if(ctx.SUMS()!=null)
+            variables.setOneOperation(ctx.SUMS().getText());
+
+        return variables;
     }
 
     @Override
-    public Object visitMinus_one(PARSERCONTROLLER.Minus_oneContext ctx) {
-        return super.visitMinus_one(ctx);
+    public Variables visitMinus_one(PARSERCONTROLLER.Minus_oneContext ctx) {
+
+        Variables variables = new Variables();
+
+        if (ctx.CHARS()!=null)
+        variables.setName(ctx.CHARS().getText());
+
+        if (ctx.MINUSS()!=null)
+            variables.setOneOperation(ctx.MINUSS().getText());
+
+        return variables;
     }
 
     @Override
-    public Object visitNumber_attribute(PARSERCONTROLLER.Number_attributeContext ctx) {
-        return super.visitNumber_attribute(ctx);
+    public String visitNumber_attribute(PARSERCONTROLLER.Number_attributeContext ctx) {
+
+        if (ctx.SUM()!=null)
+        return ctx.SUM().getText();
+
+        if (ctx.DIVID()!=null)
+            return ctx.DIVID().getText();
+
+        if (ctx.MULTIPLY()!=null)
+            return ctx.MULTIPLY().getText();
+
+        if (ctx.MINUS()!=null)
+            return ctx.MINUS().getText();
+
+        return " ";
     }
 
     @Override
     public Variables visitVariable_text(PARSERCONTROLLER.Variable_textContext ctx) {
-        Variables variables = new Variables(" " , " ",' ');
+        Variables variables = new Variables();
 
         if (ctx!=null)
         {
 
             String nameText = ctx.CHARS(0).getText().toString() ;
-            String valueText = ctx.CHARS(1).getText().toString() ;
+            ArrayList<String> valueText = new ArrayList<>();
+            ArrayList<String> variable_text_operation = new ArrayList<>();
+
+            for (int i = 0 ; i<ctx.CHARS().size() ; i++)
+                valueText.add(ctx.CHARS(i).getText());
+
+            for (int i = 0 ; i<ctx.SUM().size() ; i++)
+                variable_text_operation.add(ctx.SUM(i).getText());
+
+
             variables.setName(nameText);
             variables.setValue(valueText);
-            return variables;
+            variables.setOperation(variable_text_operation);
+
         }
         return variables ;
     }

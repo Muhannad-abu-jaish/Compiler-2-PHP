@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
@@ -16,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
+        String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
         CharStream charStream = fromFileName(source);
         LEXERCONTROLLER lexer = new LEXERCONTROLLER(charStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -36,14 +37,31 @@ public class Main {
         System.out.println("\t\t\t<Controller>");
         for (int i = 0; i < program.getCode_attribuites().size(); i++) {
             String nameText = program.getCode_attribuites().get(i).getVariables().getName();
-            String valueText = program.getCode_attribuites().get(i).getVariables().getValue();
-           // Integer valueNumber = program.getCode_attribuites().get(i).getVariables().getNumber();
+            String oneOperation = program.getCode_attribuites().get(i).getVariables().getOneOperation();
+            String oneValue = program.getCode_attribuites().get(i).getVariables().getOneValue();
+            ArrayList<String> valueNumber = program.getCode_attribuites().get(i).getVariables().getValue();
+            ArrayList<String> operation = program.getCode_attribuites().get(i).getVariables().getOperation();
+            Fast_math fast_math = program.getCode_attribuites().get(i).getVariables().getFast_math();
 
-            if (valueText!=null&&nameText!=null)
+            /*if(oneOperation!=null&&nameText!=null)
+               System.out.println(nameText +oneOperation);
+
+            else if(fast_math!=null)
             {
-                System.out.println(nameText +" : "+valueText);
+                System.out.println(fast_math.getName() + " " +fast_math.getOperation() + " " + fast_math.getNumber() );
             }
-            if(program.getCode_attribuites().get(i).getClicking()!=null){
+*/
+
+
+
+            System.out.print(nameText +" = ");
+            for(int j = 0 ; j<valueNumber.size() ; j++ )
+            {
+                System.out.print(valueNumber.get(j) +" " +operation.get(j) + " ");
+            }
+
+
+            /*if(program.getCode_attribuites().get(i).getClicking()!=null){
                 Clicking clicking = program.getCode_attribuites().get(i).getClicking();
                 System.out.println("-----------ON Click-------------");
                 System.out.println("Click by : " + clicking.getClick());
@@ -77,7 +95,7 @@ public class Main {
                         }
                     }
                 }
-            }
+            }*/
 
            /* if (valueNumber!=null&&nameText!=null)
             {

@@ -1,7 +1,3 @@
 <controller>
-button.onClick(){
-text.Color = 'Red',
-text.Content = 'Hi',
-button.Width = '150dp',
-button.Background = 'Blue'
-};
+
+x = y + 4 + y / 8 * 5 -5 ;
