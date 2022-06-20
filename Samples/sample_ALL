@@ -4,24 +4,27 @@ x = 45;
 char = 'c';
 ID = 'myText';
 x = textInput.Content;
-print(getData(ID));    ////////////////
-print("fwef");           ///////////////////////////////////
-print(x);                //////////////////////
+print(getData(ID));
+print("fwef");
+print(x);
 if(x=='hello'){
-print(x);            //////////////////////////////
+print(x);
 }
 else if (x=='hi'){
-print("Hi");                   ///////////////////////////////
+print("Hi");
 }
 else{
-print("Else");         ///////////////////////////////////
+print("Else");
 }
 if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
 x=4;
 }
-text = getData(ID);           ///////////////////////////
+for(i=0;i<5;i++){
+print("hi");
+}
+text = getData(ID);
 ID2 = 'myButton';
-button = getData(ID2);        ///////////////////////////////////
+button = getData(ID2);
 button.onClick(){
 text.Color = 'Red',
 text.Content = 'Hi',
@@ -29,17 +32,16 @@ button.Width = '150dp',
 button.Background = 'Blue'
 };
 //HI
-x = y + 4 + y / 8 * 5 -5 ;            ///////////////////////////
-x++;             ////////////////////////
-x--;
-x+=5;             ///////////////////
-x-=10;            ////////////////////
-x/=y;            ///////////////////
-x*=2;               ////////////////////
-x=0;               /////////////////
-print(x);   //////////////////////
+x = y + 4 + y / 8 * 5 -5 ;
+x++;
+x+=5;
+x-=10;
+x/=y;
+x*=2;
+x=0;
+print(x);
 ID3 = 'myTextInput';
-textInput = getData(ID3);       //////////////////////
+textInput = getData(ID3);
 
 
 
