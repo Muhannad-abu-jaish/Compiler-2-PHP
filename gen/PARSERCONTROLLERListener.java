@@ -1,4 +1,4 @@
-// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -26,6 +26,16 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement(PARSERCONTROLLER.For_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#for_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement(PARSERCONTROLLER.For_statementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PARSERCONTROLLER#if_statment}.
 	 * @param ctx the parse tree
@@ -306,4 +316,14 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTextinput(PARSERCONTROLLER.TextinputContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
 }

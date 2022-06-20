@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
+    public Object visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
+        return super.visitFor_statement(ctx);
+    }
+    @Override
     public If_Statement visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
         If_Statement if_statement = new If_Statement();
         ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
@@ -25,20 +29,10 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         else if(ctx.IF()!=null) {
             if_statement.setName_statement(ctx.IF().getText());
         }
-        if(ctx.CHARS(0)!=null||ctx.NUMBER(0)!=null) {
-            if (ctx.CHARS(0) != null) {
+            if (ctx.CHARS(0) != null)
                 if_statement.setVariable_one(ctx.CHARS(0).getText());
-            } else {
-                if_statement.setVariable_one(ctx.NUMBER(0).getText());
-            }
-        }
-        if(ctx.CHARS(1)!=null||ctx.NUMBER(1)!=null) {
-            if (ctx.CHARS(1) != null) {
-                if_statement.setVariable_one(ctx.CHARS(1).getText());
-            } else {
-                if_statement.setVariable_one(ctx.NUMBER(0).getText());
-            }
-        }
+            if (ctx.CHARS(1) != null)
+                if_statement.setVariable_two(ctx.CHARS(1).getText());
         ArrayList<OperationIF>operationIFS = new ArrayList<>();
         for(int i=0;i<ctx.operation_if().size();i++){
             operationIFS.add(visitOperation_if(ctx.operation_if(i)));
@@ -108,15 +102,17 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
     public Code_attribuite visitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx) {
         Code_attribuite code_attribuite=new Code_attribuite();
-
-        Variables variables=new Variables();
         if(ctx.variables()!=null)
         {
             code_attribuite.setVariables(visitVariables(ctx.variables()));
         }
-        if(ctx.on_click()!=null)
+         if(ctx.on_click()!=null)
         {
             code_attribuite.setClicking(visitOn_click(ctx.on_click()));
+        }
+         if (ctx.if_statment()!=null)
+        {
+            code_attribuite.setIf_statement(visitIf_statment(ctx.if_statment()));
         }
         return code_attribuite;
     }
@@ -235,68 +231,33 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
     public Variables visitVariables(PARSERCONTROLLER.VariablesContext ctx) {
         Variables variables = new Variables();
-
-             if (ctx.variable_number()!=null)
-            variables = visitVariable_number(ctx.variable_number());
-
-            else if (!ctx.variable_text().getText().isEmpty())
-                variables = visitVariable_text(ctx.variable_text());
-
+        if(ctx.variable_text()!=null){
+            variables.setVariables_text(visitVariable_text(ctx.variable_text()));
+        }
+        if(ctx.variable_number()!=null){
+            variables.setVariable_numbers(visitVariable_number(ctx.variable_number()));
+        }
+        if(ctx.textinput()!=null){
+            variables.setTextInput(visitTextinput(ctx.textinput()));
+        }
         return variables;
     }
 
     @Override
-    public Variables visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
-        Variables variables = new Variables();
-
-
-        if (ctx!=null)
-        {
-
-            if(ctx.adding_one()!=null)
-                variables = visitAdding_one(ctx.adding_one());
-
-
-            else if (ctx.minus_one()!=null)
-                variables = visitMinus_one(ctx.minus_one());
-
-            else if (ctx.fast_math()!=null)
-                variables.setFast_math(visitFast_math(ctx.fast_math()));
-
-            else if (ctx.CHARS()!=null)
-            {
-                String nameNumber = ctx.CHARS(0).getText();
-                ArrayList<String> valueNumber =new ArrayList<>();
-                ArrayList<String> number_attribute_operation = new ArrayList<>();
-
-                if (ctx.number_attribute()!=null) {
-
-                    for(int i = 0 ; i<ctx.number_attribute().size() ; i++)
-                    {
-                        number_attribute_operation.add(visitNumber_attribute(ctx.number_attribute(i)));
-                    }
-
-                }
-               for(int i=1;i<ctx.CHARS().size();i++){
-                   System.out.println("is : "+ctx.CHARS(i).getText());
-                   valueNumber.add(ctx.CHARS(i).getText());
-                }
-
-
-                variables.setName(nameNumber);
-                variables.setValue(valueNumber);
-                variables.setOperation(number_attribute_operation);
-
-                return variables;
-
-            }
-
-
-
-
+    public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
+        Variable_Numbers variable_numbers = new Variable_Numbers();
+        variable_numbers.setName_variable(ctx.CHARS(0).getText());
+        ArrayList<String>values_variables = new ArrayList<>();
+        ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
+        for(int i = 1 ; i<ctx.CHARS().size();i++){
+            values_variables.add(ctx.CHARS(i).getText());
         }
-
-        return variables;
+        for(int i = 0 ;i<ctx.number_attribute().size();i++){
+            number_attributes.add(visitNumber_attribute(ctx.number_attribute(i)));
+        }
+        variable_numbers.setValues_variables(values_variables);
+        variable_numbers.setName_attributes(number_attributes);
+        return variable_numbers;
     }
 
     @Override
@@ -304,7 +265,10 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         Fast_math fast_math = new Fast_math();
 
         if (ctx.CHARS()!=null)
-            fast_math.setName(ctx.CHARS().getText());
+        {
+            fast_math.setName(ctx.CHARS(0).getText());
+            fast_math.setNumber(ctx.CHARS(1).getText());
+        }
 
         if (ctx.SUM_EQUAL()!=null)
             fast_math.setOperation(ctx.SUM_EQUAL().getText());
@@ -317,12 +281,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
         else if (ctx.MULTIPLY_EQUAL()!=null)
             fast_math.setOperation(ctx.MULTIPLY_EQUAL().getText());
-
-        if (ctx.NUMBER()!=null)
-        {
-            System.out.println("here number : "+ctx.NUMBER().getText());
-            fast_math.setNumber(ctx.NUMBER().getText());
-        }
         return fast_math;
 
     }
@@ -356,47 +314,34 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public String visitNumber_attribute(PARSERCONTROLLER.Number_attributeContext ctx) {
-
+    public Number_Attribute visitNumber_attribute(PARSERCONTROLLER.Number_attributeContext ctx) {
+       Number_Attribute number_attribute = new Number_Attribute();
         if (ctx.SUM()!=null)
-        return ctx.SUM().getText();
-
+        number_attribute.setOperator(ctx.SUM().getText());
         if (ctx.DIVID()!=null)
-            return ctx.DIVID().getText();
-
+            number_attribute.setOperator(ctx.DIVID().getText());
         if (ctx.MULTIPLY()!=null)
-            return ctx.MULTIPLY().getText();
-
+            number_attribute.setOperator(ctx.MULTIPLY().getText());
         if (ctx.MINUS()!=null)
-            return ctx.MINUS().getText();
-
-        return " ";
+            number_attribute.setOperator(ctx.MINUS().getText());
+        return number_attribute;
     }
 
     @Override
-    public Variables visitVariable_text(PARSERCONTROLLER.Variable_textContext ctx) {
-        Variables variables = new Variables();
-
-        if (ctx!=null)
-        {
-
-            String nameText = ctx.CHARS(0).getText().toString() ;
-            ArrayList<String> valueText = new ArrayList<>();
-            ArrayList<String> variable_text_operation = new ArrayList<>();
-
-            for (int i = 0 ; i<ctx.CHARS().size() ; i++)
-                valueText.add(ctx.CHARS(i).getText());
-
-            for (int i = 0 ; i<ctx.SUM().size() ; i++)
-                variable_text_operation.add(ctx.SUM(i).getText());
-
-
-            variables.setName(nameText);
-            variables.setValue(valueText);
-            variables.setOperation(variable_text_operation);
-
+    public Variables_Text visitVariable_text(PARSERCONTROLLER.Variable_textContext ctx) {
+        Variables_Text variables_text = new Variables_Text();
+        variables_text.setName_variable(ctx.CHARS(0).getText());
+        ArrayList<String>values_variables = new ArrayList<>();
+        ArrayList<String>operators = new ArrayList<>();
+        for(int i = 1;i<ctx.CHARS().size();i++){
+            values_variables.add(ctx.CHARS(i).getText());
         }
-        return variables ;
+        for(int i = 0 ;i < ctx.SUM().size();i++){
+            operators.add(ctx.SUM(i).getText());
+        }
+        variables_text.setValues_variables(values_variables);
+        variables_text.setOperator(operators);
+        return variables_text;
     }
 
 
@@ -406,10 +351,25 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public Object visitTextinput(PARSERCONTROLLER.TextinputContext ctx) {
-        return super.visitTextinput(ctx);
+    public TextInput visitTextinput(PARSERCONTROLLER.TextinputContext ctx) {
+        TextInput textInput = new TextInput();
+        textInput.setKey(ctx.CHARS(0).getText());
+        textInput.setValue(ctx.CHARS(1).getText());
+        if(ctx.textinput_attribute()!=null) {
+            textInput.setAttribute_textInput(visitTextinput_attribute(ctx.textinput_attribute()));
+        }
+        return textInput;
     }
 
+    @Override
+    public Attribute_TextInput visitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx) {
+       Attribute_TextInput attribute_textInput = new Attribute_TextInput();
+       if(ctx.COLOR()!=null)
+           attribute_textInput.setName_attribute_TextInput(ctx.COLOR().getText());
+       else if (ctx.CONTENT()!=null)
+           attribute_textInput.setName_attribute_TextInput(ctx.CONTENT().getText());
+        return attribute_textInput;
+    }
     @Override
     public Object visit(ParseTree tree) {
         return super.visit(tree);

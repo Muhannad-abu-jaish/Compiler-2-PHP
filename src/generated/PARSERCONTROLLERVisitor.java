@@ -1,4 +1,4 @@
-package generated;// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+package generated;// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -21,6 +21,12 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_statement(PARSERCONTROLLER.For_statementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#if_statment}.
 	 * @param ctx the parse tree
@@ -189,4 +195,10 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTextinput(PARSERCONTROLLER.TextinputContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
 }

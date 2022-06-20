@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Code_attribuite {
 
-    Variables variables=new Variables();
-    Clicking clicking = new Clicking();
-    If_Statement if_statement = new If_Statement();
+    Variables variables;
+    Clicking clicking ;
+    If_Statement if_statement;
 
     public If_Statement getIf_statement() {
         return if_statement;
