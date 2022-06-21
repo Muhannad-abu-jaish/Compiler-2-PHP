@@ -10,11 +10,11 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.*;
 
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
 
         String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
@@ -24,13 +24,22 @@ public class Main {
         PARSERCONTROLLER parser = new PARSERCONTROLLER(tokenStream);
         ParseTree tree = parser.program();
         Program program = (Program) new BaseVisitor().visit(tree);
-
-        generateAst(program);
-        /*ErrorHandling(program);
-        generateAst(program);
-*/
+        ErrorHandling(program);
         // write your code here
     }
+
+    private static void ErrorHandling(Program program) {
+    Stack<String>stack = BaseVisitor.getErrors();// الحصول على ستاك الايرورات من داخل كلاس الفيزيتور
+    if(stack.empty()){// إذا لم يوجد أي اخطاء
+        generateAst(program);// توليد شجرة ال ast
+    }
+    else { // كان في اخطاء
+        while (!stack.empty()) { // منمشي عليهن خطأ خطأ
+            System.err.println(stack.pop());//منطبعهن وحدة وحدة وسطر وسطر
+        }
+    }
+    }
+
     public static void recursive_else(Else_statement else_statement){
         int num_sums = 0, num_operation = 0, num_operation_IF_Statement = 0, num_logic_symbol_if = 0;
         for (int i = 0; i < else_statement.getCode_attributes().size(); i++) {

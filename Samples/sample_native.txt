@@ -1,3 +1,4 @@
 <controller>
-text = getData(ID);
-textInput = getData(ID3);
+x=5;
+y=z;
+v=u;

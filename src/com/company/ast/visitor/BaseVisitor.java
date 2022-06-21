@@ -7,10 +7,18 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.util.ArrayList;
+import java.util.*;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
+    static  HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
+    static  Stack<String> errors = new Stack<>(); // ستاك لتخزين الاخطاء يلي لح تظهر
+    public static HashMap<String, String> getSymbolTable() { // منروح عالسطر 306 لنشوف المثال
+        return symbolTable;
+    }
+
+    public static Stack<String> getErrors() {
+        return errors;
+    }
 
     @Override
     public Object visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
@@ -279,19 +287,31 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
     }
-
+private boolean isNumber(String data){ // تابع ليتحقق من انو السترينغ هو عبارة عن رقم
+    try {
+        double d = Double.parseDouble(data);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
     @Override
     public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variable_Numbers variable_numbers = new Variable_Numbers();
-
-
         if (ctx.CHARS(0)!=null)
         {
             variable_numbers.setName_variable(ctx.CHARS(0).getText());
+            symbolTable.put(ctx.CHARS(0).getText(),"True");//منخزن المتغير يلي لح نأسندلو مثلا x=5 منخزن ال x والفاليو حطيتا True مؤقتا
             ArrayList<String>values_variables = new ArrayList<>();
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
+                if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
+                    errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                }
+                //هلئ هون انا بشيك بركي كنت عبأسند لمتحول مو معروف متل x=y فال y مالي مأسندها لحدا من قبل
+            //فلازم هون يعطيني ايرور انو ال y غير معرّفة فالشرط انا عبستعمل تابعين ال isNumber لأتحقق انو حرف ومو رقم
+            // و إذا كان مو موجود بالsymbolTable فهون معناتا مو معرّف فهون بفوت عالشرط وبعبي الستاك وبحط نص الايرور
             }
 
             for(int i = 0 ;i<ctx.number_attribute().size();i++){
@@ -315,6 +335,13 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
 
         return variable_numbers;
+    }
+
+    private boolean isDefined(String text) {//هاد التابع بيفحص إذا السترينغ موجود من قبل ولا لاء
+     if(symbolTable.containsKey(text)){ // إذا كان موجود يعني متعرّف عليه
+         return true;
+     }
+     return false;
     }
 
     @Override
