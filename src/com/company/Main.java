@@ -240,6 +240,8 @@ public class Main {
                 Variables_Text variables_text = program.getCode_attribuites().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = program.getCode_attribuites().get(i).getVariables().getVariable_numbers();
                 TextInput textInput = program.getCode_attribuites().get(i).getVariables().getTextInput();
+                VariableGet variableGet =program.getCode_attribuites().get(i).getVariables().getVariableGet();
+
                 if(textInput!=null){
                     System.out.println("------------TEXT_INPUT---------");
                     System.out.println(textInput.getKey()+ "=" + textInput.getValue() +"."+textInput.getAttribute_textInput().getName_attribute_TextInput());
@@ -260,20 +262,38 @@ public class Main {
                 }
                 else if(variable_numbers!=null){
                     System.out.println("--------------VARIABLE_Number-----------");
-                    System.out.print(variable_numbers.getName_variable() + " = ");
-                    for(int j = 0 ; j <variable_numbers.getValues_variables().size();j++){
-                        System.out.print(variable_numbers.getValues_variables().get(j));
-                        if(variable_numbers.getName_attributes().size()>0&&num_operation<variable_numbers.getName_attributes().size()){
-                            System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator()+" ");
-                            num_operation++;
-                        }else{
-                            System.out.println();
+
+                    OneOperation oneOperation = variable_numbers.getOneOperation();
+                    Fast_math fast_math = program.getCode_attribuites().get(i).getVariables().getVariable_numbers().getFast_math();
+                    if (oneOperation!=null)
+                        System.out.println(oneOperation.getNameOneOperation() + oneOperation.getOneOperation());
+
+                    if (fast_math!=null)
+                        System.out.println(fast_math.getName() + fast_math.getOperation() + fast_math.getNumber());
+
+
+                    if (variable_numbers.getName_variable()!=null)
+                    {
+                        System.out.print(variable_numbers.getName_variable() + " = ");
+                        for(int j = 0 ; j <variable_numbers.getValues_variables().size();j++){
+                            System.out.print(variable_numbers.getValues_variables().get(j));
+                            if(variable_numbers.getName_attributes().size()>0&&num_operation<variable_numbers.getName_attributes().size()){
+                                System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator()+" ");
+                                num_operation++;
+                            }else{
+                                System.out.println();
+                            }
                         }
+
+                        num_operation = 0;
                     }
-                    num_operation = 0;
+
                 }
 
+                if (variableGet!=null)
+                    System.out.println(variableGet.getGetName()+ " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
             }
+
             Print print = program.getCode_attribuites().get(i).getPrint();
             Clicking clicking = program.getCode_attribuites().get(i).getClicking();
             If_Statement if_statement = program.getCode_attribuites().get(i).getIf_statement();

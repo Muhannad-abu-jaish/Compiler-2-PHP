@@ -4,6 +4,24 @@ public class Variable_Numbers {
     String name_variable;
     ArrayList<String>values_variables;
     ArrayList<Number_Attribute>name_attributes;
+    OneOperation oneOperation ;
+    Fast_math fast_math ;
+
+    public Fast_math getFast_math() {
+        return fast_math;
+    }
+
+    public void setFast_math(Fast_math fast_math) {
+        this.fast_math = fast_math;
+    }
+
+    public OneOperation getOneOperation() {
+        return oneOperation;
+    }
+
+    public void setOneOperation(OneOperation oneOperation) {
+        this.oneOperation = oneOperation;
+    }
 
     public String getName_variable() {
         return name_variable;

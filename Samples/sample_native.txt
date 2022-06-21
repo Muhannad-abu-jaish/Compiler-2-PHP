@@ -1,15 +1,3 @@
 <controller>
-message = 'hello'+'hi';
-x = 45+5+6*8/10;
-char = 'c';
-ID = 'myText';
-x = textInput.Content;
-button.onClick(){
-text.Color = 'Red',
-text.Content = 'Hi',
-button.Width = '150dp',
-button.Background = 'Blue'
-};
-if(x=='hello'){
-x=9;
-}
+text = getData(ID);
+textInput = getData(ID3);

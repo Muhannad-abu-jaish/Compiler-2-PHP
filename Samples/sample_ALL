@@ -19,9 +19,7 @@ print("Else");
 if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
 x=4;
 }
-for(i=0;i<5;i++){
 print("hi");
-}
 text = getData(ID);
 ID2 = 'myButton';
 button = getData(ID2);

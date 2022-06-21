@@ -243,8 +243,17 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public Object visitGetdata(PARSERCONTROLLER.GetdataContext ctx) {
-        return super.visitGetdata(ctx);
+    public GetData visitGetdata(PARSERCONTROLLER.GetdataContext ctx) {
+
+        GetData getData = new GetData();
+
+        if (ctx.GET_DATA()!=null)
+            getData.setDataName(ctx.GET_DATA().getText());
+
+        if (ctx.CHARS()!=null)
+            getData.setDataValue(ctx.CHARS().getText());
+
+        return getData ;
     }
     @Override
     public Print_text visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
@@ -265,23 +274,46 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         if(ctx.textinput()!=null){
             variables.setTextInput(visitTextinput(ctx.textinput()));
         }
+
+        if (ctx.variable_get()!=null)
+            variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
     }
 
     @Override
     public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variable_Numbers variable_numbers = new Variable_Numbers();
-        variable_numbers.setName_variable(ctx.CHARS(0).getText());
-        ArrayList<String>values_variables = new ArrayList<>();
-        ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
-        for(int i = 1 ; i<ctx.CHARS().size();i++){
-            values_variables.add(ctx.CHARS(i).getText());
+
+
+        if (ctx.CHARS(0)!=null)
+        {
+            variable_numbers.setName_variable(ctx.CHARS(0).getText());
+            ArrayList<String>values_variables = new ArrayList<>();
+            ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
+            for(int i = 1 ; i<ctx.CHARS().size();i++){
+                values_variables.add(ctx.CHARS(i).getText());
+            }
+
+            for(int i = 0 ;i<ctx.number_attribute().size();i++){
+                number_attributes.add(visitNumber_attribute(ctx.number_attribute(i)));
+            }
+
+            variable_numbers.setValues_variables(values_variables);
+            variable_numbers.setName_attributes(number_attributes);
         }
-        for(int i = 0 ;i<ctx.number_attribute().size();i++){
-            number_attributes.add(visitNumber_attribute(ctx.number_attribute(i)));
-        }
-        variable_numbers.setValues_variables(values_variables);
-        variable_numbers.setName_attributes(number_attributes);
+
+
+        if (ctx.adding_one()!=null)
+            variable_numbers.setOneOperation(visitAdding_one(ctx.adding_one()));
+
+        if (ctx.minus_one()!=null)
+            variable_numbers.setOneOperation(visitMinus_one(ctx.minus_one()));
+
+        if (ctx.fast_math()!=null)
+            variable_numbers.setFast_math(visitFast_math(ctx.fast_math()));
+
+
+
         return variable_numbers;
     }
 
@@ -306,36 +338,37 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
         else if (ctx.MULTIPLY_EQUAL()!=null)
             fast_math.setOperation(ctx.MULTIPLY_EQUAL().getText());
+
         return fast_math;
 
     }
 
     @Override
-    public Variables visitAdding_one(PARSERCONTROLLER.Adding_oneContext ctx) {
-        Variables variables = new Variables();
+    public OneOperation visitAdding_one(PARSERCONTROLLER.Adding_oneContext ctx) {
+        OneOperation oneOperation = new OneOperation();
 
 
-        if(ctx.CHARS()!=null)
-            variables.setName(ctx.CHARS().getText());
+        if (ctx.CHARS()!=null)
+            oneOperation.setNameOneOperation(ctx.CHARS().getText());
 
         if(ctx.SUMS()!=null)
-            variables.setOneOperation(ctx.SUMS().getText());
+            oneOperation.setOneOperation(ctx.SUMS().getText());
 
-        return variables;
+
+        return oneOperation;
     }
 
     @Override
-    public Variables visitMinus_one(PARSERCONTROLLER.Minus_oneContext ctx) {
-
-        Variables variables = new Variables();
+    public OneOperation visitMinus_one(PARSERCONTROLLER.Minus_oneContext ctx) {
+        OneOperation oneOperation = new OneOperation();
 
         if (ctx.CHARS()!=null)
-        variables.setName(ctx.CHARS().getText());
+            oneOperation.setNameOneOperation(ctx.CHARS().getText());
 
         if (ctx.MINUSS()!=null)
-            variables.setOneOperation(ctx.MINUSS().getText());
+            oneOperation.setOneOperation(ctx.MINUSS().getText());
 
-        return variables;
+        return oneOperation;
     }
 
     @Override
@@ -371,8 +404,17 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
 
     @Override
-    public Object visitVariable_get(PARSERCONTROLLER.Variable_getContext ctx) {
-        return super.visitVariable_get(ctx);
+    public VariableGet visitVariable_get(PARSERCONTROLLER.Variable_getContext ctx) {
+
+        VariableGet variableGet =new VariableGet();
+
+        if (ctx.CHARS()!=null)
+            variableGet.setGetName(ctx.CHARS().getText());
+
+        if (ctx.getdata()!=null)
+            variableGet.setGetData(visitGetdata(ctx.getdata()));
+
+        return variableGet ;
     }
 
     @Override

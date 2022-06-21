@@ -1,7 +1,7 @@
 package com.company.ast.Nodes;
 
 public class GetData {
-    String dataName , dataValue;
+    String dataName ,  dataValue;
 
     public String getDataName() {
         return dataName;
