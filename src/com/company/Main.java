@@ -38,6 +38,7 @@ public class Main {
                 Variables_Text variables_text = else_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = else_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
                 TextInput textInput = else_statement.getCode_attributes().get(i).getVariables().getTextInput();
+                VariableGet variableGet =else_statement.getCode_attributes().get(i).getVariables().getVariableGet();
                 if (textInput != null) {
                     System.out.println("------------TEXT_INPUT_ELSE---------");
                     System.out.println(textInput.getKey() + "=" + textInput.getValue() + "." + textInput.getAttribute_textInput().getName_attribute_TextInput());
@@ -56,19 +57,33 @@ public class Main {
                     num_sums = 0;
                 } else if (variable_numbers != null) {
                     System.out.println("--------------VARIABLE_Number-----------");
-                    System.out.print(variable_numbers.getName_variable() + " = ");
-                    for (int j = 0; j < variable_numbers.getValues_variables().size(); j++) {
-                        System.out.print(variable_numbers.getValues_variables().get(j));
-                        if (variable_numbers.getName_attributes().size() > 0 && num_operation < variable_numbers.getName_attributes().size()) {
-                            System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator() + " ");
-                            num_operation++;
-                        } else {
-                            System.out.println();
+                    OneOperation oneOperation = variable_numbers.getOneOperation();
+                    Fast_math fast_math = else_statement.getCode_attributes().get(i).getVariables().getVariable_numbers().getFast_math();
+                    if (oneOperation!=null)
+                        System.out.println(oneOperation.getNameOneOperation() + oneOperation.getOneOperation());
+
+                    if (fast_math!=null)
+                        System.out.println(fast_math.getName() + fast_math.getOperation() + fast_math.getNumber());
+
+                    if(variable_numbers.getName_variable()!=null) {
+                        System.out.print(variable_numbers.getName_variable() + " = ");
+                        for (int j = 0; j < variable_numbers.getValues_variables().size(); j++) {
+                            System.out.print(variable_numbers.getValues_variables().get(j));
+                            if (variable_numbers.getName_attributes().size() > 0 && num_operation < variable_numbers.getName_attributes().size()) {
+                                System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator() + " ");
+                                num_operation++;
+                            } else {
+                                System.out.println();
+                            }
                         }
+                        num_operation = 0;
                     }
-                    num_operation = 0;
+                }
+                else if (variableGet!=null) {
+                    System.out.println(variableGet.getGetName() + " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
                 }
             }
+            Print print = else_statement.getCode_attributes().get(i).getPrint();
             Clicking clicking = else_statement.getCode_attributes().get(i).getClicking();
             Else_statement else_statement_inner = else_statement.getCode_attributes().get(i).getElse_statement();
             If_Statement if_statement_inner = else_statement.getCode_attributes().get(i).getIf_statement();
@@ -106,7 +121,8 @@ public class Main {
                         }
                     }
                 }
-            } else if (else_statement_inner != null) {
+            }
+             else if (else_statement_inner != null) {
                 System.out.println("---------------else Statement_inner--------------");
                 System.out.println(else_statement_inner.getName_statement() + "{");
 
@@ -114,7 +130,8 @@ public class Main {
                     recursive_else(else_statement_inner);
                     System.out.println("}");
                 }
-            }else if (if_statement_inner != null) {
+            }
+             else if (if_statement_inner != null) {
                 System.out.println("---------------IF Statement_inner--------------");
                 System.out.print(if_statement_inner.getName_statement() + "(" + if_statement_inner.getVariable_one());
                 if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
@@ -127,6 +144,24 @@ public class Main {
                     System.out.println("}");
                 }
             }
+             else if (print!=null){
+                 System.out.println("--------PRINT--------");
+                 System.out.print(print.getName_print()+"(");
+                 if(print.getAttribute_print()!=null){
+                     if(print.getAttribute_print().getPrint_function()!=null)
+                     {
+                         System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
+                                 +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                     }
+                     else if (print.getAttribute_print().getPrint_text()!=null){
+                         System.out.print(print.getAttribute_print().getPrint_text().getContent());
+                     }
+                     else if (print.getAttribute_print().getValue()!=null){
+                         System.out.print(print.getAttribute_print().getValue());
+                     }
+                     System.out.println(")");
+                 }
+             }
         }
     }
     public static void recursive_if(If_Statement if_statement) {
@@ -135,6 +170,7 @@ public class Main {
             if(if_statement.getCode_attributes().get(i).getVariables()!=null) {
                 Variables_Text variables_text = if_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = if_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
+                VariableGet variableGet =if_statement.getCode_attributes().get(i).getVariables().getVariableGet();
                 TextInput textInput = if_statement.getCode_attributes().get(i).getVariables().getTextInput();
                 if (textInput != null) {
                     System.out.println("------------TEXT_INPUT---------");
@@ -156,20 +192,35 @@ public class Main {
                 }
                 else if (variable_numbers != null) {
                     System.out.println("--------------VARIABLE_Number-----------");
-                    System.out.print(variable_numbers.getName_variable() + " = ");
-                    for (int j = 0; j < variable_numbers.getValues_variables().size(); j++) {
-                        System.out.print(variable_numbers.getValues_variables().get(j));
-                        if (variable_numbers.getName_attributes().size() > 0 && num_operation < variable_numbers.getName_attributes().size()) {
-                            System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator() + " ");
-                            num_operation++;
-                        } else {
-                            System.out.println();
+                    OneOperation oneOperation = variable_numbers.getOneOperation();
+                    Fast_math fast_math = if_statement.getCode_attributes().get(i).getVariables().getVariable_numbers().getFast_math();
+                    if (oneOperation!=null)
+                        System.out.println(oneOperation.getNameOneOperation() + oneOperation.getOneOperation());
+
+                    if (fast_math!=null)
+                        System.out.println(fast_math.getName() + fast_math.getOperation() + fast_math.getNumber());
+
+
+                    if(variable_numbers.getName_variable()!=null) {
+                        System.out.print(variable_numbers.getName_variable() + " = ");
+                        for (int j = 0; j < variable_numbers.getValues_variables().size(); j++) {
+                            System.out.print(variable_numbers.getValues_variables().get(j));
+                            if (variable_numbers.getName_attributes().size() > 0 && num_operation < variable_numbers.getName_attributes().size()) {
+                                System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator() + " ");
+                                num_operation++;
+                            } else {
+                                System.out.println();
+                            }
                         }
+                        num_operation = 0;
                     }
-                    num_operation = 0;
+                }
+                else if (variableGet!=null) {
+                    System.out.println(variableGet.getGetName() + " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
                 }
 
             }
+            Print print = if_statement.getCode_attributes().get(i).getPrint();
             Clicking clicking = if_statement.getCode_attributes().get(i).getClicking();
             If_Statement if_statement_inner = if_statement.getCode_attributes().get(i).getIf_statement();
             Else_statement else_statement_inner = if_statement.getCode_attributes().get(i).getElse_statement();
@@ -230,6 +281,24 @@ public class Main {
                     System.out.println("}");
                 }
             }
+             else if (print!=null){
+                 System.out.println("--------PRINT--------");
+                 System.out.print(print.getName_print()+"(");
+                 if(print.getAttribute_print()!=null){
+                     if(print.getAttribute_print().getPrint_function()!=null)
+                     {
+                         System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
+                                 +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                     }
+                     else if (print.getAttribute_print().getPrint_text()!=null){
+                         System.out.print(print.getAttribute_print().getPrint_text().getContent());
+                     }
+                     else if (print.getAttribute_print().getValue()!=null){
+                         System.out.print(print.getAttribute_print().getValue());
+                     }
+                     System.out.println(")");
+                 }
+             }
         }
     }
     private static void generateAst(Program program) {
@@ -290,8 +359,9 @@ public class Main {
 
                 }
 
-                if (variableGet!=null)
-                    System.out.println(variableGet.getGetName()+ " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
+                else if (variableGet!=null) {
+                    System.out.println(variableGet.getGetName() + " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
+                }
             }
 
             Print print = program.getCode_attribuites().get(i).getPrint();
