@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import java.util.ArrayList;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
+
     @Override
     public Object visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
         return super.visitFor_statement(ctx);
@@ -24,7 +25,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         }
         if_statement.setCode_attributes(code_attributes);
         if(ctx.ELSE()!=null){
-            if_statement.setName_statement(ctx.IF().getText()+ctx.ELSE().getText());
+            if_statement.setName_statement(ctx.ELSE().getText()+" "+ctx.IF().getText());
         }
         else if(ctx.IF()!=null) {
             if_statement.setName_statement(ctx.IF().getText());
@@ -78,6 +79,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
     public Else_statement visitElse_statment(PARSERCONTROLLER.Else_statmentContext ctx) {
         Else_statement else_statement = new Else_statement();
+        else_statement.setName_statement(ctx.ELSE().getText());
         ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
         for(int i = 0;i<ctx.code_attribute().size();i++)
         {
@@ -114,6 +116,13 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         {
             code_attribuite.setIf_statement(visitIf_statment(ctx.if_statment()));
         }
+         if(ctx.else_statment()!=null)
+         {
+             code_attribuite.setElse_statement(visitElse_statment(ctx.else_statment()));
+         }
+         if(ctx.print()!=null){
+             code_attribuite.setPrint(visitPrint(ctx.print()));
+         }
         return code_attribuite;
     }
 
@@ -209,23 +218,39 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public Object visitPrint(PARSERCONTROLLER.PrintContext ctx) {
-        return super.visitPrint(ctx);
+    public Print visitPrint(PARSERCONTROLLER.PrintContext ctx) {
+        Print print = new Print();
+        print.setName_print(ctx.PRINT().getText());
+        if(ctx.printattribute()!=null){
+            print.setAttribute_print(visitPrintattribute(ctx.printattribute()));
+        }
+        return print;
     }
 
     @Override
-    public Object visitPrintattribute(PARSERCONTROLLER.PrintattributeContext ctx) {
-        return super.visitPrintattribute(ctx);
+    public Attribute_print visitPrintattribute(PARSERCONTROLLER.PrintattributeContext ctx) {
+        Attribute_print attribute_print = new Attribute_print();
+        if (ctx.CHARS()!=null){
+            attribute_print.setValue(ctx.CHARS().getText());
+        }
+        else if (ctx.print_text()!=null){
+            attribute_print.setPrint_text(visitPrint_text(ctx.print_text()));
+        }
+        else if (ctx.getdata()!=null){
+            attribute_print.setPrint_function(visitGetdata(ctx.getdata()));
+        }
+        return attribute_print;
     }
 
     @Override
     public Object visitGetdata(PARSERCONTROLLER.GetdataContext ctx) {
         return super.visitGetdata(ctx);
     }
-
     @Override
-    public Object visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
-        return super.visitPrint_text(ctx);
+    public Print_text visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
+        Print_text print_text = new Print_text();
+        print_text.setContent(ctx.CHARS().getText());
+        return  print_text;
     }
 
     @Override

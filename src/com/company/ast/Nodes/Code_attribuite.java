@@ -7,6 +7,24 @@ public class Code_attribuite {
     Variables variables;
     Clicking clicking ;
     If_Statement if_statement;
+    Else_statement else_statement;
+    Print print ;
+
+    public Print getPrint() {
+        return print;
+    }
+
+    public void setPrint(Print print) {
+        this.print = print;
+    }
+
+    public Else_statement getElse_statement() {
+        return else_statement;
+    }
+
+    public void setElse_statement(Else_statement else_statement) {
+        this.else_statement = else_statement;
+    }
 
     public If_Statement getIf_statement() {
         return if_statement;
