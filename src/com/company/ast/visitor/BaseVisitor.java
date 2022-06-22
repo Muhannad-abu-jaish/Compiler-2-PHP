@@ -16,8 +16,17 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         return symbolTable;
     }
 
+
     public static Stack<String> getErrors() {
         return errors;
+    }
+    private boolean isNumber(String data){ // تابع ليتحقق من انو السترينغ هو عبارة عن رقم
+        try {
+            double d = Double.parseDouble(data);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -287,27 +296,26 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
     }
-private boolean isNumber(String data){ // تابع ليتحقق من انو السترينغ هو عبارة عن رقم
-    try {
-        double d = Double.parseDouble(data);
-    } catch (NumberFormatException nfe) {
-        return false;
-    }
-    return true;
-}
-    @Override
+       @Override
     public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variable_Numbers variable_numbers = new Variable_Numbers();
         if (ctx.CHARS(0)!=null)
         {
+            boolean number = false;
             variable_numbers.setName_variable(ctx.CHARS(0).getText());
-            symbolTable.put(ctx.CHARS(0).getText(),"True");//منخزن المتغير يلي لح نأسندلو مثلا x=5 منخزن ال x والفاليو حطيتا True مؤقتا
             ArrayList<String>values_variables = new ArrayList<>();
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
+                if(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number")){
+                    number = true;
+                    symbolTable.put(ctx.CHARS(0).getText(),"Number");
+                }
                 if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                     errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                }
+                else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
+                    errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
                 }
                 //هلئ هون انا بشيك بركي كنت عبأسند لمتحول مو معروف متل x=y فال y مالي مأسندها لحدا من قبل
             //فلازم هون يعطيني ايرور انو ال y غير معرّفة فالشرط انا عبستعمل تابعين ال isNumber لأتحقق انو حرف ومو رقم
@@ -320,6 +328,9 @@ private boolean isNumber(String data){ // تابع ليتحقق من انو ال
 
             variable_numbers.setValues_variables(values_variables);
             variable_numbers.setName_attributes(number_attributes);
+            //String value = Result_Variable(values_variables,number_attributes);
+            //System.out.println("Value = " + value);
+            //منخزن المتغير يلي لح نأسندلو مثلا x=5 منخزن ال x والفاليو حطيتا True مؤقتا
         }
 
 
@@ -332,9 +343,154 @@ private boolean isNumber(String data){ // تابع ليتحقق من انو ال
         if (ctx.fast_math()!=null)
             variable_numbers.setFast_math(visitFast_math(ctx.fast_math()));
 
-
-
         return variable_numbers;
+    }
+
+    private String getValueSymbolTable(String text) {
+    return symbolTable.get(text);
+    }
+
+    private String Result_Variable(ArrayList<String> values_variables, ArrayList<Number_Attribute> number_attributes) {
+    String statement = "";
+    int numOperation = 0;
+        int Total = 0;
+        ArrayList<Character> listOfOpertionsCharFORM = new ArrayList<>();
+        ArrayList<Character> listOfNumbersCharFORM = new ArrayList<>();
+        ArrayList<Integer> listOfNumbersINTEGERFORM = new ArrayList<>();
+
+        for(int i = 0; i<values_variables.size();i++){
+
+        statement+=values_variables.get(i);
+        if(number_attributes.size()>0&&numOperation<number_attributes.size()){
+            statement+=number_attributes.get(numOperation).getOperator();
+            numOperation++;
+        }
+    }
+        /*String operators[]=statement.split("[0-9]+");
+        String operands[]=statement.split("[/*+-]");
+        int agregate = Integer.parseInt(operands[0]);
+        for(int i=1;i<operands.length;i++){
+            if(operators[i].equals("+"))
+                agregate += Integer.parseInt(operands[i]);
+            else if(operators[i].equals("-"))
+                agregate -= Integer.parseInt(operands[i]);
+            else if (operators[i].equals("*"))
+                agregate*=Integer.parseInt(operands[i]);
+            else
+                agregate/=Integer.parseInt(operands[i]);
+        }
+        statement = String.valueOf(agregate);*/
+        String input = statement;
+        System.out.println("string is : " + input);
+
+
+        char[] convertAllToChar = input.toCharArray();
+
+        for (char inputToChar : convertAllToChar) {
+            System.out.println("convertAllToChar     " + inputToChar);
+        }
+        for (int i = 0; i < input.length(); i++) {
+
+            if (convertAllToChar[i] == '+') {
+                listOfOpertionsCharFORM.add(convertAllToChar[i]);
+            }
+            if (convertAllToChar[i] == '-') {
+                listOfOpertionsCharFORM.add(convertAllToChar[i]);
+            }
+            if (convertAllToChar[i] == '*') {
+                listOfOpertionsCharFORM.add(convertAllToChar[i]);
+            }
+            if (convertAllToChar[i] == '/') {
+                listOfOpertionsCharFORM.add(convertAllToChar[i]);
+            }
+            if (Character.isDigit(convertAllToChar[i])) {
+                listOfNumbersCharFORM.add(convertAllToChar[i]);
+            }
+
+
+        }
+        for (Character aa : listOfOpertionsCharFORM) {
+            System.out.println("list Of Operations Char FORM     " + aa);
+        }
+        for (Character aa : listOfNumbersCharFORM) {
+            System.out.println("list Of Numbers Char FORM       " + aa);
+
+        }
+
+        for (Character aa : listOfNumbersCharFORM) {
+            if (aa == '0') listOfNumbersINTEGERFORM.add(0);
+            if (aa == '1') listOfNumbersINTEGERFORM.add(1);
+            if (aa == '2') listOfNumbersINTEGERFORM.add(2);
+            if (aa == '3') listOfNumbersINTEGERFORM.add(3);
+            if (aa == '4') listOfNumbersINTEGERFORM.add(4);
+            if (aa == '5') listOfNumbersINTEGERFORM.add(5);
+            if (aa == '6') listOfNumbersINTEGERFORM.add(6);
+            if (aa == '7') listOfNumbersINTEGERFORM.add(7);
+            if (aa == '8') listOfNumbersINTEGERFORM.add(8);
+            if (aa == '9') listOfNumbersINTEGERFORM.add(9);
+
+        }
+
+        for (Integer aaa : listOfNumbersINTEGERFORM) {
+            System.out.println("list Of Numbers INTEGER FORM       " + aaa);
+        }
+
+
+
+
+        System.out.print(listOfNumbersINTEGERFORM);
+
+        System.out.print(listOfOpertionsCharFORM);
+
+        System.out.println();
+        System.out.println();
+
+
+        if (listOfNumbersINTEGERFORM.size() == (listOfOpertionsCharFORM.size() + 1)) {
+
+            for (int i = 0; i < listOfOpertionsCharFORM.size(); i++) {
+                System.out.println("i   :" + i);
+                if (listOfOpertionsCharFORM.get(i) == '+') if (i == 0) {
+                    Total = Total + listOfNumbersINTEGERFORM.get(i) + listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                } else {
+                    Total = Total + listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                }
+                if (listOfOpertionsCharFORM.get(i) == '-') if (i == 0) {
+                    Total = Total + listOfNumbersINTEGERFORM.get(i) - listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                } else {
+                    Total = Total - listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                }
+                if (listOfOpertionsCharFORM.get(i) == '*') if (i == 0) {
+                    Total = Total + listOfNumbersINTEGERFORM.get(i) * listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                } else {
+                    Total = Total * listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                }
+                if (listOfOpertionsCharFORM.get(i) == '/') if (i == 0) {
+                    Total = Total + listOfNumbersINTEGERFORM.get(i) / listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                } else {
+                    Total = Total / listOfNumbersINTEGERFORM.get(i + 1);
+                    System.out.println("total   : " + Total);
+                }
+
+            }
+
+        } else {
+            System.out.println("*********###############**********");
+            System.out.println("** your input not correct input **");
+            System.out.println("*********###############**********");
+
+        }
+
+        System.out.println("*** Final Answer *** :  " + Total);
+
+        return statement;
     }
 
     private boolean isDefined(String text) {//هاد التابع بيفحص إذا السترينغ موجود من قبل ولا لاء
@@ -416,14 +572,17 @@ private boolean isNumber(String data){ // تابع ليتحقق من انو ال
     public Variables_Text visitVariable_text(PARSERCONTROLLER.Variable_textContext ctx) {
         Variables_Text variables_text = new Variables_Text();
         variables_text.setName_variable(ctx.CHARS(0).getText());
+        symbolTable.put(ctx.CHARS(0).getText(),"String");
         ArrayList<String>values_variables = new ArrayList<>();
         ArrayList<String>operators = new ArrayList<>();
         for(int i = 1;i<ctx.CHARS().size();i++){
             values_variables.add(ctx.CHARS(i).getText());
+
         }
         for(int i = 0 ;i < ctx.SUM().size();i++){
             operators.add(ctx.SUM(i).getText());
         }
+        symbolTable.put(ctx.CHARS(0).getText(),"String");
         variables_text.setValues_variables(values_variables);
         variables_text.setOperator(operators);
         return variables_text;

@@ -1,6 +1,6 @@
 <controller>
 message = 'hello';
-x = 45;
+x = 45 + g + 6 -u * 9;
 char = 'c';
 ID = 'myText';
 x = textInput.Content;

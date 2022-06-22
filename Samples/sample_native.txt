@@ -1,4 +1,4 @@
 <controller>
-x=5;
-y=z;
-v=u;
+x=7;
+z='ff';
+y=z+x+z;
