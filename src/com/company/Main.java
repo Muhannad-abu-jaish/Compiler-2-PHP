@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.ast.Nodes.*;
 import com.company.ast.visitor.BaseVisitor;
+import com.company.ast.visitor.ForStatement;
 import generated.LEXERCONTROLLER;
 import generated.PARSERCONTROLLER;
 import jdk.nashorn.internal.runtime.ParserException;
@@ -18,7 +19,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
+        String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
         CharStream charStream = fromFileName(source);
         LEXERCONTROLLER lexer = new LEXERCONTROLLER(charStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -93,6 +94,45 @@ public class Main {
                     System.out.println(variableGet.getGetName() + " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
                 }
             }
+
+
+            //The Begin For Statement's Generate
+            ForStatement forStatementInner = else_statement.getCode_attributes().get(i).getForStatement();
+             if( forStatementInner!=null )
+            {
+                System.out.println("---------------Inner FOR Statement--------------");
+                System.out.print("for ( " + forStatementInner.getForID() + " = " + forStatementInner.getIdValue() + " ; " + forStatementInner.getSecondID() + " ");
+                System.out.print(forStatementInner.getOperationIF().getOperation() + " " + forStatementInner.getCompareValue() + " ; " );
+
+                if (forStatementInner.getForStatementVariableNumber().getOneOperation()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
+                    System.out.println(" = " + forStatementInner.getForStatementVariableNumber().getOneOperation().getOneOperation() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getFast_math()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getFast_math().getName() + forStatementInner.getForStatementVariableNumber().getFast_math().getOperation());
+                    System.out.println( forStatementInner.getForStatementVariableNumber().getFast_math().getNumber() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getThirdID()!=null && forStatementInner.getForStatementVariableNumber().getCountValue()!=null)
+                {
+                    System.out.println(forStatementInner.getForStatementVariableNumber().getThirdID() + " = " + forStatementInner.getForStatementVariableNumber().getCountValue() + " )");
+                }
+
+                System.out.println( "{ "  );
+
+                if (forStatementInner.getCode_attributes()!=null)
+                {
+                    recursive_for(forStatementInner);
+                }
+
+                System.out.println("} ");
+
+            }//The End For Statement's Generate
+
+
             Print print = else_statement.getCode_attributes().get(i).getPrint();
             Clicking clicking = else_statement.getCode_attributes().get(i).getClicking();
             Else_statement else_statement_inner = else_statement.getCode_attributes().get(i).getElse_statement();
@@ -174,6 +214,187 @@ public class Main {
              }
         }
     }
+    public static void recursive_for(ForStatement forStatement) {
+        int num_sums = 0, num_operation = 0, num_operation_IF_Statement = 0, num_logic_symbol_if = 0;
+
+        for (int i = 0; i < forStatement.getCode_attributes().size(); i++) {
+            if (forStatement.getCode_attributes().get(i).getVariables() != null) {
+                Variables_Text variables_text = forStatement.getCode_attributes().get(i).getVariables().getVariables_text();
+                Variable_Numbers variable_numbers = forStatement.getCode_attributes().get(i).getVariables().getVariable_numbers();
+                TextInput textInput = forStatement.getCode_attributes().get(i).getVariables().getTextInput();
+                VariableGet variableGet = forStatement.getCode_attributes().get(i).getVariables().getVariableGet();
+
+                if (textInput != null) {
+                    System.out.println("------------TEXT_INPUT---------");
+                    System.out.println(textInput.getKey() + "=" + textInput.getValue() + "." + textInput.getAttribute_textInput().getName_attribute_TextInput());
+                } else if (variables_text != null) {
+                    System.out.println("--------------VARIABLE_TEXT-----------");
+                    System.out.print(variables_text.getName_variable() + " = ");
+                    for (int j = 0; j < variables_text.getValues_variables().size(); j++) {
+                        System.out.print(variables_text.getValues_variables().get(j));
+                        if (variables_text.getOperator().size() > 0 && num_sums < variables_text.getOperator().size()) {
+                            System.out.print(" " + variables_text.getOperator().get(num_sums));
+                            num_sums++;
+                        } else {
+                            System.out.println();
+                        }
+                    }
+                    num_sums = 0;
+                } else if (variable_numbers != null) {
+                    System.out.println("--------------VARIABLE_Number-----------");
+
+                    OneOperation oneOperation = variable_numbers.getOneOperation();
+                    Fast_math fast_math = forStatement.getCode_attributes().get(i).getVariables().getVariable_numbers().getFast_math();
+                    if (oneOperation != null)
+                        System.out.println(oneOperation.getNameOneOperation() + oneOperation.getOneOperation());
+
+                    if (fast_math != null)
+                        System.out.println(fast_math.getName() + fast_math.getOperation() + fast_math.getNumber());
+
+
+                    if (variable_numbers.getName_variable() != null) {
+                        System.out.print(variable_numbers.getName_variable() + " = ");
+                        for (int j = 0; j < variable_numbers.getValues_variables().size(); j++) {
+                            System.out.print(variable_numbers.getValues_variables().get(j));
+                            if (variable_numbers.getName_attributes().size() > 0 && num_operation < variable_numbers.getName_attributes().size()) {
+                                System.out.print(" " + variable_numbers.getName_attributes().get(num_operation).getOperator() + " ");
+                                num_operation++;
+                            } else {
+                                System.out.println();
+                            }
+                        }
+
+                        num_operation = 0;
+                    }
+
+                } else if (variableGet != null) {
+                    System.out.println(variableGet.getGetName() + " = " + variableGet.getGetData().getDataName() + "(" + variableGet.getGetData().getDataValue() + ")");
+                }
+
+
+            }
+
+            //The Begin For Statement's Generate
+            ForStatement forStatementInner = forStatement.getCode_attributes().get(i).getForStatement();
+            if( forStatementInner!=null )
+            {
+                System.out.println("---------------Inner FOR Statement--------------");
+                System.out.print("for ( " + forStatementInner.getForID() + " = " + forStatementInner.getIdValue() + " ; " + forStatementInner.getSecondID() + " ");
+                System.out.print(forStatementInner.getOperationIF().getOperation() + " " + forStatementInner.getCompareValue() + " ; " );
+
+                if (forStatementInner.getForStatementVariableNumber().getOneOperation()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
+                    System.out.println(" = " + forStatementInner.getForStatementVariableNumber().getOneOperation().getOneOperation() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getFast_math()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getFast_math().getName() + forStatementInner.getForStatementVariableNumber().getFast_math().getOperation());
+                    System.out.println( forStatementInner.getForStatementVariableNumber().getFast_math().getNumber() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getThirdID()!=null && forStatementInner.getForStatementVariableNumber().getCountValue()!=null)
+                {
+                    System.out.println(forStatementInner.getForStatementVariableNumber().getThirdID() + " = " + forStatementInner.getForStatementVariableNumber().getCountValue() + " )");
+                }
+
+                System.out.println( "{ "  );
+
+                if (forStatementInner.getCode_attributes()!=null)
+                {
+                    recursive_for(forStatementInner);
+                }
+
+                System.out.println("} ");
+
+            }//The End For Statement's Generate
+
+
+            Print print = forStatement.getCode_attributes().get(i).getPrint();
+            Clicking clicking = forStatement.getCode_attributes().get(i).getClicking();
+            If_Statement if_statement = forStatement.getCode_attributes().get(i).getIf_statement();
+            Else_statement else_statement = forStatement.getCode_attributes().get(i).getElse_statement();
+            if(clicking!=null)
+            {
+                System.out.println("I = " + i);
+                System.out.println("-----------ON Click-------------");
+                System.out.println("Click by : " + clicking.getClick());
+                int size_attribute_click = clicking.getAttribute_clickList().size();
+                if(size_attribute_click!=0){
+                    for(int j = 0 ; j<size_attribute_click;j++){
+                        System.out.println("name_attribute : " +clicking.getAttribute_clickList().get(j).getName_attribute());
+                        System.out.println("-----------Attribute:------------");
+                        if(clicking.getAttribute_clickList().get(j).getText()!=null){
+                            Text text = clicking.getAttribute_clickList().get(j).getText();
+                            System.out.println("-----Text----");
+                            System.out.println("Name Text : " + text.getName_text());
+                            Text_Attribute text_attribute = text.getText_attribute();
+                            if(text_attribute.getColor()!=null){
+                                System.out.println("Color : "+text_attribute.getColor());
+                            }
+                            if(text_attribute.getContent()!=null){
+                                System.out.println("Content : " + text_attribute.getContent());
+                            }
+                        }if(clicking.getAttribute_clickList().get(j).getButton()!=null){
+                            Button button = clicking.getAttribute_clickList().get(j).getButton();
+                            System.out.println("-----Button----");
+                            System.out.println("Name Button : " + button.getName_button());
+                            Button_Attribute button_attribute = button.getButton_attribute();
+                            if(button_attribute.getWidth()!=null){
+                                System.out.println("Width : "+button_attribute.getWidth());
+                            }
+                            if(button_attribute.getBackground() !=null){
+                                System.out.println("Background : " + button_attribute.getBackground());
+                            }
+                        }
+                    }
+                }
+            }
+            else if(if_statement!=null){
+                System.out.println("---------------IF Statement--------------");
+                System.out.print(if_statement.getName_statement()+"("+if_statement.getVariable_one());
+                if(if_statement.getOperationIFS().size()>0&&num_operation_IF_Statement<if_statement.getOperationIFS().size()){
+                    System.out.print(" "+if_statement.getOperationIFS().get(num_operation_IF_Statement).getOperation());
+                    num_operation_IF_Statement++;
+                }
+                System.out.println(if_statement.getVariable_two()+"){");
+                if(if_statement.getCode_attributes().size()>0){
+                    recursive_if(if_statement);
+                    System.out.println("}");
+                }
+
+
+            }
+            else if (else_statement!=null){
+                System.out.println("-----------ELSE STATEMENT-----------");
+                System.out.println(else_statement.getName_statement()+"{");
+                if(else_statement.getCode_attributes().size()>0){
+                    recursive_else(else_statement);
+                    System.out.println("}");
+                }
+            }
+            else if (print!=null){
+                System.out.println("--------PRINT--------");
+                System.out.print(print.getName_print()+"(");
+                if(print.getAttribute_print()!=null){
+                    if(print.getAttribute_print().getPrint_function()!=null)
+                    {
+                        System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
+                                +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                    }
+                    else if (print.getAttribute_print().getPrint_text()!=null){
+                        System.out.print(print.getAttribute_print().getPrint_text().getContent());
+                    }
+                    else if (print.getAttribute_print().getValue()!=null){
+                        System.out.print(print.getAttribute_print().getValue());
+                    }
+                    System.out.println(")");
+                }
+            }
+        }
+    }
+
     public static void recursive_if(If_Statement if_statement) {
         int num_sums = 0, num_operation = 0, num_operation_IF_Statement = 0, num_logic_symbol_if = 0;
         for (int i = 0; i < if_statement.getCode_attributes().size(); i++) {
@@ -230,6 +451,44 @@ public class Main {
                 }
 
             }
+
+
+            //The Begin For Statement's Generate
+            ForStatement forStatementInner = if_statement.getCode_attributes().get(i).getForStatement();
+            if( forStatementInner!=null )
+            {
+                System.out.println("---------------Inner FOR Statement--------------");
+                System.out.print("for ( " + forStatementInner.getForID() + " = " + forStatementInner.getIdValue() + " ; " + forStatementInner.getSecondID() + " ");
+                System.out.print(forStatementInner.getOperationIF().getOperation() + " " + forStatementInner.getCompareValue() + " ; " );
+
+                if (forStatementInner.getForStatementVariableNumber().getOneOperation()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
+                    System.out.println(" = " + forStatementInner.getForStatementVariableNumber().getOneOperation().getOneOperation() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getFast_math()!=null)
+                {
+                    System.out.print( forStatementInner.getForStatementVariableNumber().getFast_math().getName() + forStatementInner.getForStatementVariableNumber().getFast_math().getOperation());
+                    System.out.println( forStatementInner.getForStatementVariableNumber().getFast_math().getNumber() + " )");
+                }
+
+                else if (forStatementInner.getForStatementVariableNumber().getThirdID()!=null && forStatementInner.getForStatementVariableNumber().getCountValue()!=null)
+                {
+                    System.out.println(forStatementInner.getForStatementVariableNumber().getThirdID() + " = " + forStatementInner.getForStatementVariableNumber().getCountValue() + " )");
+                }
+
+                System.out.println( "{ "  );
+
+                if (forStatementInner.getCode_attributes()!=null)
+                {
+                    recursive_for(forStatementInner);
+                }
+
+                System.out.println("} ");
+
+            }//The End For Statement's Generate
+
             Print print = if_statement.getCode_attributes().get(i).getPrint();
             Clicking clicking = if_statement.getCode_attributes().get(i).getClicking();
             If_Statement if_statement_inner = if_statement.getCode_attributes().get(i).getIf_statement();
@@ -319,7 +578,7 @@ public class Main {
                 Variables_Text variables_text = program.getCode_attribuites().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = program.getCode_attribuites().get(i).getVariables().getVariable_numbers();
                 TextInput textInput = program.getCode_attribuites().get(i).getVariables().getTextInput();
-                VariableGet variableGet =program.getCode_attribuites().get(i).getVariables().getVariableGet();
+                VariableGet variableGet = program.getCode_attribuites().get(i).getVariables().getVariableGet();
 
                 if(textInput!=null){
                     System.out.println("------------TEXT_INPUT---------");
@@ -374,11 +633,49 @@ public class Main {
                 }
             }
 
+            //The Begin For Statement's Generate
+            ForStatement forStatement = program.getCode_attribuites().get(i).getForStatement();
+
+                if( forStatement!=null )
+            {
+                System.out.println("---------------FOR Statement--------------");
+                System.out.print("for ( " + forStatement.getForID() + " = " + forStatement.getIdValue() + " ; " + forStatement.getSecondID() + " ");
+                System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; " );
+
+                if (forStatement.getForStatementVariableNumber().getOneOperation()!=null)
+                {
+                    System.out.print( forStatement.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
+                    System.out.println(" = " + forStatement.getForStatementVariableNumber().getOneOperation().getOneOperation() + " )");
+                }
+
+                else if (forStatement.getForStatementVariableNumber().getFast_math()!=null)
+                {
+                    System.out.print( forStatement.getForStatementVariableNumber().getFast_math().getName() + forStatement.getForStatementVariableNumber().getFast_math().getOperation());
+                    System.out.println( forStatement.getForStatementVariableNumber().getFast_math().getNumber() + " )");
+                }
+
+                else if (forStatement.getForStatementVariableNumber().getThirdID()!=null && forStatement.getForStatementVariableNumber().getCountValue()!=null)
+                {
+                    System.out.println(forStatement.getForStatementVariableNumber().getThirdID() + " = " + forStatement.getForStatementVariableNumber().getCountValue() + " )");
+                }
+
+                System.out.println( "{ "  );
+
+                    if (forStatement.getCode_attributes()!=null)
+                    {
+                       recursive_for(forStatement);
+                    }
+
+                System.out.println("} ");
+
+            }//The End For Statement's Generate
+
+
             Print print = program.getCode_attribuites().get(i).getPrint();
             Clicking clicking = program.getCode_attribuites().get(i).getClicking();
             If_Statement if_statement = program.getCode_attribuites().get(i).getIf_statement();
             Else_statement else_statement = program.getCode_attribuites().get(i).getElse_statement();
-            if(clicking!=null)
+             if(clicking!=null)
             {
                 System.out.println("I = " + i);
                 System.out.println("-----------ON Click-------------");

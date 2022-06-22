@@ -1,5 +1,7 @@
 package com.company.ast.Nodes;
 
+import com.company.ast.visitor.ForStatement;
+
 import java.util.ArrayList;
 
 public class Code_attribuite {
@@ -8,7 +10,16 @@ public class Code_attribuite {
     Clicking clicking ;
     If_Statement if_statement;
     Else_statement else_statement;
+    ForStatement forStatement;
     Print print ;
+
+    public ForStatement getForStatement() {
+        return forStatement;
+    }
+
+    public void setForStatement(ForStatement forStatement) {
+        this.forStatement = forStatement;
+    }
 
     public Print getPrint() {
         return print;

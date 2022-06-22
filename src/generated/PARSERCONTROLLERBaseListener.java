@@ -1,4 +1,4 @@
-package generated;// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+package generated;// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -291,6 +291,18 @@ public class PARSERCONTROLLERBaseListener implements PARSERCONTROLLERListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -310,6 +322,42 @@ public class PARSERCONTROLLERBaseListener implements PARSERCONTROLLERListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFast_math(PARSERCONTROLLER.Fast_mathContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

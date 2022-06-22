@@ -1,4 +1,4 @@
-package generated;// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+package generated;// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -148,6 +148,12 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariables(PARSERCONTROLLER.VariablesContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement_variable_number}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#variable_number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -159,6 +165,24 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFast_math(PARSERCONTROLLER.Fast_mathContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement_adding_one}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement_minuss_one}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement_fast_math}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#adding_one}.
 	 * @param ctx the parse tree
