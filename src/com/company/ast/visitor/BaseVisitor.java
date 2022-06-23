@@ -417,6 +417,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if (ctx.CHARS(0)!=null)
         {
             boolean number = false;
+            boolean STRING = false;
             variable_numbers.setName_variable(ctx.CHARS(0).getText());
             ArrayList<String>values_variables = new ArrayList<>();
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
@@ -425,17 +426,21 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                 if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                     errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                 }
-                else if(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number")){
+                else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
                     number = true;
                     symbolTable.put(ctx.CHARS(0).getText(),"Number");
+                }
+                else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                   STRING = true;
+                   symbolTable.put(ctx.CHARS(0).getText(),"String");
+                }
+                else if (STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                    errors.push(ctx.CHARS(i).getText()+" is not a String Variable!!");
                 }
                 else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
                     errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
                 }
-                //هلئ هون انا بشيك بركي كنت عبأسند لمتحول مو معروف متل x=y فال y مالي مأسندها لحدا من قبل
-            //فلازم هون يعطيني ايرور انو ال y غير معرّفة فالشرط انا عبستعمل تابعين ال isNumber لأتحقق انو حرف ومو رقم
-            // و إذا كان مو موجود بالsymbolTable فهون معناتا مو معرّف فهون بفوت عالشرط وبعبي الستاك وبحط نص الايرور
-            }
+              }
 
             for(int i = 0 ;i<ctx.number_attribute().size();i++){
                 number_attributes.add(visitNumber_attribute(ctx.number_attribute(i)));
