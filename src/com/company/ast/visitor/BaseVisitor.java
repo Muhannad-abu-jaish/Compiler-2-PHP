@@ -307,12 +307,12 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
-                if(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number")){
-                    number = true;
-                    symbolTable.put(ctx.CHARS(0).getText(),"Number");
-                }
                 if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                     errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                }
+                else if(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number")){
+                    number = true;
+                    symbolTable.put(ctx.CHARS(0).getText(),"Number");
                 }
                 else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
                     errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
