@@ -1,4 +1,4 @@
-// Generated from D:/Compiler-PHP\PARSERCONTROLLER.g4 by ANTLR 4.10.1
+// Generated from C:/Users/muhannad/IdeaProjects/Compiler-2-2-\PARSERCONTROLLER.g4 by ANTLR 4.10.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -237,6 +237,16 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 */
 	void exitVariables(PARSERCONTROLLER.VariablesContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement_variable_number}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#for_statement_variable_number}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PARSERCONTROLLER#variable_number}.
 	 * @param ctx the parse tree
 	 */
@@ -256,6 +266,36 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFast_math(PARSERCONTROLLER.Fast_mathContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement_adding_one}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#for_statement_adding_one}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement_minuss_one}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#for_statement_minuss_one}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement_fast_math}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#for_statement_fast_math}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PARSERCONTROLLER#adding_one}.
 	 * @param ctx the parse tree

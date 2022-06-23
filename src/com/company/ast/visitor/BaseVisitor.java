@@ -7,9 +7,46 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.*;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
+HashMap<String,String> SymbolTable = new HashMap<>();
+    @Override
+    public ForStatement visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
+        ForStatement forStatement =new ForStatement();
+
+
+        if (ctx.CHARS(0)!=null)
+            forStatement.setForID(ctx.CHARS(0).getText());
+
+        if (ctx.CHARS(1)!=null)
+            forStatement.setIdValue(ctx.CHARS(1).getText());
+
+        if (ctx.CHARS(2)!=null)
+            forStatement.setSecondID(ctx.CHARS(2).getText());
+
+        if (ctx.operation_if()!=null)
+            forStatement.setOperationIF(visitOperation_if(ctx.operation_if()));
+
+        if (ctx.CHARS(3)!=null)
+            forStatement.setCompareValue(ctx.CHARS(3).getText());
+
+        if (ctx.for_statement_variable_number()!=null)
+        {
+            forStatement.setForStatementVariableNumber(visitFor_statement_variable_number(ctx.for_statement_variable_number()));
+        }
+
+        ArrayList<Code_attribuite> codeAttribuites = new ArrayList<>();
+        for (int i = 0 ; i<ctx.code_attribute().size() ; i++)
+        {
+            codeAttribuites.add(visitCode_attribute(ctx.code_attribute(i)));
+        }
+
+        forStatement.setCode_attributes(codeAttribuites);
+        return forStatement;
+    }
     static  HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
     static  Stack<String> errors = new Stack<>(); // ستاك لتخزين الاخطاء يلي لح تظهر
     public static HashMap<String, String> getSymbolTable() { // منروح عالسطر 306 لنشوف المثال
@@ -30,9 +67,83 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     }
 
     @Override
-    public Object visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
-        return super.visitFor_statement(ctx);
+    public ForStatementVariableNumber visitFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx) {
+
+        ForStatementVariableNumber forStatementVariableNumber = new ForStatementVariableNumber() ;
+
+        if (ctx.CHARS(0)!=null && ctx.CHARS(1)!=null)
+        {
+            forStatementVariableNumber.setThirdID(ctx.CHARS(0).getText());
+            forStatementVariableNumber.setCountValue(ctx.CHARS(1).getText());
+        }
+
+        else if (ctx.for_statement_fast_math()!=null)
+            forStatementVariableNumber.setFast_math(visitFor_statement_fast_math(ctx.for_statement_fast_math()));
+
+        else if (ctx.for_statement_adding_one()!=null)
+            forStatementVariableNumber.setOneOperation(visitFor_statement_adding_one(ctx.for_statement_adding_one()));
+
+        else if (ctx.for_statement_minuss_one()!=null)
+            forStatementVariableNumber.setOneOperation(visitFor_statement_minuss_one(ctx.for_statement_minuss_one()));
+
+        return forStatementVariableNumber;
     }
+
+    @Override
+    public OneOperation visitFor_statement_adding_one(PARSERCONTROLLER.For_statement_adding_oneContext ctx) {
+        OneOperation oneOperation = new OneOperation();
+
+
+        if (ctx.CHARS()!=null)
+            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+        if(ctx.SUMS()!=null)
+            oneOperation.setOneOperation(ctx.SUMS().getText());
+
+
+        return oneOperation;
+    }
+
+    @Override
+    public OneOperation visitFor_statement_minuss_one(PARSERCONTROLLER.For_statement_minuss_oneContext ctx) {
+        OneOperation oneOperation = new OneOperation();
+
+
+        if (ctx.CHARS()!=null)
+            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+        if(ctx.MINUSS()!=null)
+            oneOperation.setOneOperation(ctx.MINUSS().getText());
+
+
+        return oneOperation;
+    }
+
+    @Override
+    public Fast_math visitFor_statement_fast_math(PARSERCONTROLLER.For_statement_fast_mathContext ctx) {
+        Fast_math fast_math = new Fast_math();
+
+        if (ctx.CHARS()!=null)
+        {
+            fast_math.setName(ctx.CHARS(0).getText());
+            fast_math.setNumber(ctx.CHARS(1).getText());
+        }
+
+        if (ctx.SUM_EQUAL()!=null)
+            fast_math.setOperation(ctx.SUM_EQUAL().getText());
+
+        else if (ctx.MINUS_EQUAL()!=null)
+            fast_math.setOperation(ctx.MINUS_EQUAL().getText());
+
+        else if(ctx.DIVID_EQUAL()!=null)
+            fast_math.setOperation(ctx.DIVID_EQUAL().getText());
+
+        else if (ctx.MULTIPLY_EQUAL()!=null)
+            fast_math.setOperation(ctx.MULTIPLY_EQUAL().getText());
+
+        return fast_math;
+    }
+
     @Override
     public If_Statement visitIf_statment(PARSERCONTROLLER.If_statmentContext ctx) {
         If_Statement if_statement = new If_Statement();
@@ -139,6 +250,10 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
          }
          if(ctx.print()!=null){
              code_attribuite.setPrint(visitPrint(ctx.print()));
+         }
+         if (ctx.for_statement()!=null)
+         {
+             code_attribuite.setForStatement(visitFor_statement(ctx.for_statement()));
          }
         return code_attribuite;
     }
