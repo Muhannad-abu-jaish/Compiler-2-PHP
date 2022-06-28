@@ -1,4 +1,8 @@
 <controller>
 x=7;
-z='ff';
-y=z*z+z-z/z;
+if('y'<xz){
+print(4);
+}
+else{
+print(4);
+}

@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.*;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
-HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public ForStatement visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
         ForStatement forStatement =new ForStatement();
@@ -47,7 +46,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         forStatement.setCode_attributes(codeAttribuites);
         return forStatement;
     }
-    static  HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
+    static  public HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
     static  Stack<String> errors = new Stack<>(); // ستاك لتخزين الاخطاء يلي لح تظهر
     public static HashMap<String, String> getSymbolTable() { // منروح عالسطر 306 لنشوف المثال
         return symbolTable;
@@ -159,9 +158,38 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             if_statement.setName_statement(ctx.IF().getText());
         }
             if (ctx.CHARS(0) != null)
-                if_statement.setVariable_one(ctx.CHARS(0).getText());
+            {
+                if(!isNumber(ctx.CHARS(0).getText())&&ctx.SINGLE_QUOTE().size()==0){
+                    if(!isDefined(ctx.CHARS(0).getText())){
+                        if(ctx.ELSE()!=null){
+                            errors.push("The Variable " + ctx.CHARS(0).getText() + " is not defined in Else IF Statement");
+                    }else{
+                            errors.push("The Variable " + ctx.CHARS(0).getText() + " is not defined in IF Statement");
+                        }
+                    }
+                    else{
+                        if_statement.setVariable_one(ctx.CHARS(0).getText());
+                    }
+                }else{
+                    if_statement.setVariable_one(ctx.CHARS(0).getText());
+                }
+            }
             if (ctx.CHARS(1) != null)
-                if_statement.setVariable_two(ctx.CHARS(1).getText());
+            {
+                if(!isNumber(ctx.CHARS(1).getText())&&ctx.SINGLE_QUOTE().size()==0){
+                    if(!isDefined(ctx.CHARS(1).getText())){
+                        if(ctx.ELSE()!=null){
+                            errors.push("The Variable " + ctx.CHARS(1).getText() + " is not defined in Else IF Statement");
+                        }else{
+                            errors.push("The Variable " + ctx.CHARS(1).getText() + " is not defined in IF Statement");
+                        }
+                    }
+                    else{
+                        if_statement.setVariable_two(ctx.CHARS(1).getText());    }
+                }else{
+                    if_statement.setVariable_two(ctx.CHARS(1).getText());
+                }
+            }
         ArrayList<OperationIF>operationIFS = new ArrayList<>();
         for(int i=0;i<ctx.operation_if().size();i++){
             operationIFS.add(visitOperation_if(ctx.operation_if(i)));
@@ -224,6 +252,31 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         for(int i = 0;i<ctx.code_attribute().size();i++)
         {
             code_attribuites.add(visitCode_attribute(ctx.code_attribute(i)));
+            if(ctx.code_attribute(i).if_statment()!=null){
+               if(ctx.code_attribute(i).if_statment().ELSE()==null){
+                   symbolTable.put("IF", String.valueOf(i));
+               }else{
+                   if(!isDefined("IF")){
+                       errors.push("IF Statement is not Define!!");
+                   }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))){
+                       errors.push("Else IF Statement must be after IF statement!!");
+                   }
+                   symbolTable.put("Else IF",String.valueOf(i));
+               }
+            }
+            if(ctx.code_attribute(i).else_statment()!=null){
+                if(!isDefined("IF")){
+                    errors.push("IF Statement is not Define!!");
+                }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))) {
+                    if (isDefined("Else IF")) {
+                        if (!getValueSymbolTable("Else IF").equals(String.valueOf(i - 1))) {
+                            errors.push("Else Statement must be after Else IF statement!!");
+                        }
+                    } else {
+                        errors.push("Else Statement must be after IF statement!!");
+                    }
+                }
+            }
         }
         program.setCode_attribuites(code_attribuites);
         return program;

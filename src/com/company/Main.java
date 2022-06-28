@@ -723,8 +723,6 @@ public class Main {
                     recursive_if(if_statement);
                     System.out.println("}");
                 }
-
-
             }
             else if (else_statement!=null){
                 System.out.println("-----------ELSE STATEMENT-----------");
