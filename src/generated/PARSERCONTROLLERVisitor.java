@@ -148,6 +148,12 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariables(PARSERCONTROLLER.VariablesContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PARSERCONTROLLER#array}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray(PARSERCONTROLLER.ArrayContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#for_statement_variable_number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

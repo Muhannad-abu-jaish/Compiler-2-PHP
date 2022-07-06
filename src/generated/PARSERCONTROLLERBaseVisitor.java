@@ -177,6 +177,13 @@ public class PARSERCONTROLLERBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitArray(PARSERCONTROLLER.ArrayContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitFor_statement_variable_number(PARSERCONTROLLER.For_statement_variable_numberContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

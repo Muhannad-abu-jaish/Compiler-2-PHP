@@ -13,6 +13,17 @@ import java.util.*;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     @Override
+    public Array_statement visitArray(PARSERCONTROLLER.ArrayContext ctx) {
+        Array_statement array_statement = new Array_statement();
+        ArrayList<String>elements = new ArrayList<>();
+        for(int i = 0 ;i<ctx.CHARS().size();i++){
+            elements.add(ctx.CHARS(i).getText());
+        }
+        array_statement.setElements(elements);
+        return array_statement;
+    }
+
+    @Override
     public ForStatement visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
         ForStatement forStatement =new ForStatement();
 
@@ -56,7 +67,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public static Stack<String> getErrors() {
         return errors;
     }
-    private boolean isNumber(String data){ // تابع ليتحقق من انو السترينغ هو عبارة عن رقم
+    private boolean isNumber(String data){
         try {
             double d = Double.parseDouble(data);
         } catch (NumberFormatException nfe) {
@@ -459,7 +470,9 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         if(ctx.textinput()!=null){
             variables.setTextInput(visitTextinput(ctx.textinput()));
         }
-
+        if(ctx.array()!=null){
+            variables.setArray_statement(visitArray(ctx.array()));
+        }
         if (ctx.variable_get()!=null)
             variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
@@ -501,9 +514,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
             variable_numbers.setValues_variables(values_variables);
             variable_numbers.setName_attributes(number_attributes);
-            //String value = Result_Variable(values_variables,number_attributes);
-            //System.out.println("Value = " + value);
-            //منخزن المتغير يلي لح نأسندلو مثلا x=5 منخزن ال x والفاليو حطيتا True مؤقتا
         }
 
 

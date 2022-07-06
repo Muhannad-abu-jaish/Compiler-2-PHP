@@ -8,6 +8,15 @@ public class Variables {
     Variable_Numbers variable_numbers;
     TextInput textInput ;
     VariableGet variableGet;
+    Array_statement array_statement;
+
+    public Array_statement getArray_statement() {
+        return array_statement;
+    }
+
+    public void setArray_statement(Array_statement array_statement) {
+        this.array_statement = array_statement;
+    }
 
     public VariableGet getVariableGet() {
         return variableGet;
