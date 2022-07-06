@@ -16,6 +16,9 @@ print("Hi");
 else{
 print("Else");
 }
+for(i = 0 ;i<5;i++){
+print(5);
+}
 if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
 x=4;
 }

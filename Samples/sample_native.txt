@@ -1,8 +1,5 @@
 <controller>
-x=7;
-if('y'<xz){
-print(4);
+for(;i<5;i++){
+print(5);
 }
-else{
-print(4);
 }

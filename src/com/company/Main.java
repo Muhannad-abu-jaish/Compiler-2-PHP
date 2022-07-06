@@ -19,7 +19,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
+        String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
         CharStream charStream = fromFileName(source);
         LEXERCONTROLLER lexer = new LEXERCONTROLLER(charStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
