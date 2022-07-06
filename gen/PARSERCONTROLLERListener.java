@@ -237,6 +237,16 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 */
 	void exitVariables(PARSERCONTROLLER.VariablesContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PARSERCONTROLLER#array}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray(PARSERCONTROLLER.ArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PARSERCONTROLLER#array}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray(PARSERCONTROLLER.ArrayContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PARSERCONTROLLER#for_statement_variable_number}.
 	 * @param ctx the parse tree
 	 */

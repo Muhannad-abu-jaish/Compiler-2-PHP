@@ -7,6 +7,9 @@ x = textInput.Content;
 print(getData(ID));
 print("fwef");
 print(x);
+arr = array("ahmad","Mohammed");
+arr2 = array("10","11","12","13");
+
 if(x=='hello'){
 print(x);
 }
@@ -16,8 +19,8 @@ print("Hi");
 else{
 print("Else");
 }
-for(i = 0 ;i<5;i++){
-print(5);
+for(i = 0 ;i<arr.count;i++){
+print(i);
 }
 if(x>5||x<3||x==4||x>=8||x<=7&&x!=6){
 x=4;
