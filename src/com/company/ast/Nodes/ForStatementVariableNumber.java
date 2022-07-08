@@ -1,8 +1,11 @@
 package com.company.ast.Nodes;
 
+import java.util.ArrayList;
+
 public class ForStatementVariableNumber {
 
-    String thirdID , countValue ;
+    String thirdID ;
+    ArrayList<String> countValue ;
     Fast_math fast_math ;
     OneOperation oneOperation ;
 
@@ -15,11 +18,11 @@ public class ForStatementVariableNumber {
         this.thirdID = thirdID;
     }
 
-    public String getCountValue() {
+    public ArrayList<String> getCountValue() {
         return countValue;
     }
 
-    public void setCountValue(String countValue) {
+    public void setCountValue(ArrayList<String> countValue) {
         this.countValue = countValue;
     }
 

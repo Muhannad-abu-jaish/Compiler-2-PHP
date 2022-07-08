@@ -6,7 +6,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/LEXERCONTROLLER.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\Compiler-PHP\gen" />
+          <option name="outputDir" value="C:\Users\muhannad\IdeaProjects\Compiler-2-2-\gen" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />
@@ -16,7 +16,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/PARSERCONTROLLER.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\Compiler-PHP\gen" />
+          <option name="outputDir" value="C:\Users\muhannad\IdeaProjects\Compiler-2-2-\gen" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />

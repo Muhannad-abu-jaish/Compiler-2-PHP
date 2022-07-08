@@ -3,7 +3,8 @@ message = 'hello';
 x = 45 + g + 6 -u * 9;
 char = 'c';
 ID = 'myText';
-x = textInput.Content;
+textinput=getData(ID); // نوعها جيت داتا  وبقبها سترينج معرف
+x = textInput.Content; // التعرف على تيكست اتبوت
 print(getData(ID));
 print("fwef");
 print(x);
@@ -45,7 +46,7 @@ x*=2;
 x=0;
 print(x);
 ID3 = 'myTextInput';
-textInput = getData(ID3);
+textInput = getData(ID3) +getData(ID4);
 
 
 

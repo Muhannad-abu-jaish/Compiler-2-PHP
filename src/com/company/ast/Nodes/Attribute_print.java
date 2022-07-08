@@ -1,9 +1,28 @@
 package com.company.ast.Nodes;
 
+import java.util.ArrayList;
+
 public class Attribute_print {
     Print_text print_text;
     GetData getData;
-    String value;
+    ArrayList<String> value;
+    ArrayList<String> operation ;
+
+    public ArrayList<String> getValue() {
+        return value;
+    }
+
+    public void setValue(ArrayList<String> value) {
+        this.value = value;
+    }
+
+    public ArrayList<String> getOperation() {
+        return operation;
+    }
+
+    public void setOperation(ArrayList<String> operation) {
+        this.operation = operation;
+    }
 
     public Print_text getPrint_text() {
         return print_text;
@@ -21,11 +40,5 @@ public class Attribute_print {
         this.getData = getData;
     }
 
-    public String getValue() {
-        return value;
-    }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
 }
