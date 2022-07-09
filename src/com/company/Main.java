@@ -19,7 +19,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
+        String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
         CharStream charStream = fromFileName(source);
         LEXERCONTROLLER lexer = new LEXERCONTROLLER(charStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -204,19 +204,20 @@ public class Main {
              else if (print!=null){
                  System.out.println("--------PRINT--------");
                  System.out.print(print.getName_print()+"(");
-                 if(print.getAttribute_print()!=null){
-                     if(print.getAttribute_print().getPrint_function()!=null)
-                     {
-                         System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
-                                 +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                 if(print.getAttribute_prints()!=null){
+                     for(int m = 0 ; m<print.getAttribute_prints().size();m++){
+                         if(print.getAttribute_prints().get(m).getPrint_function()!=null)
+                         {
+                             System.out.print(print.getAttribute_prints().get(m).getPrint_function().getDataName()+"("
+                                     +print.getAttribute_prints().get(m).getPrint_function().getDataValue()+")");
+                         }else if (print.getAttribute_prints().get(m).getPrint_text()!=null){
+                             System.out.print(print.getAttribute_prints().get(m).getPrint_text().getContent());
+                         }
+                         else if (print.getAttribute_prints().get(m).getValue()!=null){
+                             System.out.print(print.getAttribute_prints().get(m).getValue());
+                         }
+                         System.out.println(")");
                      }
-                     else if (print.getAttribute_print().getPrint_text()!=null){
-                         System.out.print(print.getAttribute_print().getPrint_text().getContent());
-                     }
-                     else if (print.getAttribute_print().getValue()!=null){
-                         System.out.print(print.getAttribute_print().getValue());
-                     }
-                     System.out.println(")");
                  }
              }
         }
@@ -384,22 +385,22 @@ public class Main {
             else if (print!=null){
                 System.out.println("--------PRINT--------");
                 System.out.print(print.getName_print()+"(");
-                if(print.getAttribute_print()!=null){
-                    if(print.getAttribute_print().getPrint_function()!=null)
-                    {
-                        System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
-                                +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                if(print.getAttribute_prints()!=null){
+                    for(int m = 0 ; m<print.getAttribute_prints().size();m++){
+                        if(print.getAttribute_prints().get(m).getPrint_function()!=null)
+                        {
+                            System.out.print(print.getAttribute_prints().get(m).getPrint_function().getDataName()+"("
+                                    +print.getAttribute_prints().get(m).getPrint_function().getDataValue()+")");
+                        }else if (print.getAttribute_prints().get(m).getPrint_text()!=null){
+                            System.out.print(print.getAttribute_prints().get(m).getPrint_text().getContent());
+                        }
+                        else if (print.getAttribute_prints().get(m).getValue()!=null){
+                            System.out.print(print.getAttribute_prints().get(m).getValue());
+                        }
+                        System.out.println(")");
                     }
-                    else if (print.getAttribute_print().getPrint_text()!=null){
-                        System.out.print(print.getAttribute_print().getPrint_text().getContent());
-                    }
-                    else if (print.getAttribute_print().getValue()!=null){
-                        System.out.print(print.getAttribute_print().getValue());
-                    }
-                    System.out.println(")");
                 }
-            }
-        }
+            }        }
     }
 
     public static void recursive_if(If_Statement if_statement) {
@@ -560,19 +561,20 @@ public class Main {
              else if (print!=null){
                  System.out.println("--------PRINT--------");
                  System.out.print(print.getName_print()+"(");
-                 if(print.getAttribute_print()!=null){
-                     if(print.getAttribute_print().getPrint_function()!=null)
-                     {
-                         System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
-                                 +print.getAttribute_print().getPrint_function().getDataValue()+")");
+                 if(print.getAttribute_prints()!=null){
+                     for(int m = 0 ; m<print.getAttribute_prints().size();m++){
+                         if(print.getAttribute_prints().get(m).getPrint_function()!=null)
+                         {
+                             System.out.print(print.getAttribute_prints().get(m).getPrint_function().getDataName()+"("
+                                     +print.getAttribute_prints().get(m).getPrint_function().getDataValue()+")");
+                         }else if (print.getAttribute_prints().get(m).getPrint_text()!=null){
+                             System.out.print(print.getAttribute_prints().get(m).getPrint_text().getContent());
+                         }
+                         else if (print.getAttribute_prints().get(m).getValue()!=null){
+                             System.out.print(print.getAttribute_prints().get(m).getValue());
+                         }
+                         System.out.println(")");
                      }
-                     else if (print.getAttribute_print().getPrint_text()!=null){
-                         System.out.print(print.getAttribute_print().getPrint_text().getContent());
-                     }
-                     else if (print.getAttribute_print().getValue()!=null){
-                         System.out.print(print.getAttribute_print().getValue());
-                     }
-                     System.out.println(")");
                  }
              }
         }
@@ -735,49 +737,30 @@ public class Main {
                 }
             }
             else if (print!=null){
+                int numOfSums = 0;
                 System.out.println("--------PRINT--------");
                 System.out.print(print.getName_print()+"(");
-                if(print.getAttribute_print()!=null){
-                    if(print.getAttribute_print().getPrint_function()!=null)
-                    {
-                        System.out.print(print.getAttribute_print().getPrint_function().getDataName()+"("
-                                +print.getAttribute_print().getPrint_function().getDataValue()+")");
-                    }
-                    else if (print.getAttribute_print().getPrint_text()!=null){
-                        System.out.print(print.getAttribute_print().getPrint_text().getContent());
-                    }
-
-                    else if (print.getAttribute_print().getValue()!=null) {
-                        ArrayList<String> values = new ArrayList<>();
-                        ArrayList<String> printOperation = new ArrayList<>();
-
-                        values = print.getAttribute_print().getValue();
-                        System.out.print(values.get(0));
-                        if (print.getAttribute_print().getOperation()!=null)
-                        {
-                            printOperation = print.getAttribute_print().getOperation();
-                            int z = 0 ;
-                            for (int w = 1; w < ( printOperation.size() )+1; w++) {
-
-                                if (z==(values.size() + printOperation.size())-1)
-                                    System.out.println(values.get(w));
-
-                                else
-                                System.out.print( printOperation.get(z) + values.get(w));
-
-                                z++;
-                            }
+                if(print.getAttribute_prints()!=null) {
+                    for (int m = 0; m < print.getAttribute_prints().size(); m++) {
+                        if (print.getAttribute_prints().get(m).getPrint_function() != null) {
+                            System.out.print(print.getAttribute_prints().get(m).getPrint_function().getDataName() + "("
+                                    + print.getAttribute_prints().get(m).getPrint_function().getDataValue() + ")");
+                        } else if (print.getAttribute_prints().get(m).getPrint_text() != null) {
+                            System.out.print(print.getAttribute_prints().get(m).getPrint_text().getContent());
+                        } else if (print.getAttribute_prints().get(m).getValue() != null) {
+                            String values = print.getAttribute_prints().get(m).getValue();
+                            System.out.print(values);
                         }
-
+                        if(print.getOperation()!=null&&numOfSums!=(print.getAttribute_prints().size()-1)){
+                            System.out.print(" "+print.getOperation().get(numOfSums));
+                            numOfSums++;
+                        }
                     }
-
-                    /*else if (print.getAttribute_print().getValue()!=null){
-                        System.out.println("hi am in get value els if");
-                        System.out.print(print.getAttribute_print().getValue());
-                    }*/
-
-                    System.out.println(")");
                 }
+                System.out.println(")");
+            }
+
+
             }
             /*String nameText = program.getCode_attribuites().get(i).getVariables().getName();
             String oneOperation = program.getCode_attribuites().get(i).getVariables().getOneOperation();
@@ -812,5 +795,3 @@ public class Main {
 
         }
     }
-
-}

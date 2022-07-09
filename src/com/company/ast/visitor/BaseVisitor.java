@@ -433,16 +433,36 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         Print print = new Print();
         print.setName_print(ctx.PRINT().getText());
         if(ctx.printattribute()!=null){
-            //print.setAttribute_print(visitPrintattribute(ctx.printattribute()));
+            ArrayList<Attribute_print>attribute_prints  = new ArrayList<>();
+            for(int i = 0 ; i < ctx.printattribute().size();i++){
+                attribute_prints.add(visitPrintattribute(ctx.printattribute(i)));
+            }
+            print.setAttribute_prints(attribute_prints);
+        }
+        if(ctx.SUM()!=null){
+            ArrayList<String>operations  = new ArrayList<>();
+            for(int i = 0 ; i < ctx.SUM().size();i++){
+                operations.add(ctx.SUM(i).getText());
+            }
+            print.setOperation(operations);
         }
         return print;
+    }
+
+    @Override
+    public Print_text visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
+        Print_text print_text = new Print_text();
+        if(ctx.CHARS()!=null){
+            print_text.setContent(ctx.CHARS().getText());
+        }
+        return print_text;
     }
 
     @Override
     public Attribute_print visitPrintattribute(PARSERCONTROLLER.PrintattributeContext ctx) {
         Attribute_print attribute_print = new Attribute_print();
         if (ctx.CHARS()!=null){
-            //attribute_print.setValue(ctx.CHARS().getText());
+            attribute_print.setValue(ctx.CHARS().getText());
         }
         else if (ctx.print_text()!=null){
             attribute_print.setPrint_text(visitPrint_text(ctx.print_text()));
@@ -466,12 +486,12 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
         return getData ;
     }
-    @Override
+    /*@Override
     public Print_text visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
         Print_text print_text = new Print_text();
         print_text.setContent(ctx.CHARS().getText());
         return  print_text;
-    }
+    }*/
 
     @Override
     public Variables visitVariables(PARSERCONTROLLER.VariablesContext ctx) {

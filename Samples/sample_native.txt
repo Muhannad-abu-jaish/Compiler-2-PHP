@@ -1,5 +1,2 @@
-< controller >
-
-for(;i<5;i++){
-
-}
+<controller>
+print("kk"+"ii"+"ii");

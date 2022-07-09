@@ -1,15 +1,24 @@
 package com.company.ast.Nodes;
-
+import java.util.*;
 public class Print {
    String name_print;
-   Attribute_print attribute_print;
+   ArrayList<Attribute_print> attribute_prints;
+   ArrayList<String> operation ;
 
-   public Attribute_print getAttribute_print() {
-      return attribute_print;
+   public ArrayList<String> getOperation() {
+      return operation;
    }
 
-   public void setAttribute_print(Attribute_print attribute_print) {
-      this.attribute_print = attribute_print;
+   public void setOperation(ArrayList<String> operation) {
+      this.operation = operation;
+   }
+
+   public ArrayList<Attribute_print> getAttribute_prints() {
+      return attribute_prints;
+   }
+
+   public void setAttribute_prints(ArrayList<Attribute_print> attribute_prints) {
+      this.attribute_prints = attribute_prints;
    }
 
    public String getName_print() {

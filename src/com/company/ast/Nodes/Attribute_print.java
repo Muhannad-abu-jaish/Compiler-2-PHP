@@ -5,24 +5,24 @@ import java.util.ArrayList;
 public class Attribute_print {
     Print_text print_text;
     GetData getData;
-    ArrayList<String> value;
-    ArrayList<String> operation ;
+    String value;
 
-    public ArrayList<String> getValue() {
+    public GetData getGetData() {
+        return getData;
+    }
+
+    public void setGetData(GetData getData) {
+        this.getData = getData;
+    }
+
+    public String getValue() {
         return value;
     }
 
-    public void setValue(ArrayList<String> value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public ArrayList<String> getOperation() {
-        return operation;
-    }
-
-    public void setOperation(ArrayList<String> operation) {
-        this.operation = operation;
-    }
 
     public Print_text getPrint_text() {
         return print_text;
