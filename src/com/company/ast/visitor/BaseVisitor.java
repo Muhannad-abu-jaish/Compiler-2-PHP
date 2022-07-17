@@ -12,6 +12,12 @@ import java.util.HashMap;
 import java.util.*;
 
 public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
+
+    public static final String MY_NUMBERS = "Number" ;
+    public static final String MY_STRINGS = "String" ;
+    public static final String MY_IDS = "ID" ;
+    public static final String MY_ELSE_IFS = "Else IF" ;
+    public static final String MY_IFS = "IF" ;
 HashMap<String,String> SymbolTable = new HashMap<>();
     static  HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
     static  Stack<String> errors = new Stack<>(); // ستاك لتخزين الاخطاء يلي لح تظهر
@@ -32,7 +38,17 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         return true;
     }
 
-
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public Array_statement visitArray(PARSERCONTROLLER.ArrayContext ctx) {
@@ -49,24 +65,125 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public ForStatement visitFor_statement(PARSERCONTROLLER.For_statementContext ctx) {
         ForStatement forStatement =new ForStatement();
 
-
         if (ctx.EQUAL()!=null) {
-            forStatement.setForID(ctx.CHARS(0).getText());
-            forStatement.setIdValue(ctx.CHARS(1).getText());
+
+            if (isDefined(ctx.CHARS(0).getText()))
+            {
+                if (!getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+                {
+                    forStatement.setForID(ctx.CHARS(0).getText());
+                }else
+                    errors.push("The first parameter in for" + ctx.CHARS(0).getText() + "must be a variable number not character or string");
+            }
+            else if (!isNumeric(ctx.CHARS(0).getText()))
+            {
+                forStatement.setForID(ctx.CHARS(0).getText());
+                symbolTable.put(ctx.CHARS(0).getText() , MY_NUMBERS) ;
+
+            }else
+                errors.push("The first parameter in for should not be a direct number like this :" + ctx.CHARS(0).getText());
+
+
+            if (isDefined(ctx.CHARS(1).getText()))
+            {
+                if (!getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_STRINGS))
+                {
+                    forStatement.setIdValue(ctx.CHARS(1).getText());
+                }else
+                    errors.push(  ctx.CHARS(1).getText() + " a String variable ,,must be a number");
+
+            }
+            else if (!isNumeric(ctx.CHARS(1).getText()))
+            {
+                if (!isDefined(ctx.CHARS(1).getText()))
+                    errors.push(ctx.CHARS(1).getText() + " Undefined Variable ");
+
+                else
+                {
+                    forStatement.setIdValue(ctx.CHARS(1).getText());
+                    symbolTable.put(ctx.CHARS(1).getText(), MY_NUMBERS);
+                }
+
+            }else
+                forStatement.setIdValue(ctx.CHARS(1).getText());
+
 
             if (ctx.CHARS(2)!=null)
             {
-                forStatement.setSecondID(ctx.CHARS(2).getText());
-                forStatement.setOperationIF(visitOperation_if(ctx.operation_if()));
-                forStatement.setCompareValue(ctx.CHARS(3).getText());
+                if (isDefined(ctx.CHARS(2).getText()))
+                {
+                    if (getValueSymbolTable(ctx.CHARS(2).getText()).equals(MY_NUMBERS))
+                    {
+                        forStatement.setSecondID(ctx.CHARS(2).getText());
+                        forStatement.setOperationIF(visitOperation_if(ctx.operation_if()));
+                    }else
+                        errors.push("The compare variable " + ctx.CHARS(2).getText() + "must be a variable number") ;
+                } else
+                {
+                    if (isNumeric(ctx.CHARS(2).getText()))
+                        errors.push("The compare variable in for must be a variable number not like this "  + ctx.CHARS(2).getText() ) ;
+
+                    else
+                    errors.push(ctx.CHARS(2).getText() + " Undefined Variable") ;
+                }
+
+                if (isDefined(ctx.CHARS(3).getText()))
+                {
+                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS))
+                    {
+                        forStatement.setCompareValue(ctx.CHARS(3).getText());
+
+                    }else
+                        errors.push("The compare variable " + ctx.CHARS(3).getText() + " must be a variable number") ;
+                } else
+                {
+                    if (isNumeric(ctx.CHARS(3).getText()))
+                        forStatement.setCompareValue(ctx.CHARS(3).getText());
+
+                    else
+                    {
+                        forStatement.setCompareValue(ctx.CHARS(3).getText());
+                        symbolTable.put(ctx.CHARS(3).getText() , MY_NUMBERS) ;
+                    }
+                }
+
+
             }
 
         }
+
         else if (ctx.operation_if()!=null)
         {
-            forStatement.setSecondID(ctx.CHARS(0).getText());
-            forStatement.setOperationIF(visitOperation_if(ctx.operation_if()));
-            forStatement.setCompareValue(ctx.CHARS(1).getText());
+            if (isDefined(ctx.CHARS(0).getText()))
+            {
+                if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS))
+                {
+                    forStatement.setSecondID(ctx.CHARS(0).getText());
+                    forStatement.setOperationIF(visitOperation_if(ctx.operation_if()));
+                }else
+                    errors.push("The compare variable " + ctx.CHARS(0) + " must be number not character or string") ;
+
+            }
+            else if(isNumeric(ctx.CHARS(0).getText()))
+                errors.push(ctx.CHARS(0).getText() + " must be a Variable number  ") ;
+            else
+                errors.push( ctx.CHARS(0) + " Undefined Variable");
+
+
+            if (isDefined(ctx.CHARS(1).getText()))
+            {
+                if (getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_NUMBERS))
+                {
+                    forStatement.setCompareValue(ctx.CHARS(1).getText());
+                }else
+                    errors.push("The compare variable " + ctx.CHARS(1) + " must be number not character or string") ;
+
+            }
+            else if(isNumeric(ctx.CHARS(1).getText()))
+                forStatement.setCompareValue(ctx.CHARS(1).getText());
+            else
+                errors.push( ctx.CHARS(1) + " Undefined Variable");
+
         }
 
         if (ctx.for_statement_variable_number()!=null)
@@ -93,11 +210,41 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if (ctx.CHARS(0)!=null && ctx.CHARS(1)!=null)
         {
             ArrayList<String> countValue = new ArrayList<>() ;
-            forStatementVariableNumber.setThirdID(ctx.CHARS(0).getText());
+
+            if(isDefined(ctx.CHARS(0).getText()))
+            {
+                if (!getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+                    forStatementVariableNumber.setThirdID(ctx.CHARS(0).getText());
+
+                else
+                    errors.push("The Variable " + ctx.CHARS(0).getText() + " is String one ,, must be number");
+
+            }
+            else if(!isNumeric(ctx.CHARS(0).getText())) {
+                forStatementVariableNumber.setThirdID(ctx.CHARS(0).getText());
+                symbolTable.put(ctx.CHARS(0).getText() , MY_NUMBERS);
+            }
+            else
+                errors.push(ctx.CHARS(0).getText() + " must be a variable not just a direct number");
+
 
             for (int i=0 ; i<(ctx.CHARS().size())-1 ; i++  )
             {
-                countValue.add(ctx.CHARS(i+1).getText());
+                if (isDefined(ctx.CHARS(i+1).getText()))
+                {
+                    if (!getValueSymbolTable(ctx.CHARS(i+1).getText()).equals(MY_STRINGS))
+                        countValue.add(ctx.CHARS(i+1).getText());
+
+                    else
+                        errors.push("The Variable " + ctx.CHARS(i+1).getText() + " is String one ,, must be number") ;
+                }
+                else if (isNumeric(ctx.CHARS(i+1).getText()))
+                    countValue.add(ctx.CHARS(i+1).getText());
+
+                else
+                    errors.push(ctx.CHARS(i+1).getText() + " Undefined Variable ") ;
+
+
             }
             forStatementVariableNumber.setCountValue(countValue);
         }
@@ -120,7 +267,24 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
 
         if (ctx.CHARS()!=null)
-            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+        {
+            if (isDefined(ctx.CHARS().getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS().getText()).equals(MY_STRINGS))
+                    oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+                else
+                    errors.push("The Variable " + ctx.CHARS().getText() + " is String one ,, must be number");
+
+            }
+            else if(isNumeric(ctx.CHARS().getText()))
+                errors.push(ctx.CHARS().getText()+" must be a variable number not just a direct number") ;
+
+            else
+                errors.push(ctx.CHARS().getText() + " Undefined Variable");
+
+        }
 
         if(ctx.SUMS()!=null)
             oneOperation.setOneOperation(ctx.SUMS().getText());
@@ -135,7 +299,24 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
 
         if (ctx.CHARS()!=null)
-            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+        {
+            if (isDefined(ctx.CHARS().getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS().getText()).equals(MY_STRINGS))
+                    oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+                else
+                    errors.push("The Variable " + ctx.CHARS().getText() + " is String one ,, must be number");
+
+            }
+            else if(isNumeric(ctx.CHARS().getText()))
+                errors.push(ctx.CHARS().getText()+" must be a variable number not just a direct number") ;
+
+            else
+                errors.push(ctx.CHARS().getText() + " Undefined Variable");
+        }
+
 
         if(ctx.MINUSS()!=null)
             oneOperation.setOneOperation(ctx.MINUSS().getText());
@@ -150,8 +331,39 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
         if (ctx.CHARS()!=null)
         {
-            fast_math.setName(ctx.CHARS(0).getText());
-            fast_math.setNumber(ctx.CHARS(1).getText());
+            if (isDefined(ctx.CHARS(0).getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+                    fast_math.setName(ctx.CHARS(0).getText());
+                else
+                    errors.push("The Variable " + ctx.CHARS(0).getText() + " is String one");
+
+            }
+            else if(!isNumeric(ctx.CHARS(0).getText())) {
+                fast_math.setName(ctx.CHARS(0).getText());
+                symbolTable.put(ctx.CHARS(0).getText() , MY_NUMBERS);
+            }
+
+            else
+                errors.push(ctx.CHARS(0).getText() + " must be a variable not just a direct number");
+
+
+            if (isDefined(ctx.CHARS(1).getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_STRINGS))
+                    fast_math.setNumber(ctx.CHARS(1).getText()) ;
+
+                else
+                    errors.push("The Variable " + ctx.CHARS(1).getText() + " is String one") ;
+
+            }else if (isNumeric(ctx.CHARS(1).getText()))
+                    fast_math.setNumber(ctx.CHARS(1).getText()) ;
+
+                else
+                errors.push( ctx.CHARS(1).getText() + " Undefined Variable") ;
+
         }
 
         if (ctx.SUM_EQUAL()!=null)
@@ -280,14 +492,14 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             code_attribuites.add(visitCode_attribute(ctx.code_attribute(i)));
             if(ctx.code_attribute(i).if_statment()!=null){
                if(ctx.code_attribute(i).if_statment().ELSE()==null){
-                   symbolTable.put("IF", String.valueOf(i));
+                   symbolTable.put(MY_IFS, String.valueOf(i));
                }else{
                    if(!isDefined("IF")){
                        errors.push("IF Statement is not Define!!");
                    }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))){
                        errors.push("Else IF Statement must be after IF statement!!");
                    }
-                   symbolTable.put("Else IF",String.valueOf(i));
+                   symbolTable.put(MY_ELSE_IFS,String.valueOf(i));
                }
             }
             if(ctx.code_attribute(i).else_statment()!=null){
@@ -345,12 +557,20 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public Clicking visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
         Clicking clicking = new Clicking();
-        clicking.setClick(ctx.CHARS().getText());
-        ArrayList<Attribute_click> attribute_clicks = new ArrayList<>();
-        for(int i =0 ;i<ctx.click_attribute().size();i++){
-              attribute_clicks.add(visitClick_attribute(ctx.click_attribute(i)));
+
+        if (symbolTable.containsKey( MY_IDS )) {
+            if (getValueSymbolTable(ctx.CHARS().getText()).equals(MY_IDS)) {
+                clicking.setClick(ctx.CHARS().getText());
+                ArrayList<Attribute_click> attribute_clicks = new ArrayList<>();
+                for (int i = 0; i < ctx.click_attribute().size(); i++) {
+                    attribute_clicks.add(visitClick_attribute(ctx.click_attribute(i)));
+                }
+                clicking.setAttribute_clickList(attribute_clicks);
+            } else
+                errors.push("The variable " + ctx.CHARS().getText() + " inside contains key does not point to view");
         }
-        clicking.setAttribute_clickList(attribute_clicks);
+        else
+            errors.push("The variable " + ctx.CHARS().getText() + " does not point to view");
         return clicking;
     }
 
@@ -461,9 +681,15 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public Attribute_print visitPrintattribute(PARSERCONTROLLER.PrintattributeContext ctx) {
         Attribute_print attribute_print = new Attribute_print();
+
         if (ctx.CHARS()!=null){
-            attribute_print.setValue(ctx.CHARS().getText());
+            if (!isDefined(ctx.CHARS().getText()))
+                errors.push(ctx.CHARS().getText() +" Undefined Variable");
+
+            else
+                attribute_print.setValue(ctx.CHARS().getText());
         }
+
         else if (ctx.print_text()!=null){
             attribute_print.setPrint_text(visitPrint_text(ctx.print_text()));
         }
@@ -481,9 +707,28 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if (ctx.GET_DATA()!=null)
             getData.setDataName(ctx.GET_DATA().getText());
 
-        if (ctx.CHARS()!=null)
-            getData.setDataValue(ctx.CHARS().getText());
+        if (ctx.CHARS()!=null) {
+            if (!isDefined(ctx.CHARS().getText())){
 
+                if (isNumeric((ctx.CHARS().getText())))
+                errors.push("The ID of getData must be variable not like this ( " + ctx.CHARS().getText() + " )");
+
+                else
+                    errors.push( ctx.CHARS().getText()+ "  Undefined Variable") ;
+            }
+
+            else if ( isNumber(ctx.CHARS().getText()) || getValueSymbolTable(ctx.CHARS().getText()).equals("Number") )
+            {
+                errors.push("The variable " + ctx.CHARS().getText() + " is number must be character");
+            }
+
+            else
+            {
+                getData.setDataValue(ctx.CHARS().getText());
+                symbolTable.put( ctx.CHARS().getText() , MY_IDS) ;
+            }
+
+        }
         return getData ;
     }
     /*@Override
@@ -524,16 +769,17 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
+
                 if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                     errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                 }
                 else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
                     number = true;
-                    symbolTable.put(ctx.CHARS(0).getText(),"Number");
+                    symbolTable.put(ctx.CHARS(0).getText(),MY_NUMBERS);
                 }
                 else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
                    STRING = true;
-                   symbolTable.put(ctx.CHARS(0).getText(),"String");
+                   symbolTable.put(ctx.CHARS(0).getText(),MY_STRINGS);
 
 
                 }
@@ -601,8 +847,39 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
         if (ctx.CHARS()!=null)
         {
-            fast_math.setName(ctx.CHARS(0).getText());
-            fast_math.setNumber(ctx.CHARS(1).getText());
+            if (isDefined(ctx.CHARS(0).getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+                    fast_math.setName(ctx.CHARS(0).getText());
+                else
+                    errors.push("The Variable " + ctx.CHARS(0).getText() + " is String one");
+
+            }
+            else if(!isNumeric(ctx.CHARS(0).getText())) {
+                fast_math.setName(ctx.CHARS(0).getText());
+                symbolTable.put(ctx.CHARS(0).getText() , MY_NUMBERS);
+            }
+
+            else
+                errors.push(ctx.CHARS(0).getText() + " must be a variable not just a direct number");
+
+
+            if (isDefined(ctx.CHARS(1).getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_STRINGS))
+                    fast_math.setNumber(ctx.CHARS(1).getText()) ;
+
+                else
+                    errors.push("The Variable " + ctx.CHARS(1).getText() + " is String one") ;
+
+            }else if (isNumeric(ctx.CHARS(1).getText()))
+                fast_math.setNumber(ctx.CHARS(1).getText()) ;
+
+            else
+                errors.push( ctx.CHARS(1).getText() + " Undefined Variable") ;
+
         }
 
         if (ctx.SUM_EQUAL()!=null)
@@ -625,10 +902,25 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public OneOperation visitAdding_one(PARSERCONTROLLER.Adding_oneContext ctx) {
         OneOperation oneOperation = new OneOperation();
 
-
         if (ctx.CHARS()!=null)
-            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+        {
+            if (isDefined(ctx.CHARS().getText()))
+            {
 
+                if (!getValueSymbolTable(ctx.CHARS().getText()).equals(MY_STRINGS))
+                    oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+                else
+                    errors.push("The Variable " + ctx.CHARS().getText() + " is String one ,, must be number");
+
+            }
+            else if(isNumeric(ctx.CHARS().getText()))
+                errors.push(ctx.CHARS().getText()+" must be a variable number not just a direct number") ;
+
+            else
+                errors.push(ctx.CHARS().getText() + " Undefined Variable");
+
+        }
         if(ctx.SUMS()!=null)
             oneOperation.setOneOperation(ctx.SUMS().getText());
 
@@ -641,7 +933,23 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         OneOperation oneOperation = new OneOperation();
 
         if (ctx.CHARS()!=null)
-            oneOperation.setNameOneOperation(ctx.CHARS().getText());
+        {
+            if (isDefined(ctx.CHARS().getText()))
+            {
+
+                if (!getValueSymbolTable(ctx.CHARS().getText()).equals(MY_STRINGS))
+                    oneOperation.setNameOneOperation(ctx.CHARS().getText());
+
+                else
+                    errors.push("The Variable " + ctx.CHARS().getText() + " is String one ,, must be number");
+
+            }
+            else if(isNumeric(ctx.CHARS().getText()))
+                errors.push(ctx.CHARS().getText()+" must be a variable number not just a direct number") ;
+
+            else
+                errors.push(ctx.CHARS().getText() + " Undefined Variable");
+        }
 
         if (ctx.MINUSS()!=null)
             oneOperation.setOneOperation(ctx.MINUSS().getText());
@@ -666,8 +974,20 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public Variables_Text visitVariable_text(PARSERCONTROLLER.Variable_textContext ctx) {
         Variables_Text variables_text = new Variables_Text();
-        variables_text.setName_variable(ctx.CHARS(0).getText());
-        symbolTable.put(ctx.CHARS(0).getText(),"String");
+        if (isDefined(ctx.CHARS(0).getText()))
+        {
+            if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+            variables_text.setName_variable(ctx.CHARS(0).getText());
+
+            else
+                errors.push(ctx.CHARS(0).getText() + " is not a String variable");
+
+        }else
+        {
+            variables_text.setName_variable(ctx.CHARS(0).getText());
+            symbolTable.put(ctx.CHARS(0).getText(),MY_STRINGS);
+        }
+
         ArrayList<String>values_variables = new ArrayList<>();
         ArrayList<String>operators = new ArrayList<>();
         for(int i = 1;i<ctx.CHARS().size();i++){
@@ -677,7 +997,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         for(int i = 0 ;i < ctx.SUM().size();i++){
             operators.add(ctx.SUM(i).getText());
         }
-        symbolTable.put(ctx.CHARS(0).getText(),"String");
         variables_text.setValues_variables(values_variables);
         variables_text.setOperator(operators);
         return variables_text;

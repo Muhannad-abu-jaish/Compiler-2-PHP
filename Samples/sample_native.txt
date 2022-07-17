@@ -1,2 +1,10 @@
 <controller>
-print("kk"+"ii"+"ii");
+
+x = 'Hello';
+c = getData('ID');
+y = getData('ID2');
+c.onClick(){
+y.Color = x : x is not a Color{Red||Blue||Green||YelloW....}
+y.Bakground = x : x is not a Color{Red||Blue||Green||YelloW....}
+y.Width = x : x is not a Sizes{Num_dp|Num_px|Num_rem}
+};
