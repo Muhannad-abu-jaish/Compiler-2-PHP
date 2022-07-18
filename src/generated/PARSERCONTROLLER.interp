@@ -50,6 +50,8 @@ null
 '\''
 ';'
 null
+null
+null
 
 token symbolic names:
 null
@@ -103,6 +105,8 @@ EQUAL
 SINGLE_QUOTE
 SEMICOLON
 CHARS
+COUNT
+Array
 
 rule names:
 program

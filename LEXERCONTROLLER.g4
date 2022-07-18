@@ -46,6 +46,7 @@ PRINT :'print';
 TAG_CLOSE : '>';
 TAG_CLOSE_EQUAL:'>=';
 CONTROLLER : 'controller';
+COUNT : 'count' ;
 EQUAL: '=' ;
 SINGLE_QUOTE : '\'';
 //NUMBER: [0-9]+;
