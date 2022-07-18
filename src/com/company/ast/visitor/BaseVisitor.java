@@ -192,11 +192,34 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         }
 
         ArrayList<Code_attribuite> codeAttribuites = new ArrayList<>();
-        for (int i = 0 ; i<ctx.code_attribute().size() ; i++)
-        {
+        for (int i = 0 ; i<ctx.code_attribute().size() ; i++) {
             codeAttribuites.add(visitCode_attribute(ctx.code_attribute(i)));
+            if (ctx.code_attribute(i).if_statment() != null) {
+                if (ctx.code_attribute(i).if_statment().ELSE_IF() == null) {
+                    symbolTable.put(MY_IFS, String.valueOf(i));
+                } else {
+                    if (!isDefined("IF")) {
+                        errors.push("IF Statement is not Define!!");
+                    } else if (!getValueSymbolTable("IF").equals(String.valueOf(i - 1))) {
+                        errors.push("Else IF Statement must be after IF statement!!");
+                    }
+                    symbolTable.put(MY_ELSE_IFS, String.valueOf(i));
+                }
+            }
+            if (ctx.code_attribute(i).else_statment() != null) {
+                if (!isDefined("IF")) {
+                    errors.push("IF Statement is not Define!!");
+                } else if (!getValueSymbolTable("IF").equals(String.valueOf(i - 1))) {
+                    if (isDefined("Else IF")) {
+                        if (!getValueSymbolTable("Else IF").equals(String.valueOf(i - 1))) {
+                            errors.push("Else Statement must be after Else IF statement!!");
+                        }
+                    } else {
+                        errors.push("Else Statement must be after IF statement!!");
+                    }
+                }
+            }
         }
-
         forStatement.setCode_attributes(codeAttribuites);
         return forStatement;
     }
@@ -389,45 +412,41 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
         }
         if_statement.setCode_attributes(code_attributes);
-        if(ctx.ELSE()!=null){
-            if_statement.setName_statement(ctx.ELSE().getText()+" "+ctx.IF().getText());
+        if(ctx.ELSE_IF()!=null){
+            if_statement.setName_statement(ctx.ELSE_IF().getText());
         }
         else if(ctx.IF()!=null) {
             if_statement.setName_statement(ctx.IF().getText());
         }
-            if (ctx.CHARS(0) != null)
+        ArrayList<String>variablesOne = new ArrayList<>();
+        ArrayList<String>variablesTwo = new ArrayList<>();
+        for(int i = 0 ;i <ctx.CHARS().size();i++)
             {
-                if(!isNumber(ctx.CHARS(0).getText())&&ctx.SINGLE_QUOTE().size()==0){
-                    if(!isDefined(ctx.CHARS(0).getText())){
-                        if(ctx.ELSE()!=null){
-                            errors.push("The Variable " + ctx.CHARS(0).getText() + " is not defined in Else IF Statement");
+                if(!isNumber(ctx.CHARS(i).getText())&&ctx.SINGLE_QUOTE().size()==0){
+                    if(!isDefined(ctx.CHARS(i).getText())){
+                        if(ctx.ELSE_IF()!=null){
+                            errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
                     }else{
-                            errors.push("The Variable " + ctx.CHARS(0).getText() + " is not defined in IF Statement");
+                            errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in IF Statement");
                         }
                     }
                     else{
-                        if_statement.setVariable_one(ctx.CHARS(0).getText());
-                    }
-                }else{
-                    if_statement.setVariable_one(ctx.CHARS(0).getText());
-                }
-            }
-            if (ctx.CHARS(1) != null)
-            {
-                if(!isNumber(ctx.CHARS(1).getText())&&ctx.SINGLE_QUOTE().size()==0){
-                    if(!isDefined(ctx.CHARS(1).getText())){
-                        if(ctx.ELSE()!=null){
-                            errors.push("The Variable " + ctx.CHARS(1).getText() + " is not defined in Else IF Statement");
+                        if(i%2==0){
+                            variablesOne.add(ctx.CHARS(i).getText());
                         }else{
-                            errors.push("The Variable " + ctx.CHARS(1).getText() + " is not defined in IF Statement");
+                            variablesTwo.add(ctx.CHARS(i).getText());
                         }
                     }
-                    else{
-                        if_statement.setVariable_two(ctx.CHARS(1).getText());    }
                 }else{
-                    if_statement.setVariable_two(ctx.CHARS(1).getText());
+                    if(i%2==0){
+                        variablesOne.add(ctx.CHARS(i).getText());
+                    }else{
+                        variablesTwo.add(ctx.CHARS(i).getText());
+                    }
                 }
             }
+        if_statement.setVariables_one(variablesOne);
+        if_statement.setVariables_two(variablesTwo);
         ArrayList<OperationIF>operationIFS = new ArrayList<>();
         for(int i=0;i<ctx.operation_if().size();i++){
             operationIFS.add(visitOperation_if(ctx.operation_if(i)));
@@ -491,7 +510,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         {
             code_attribuites.add(visitCode_attribute(ctx.code_attribute(i)));
             if(ctx.code_attribute(i).if_statment()!=null){
-               if(ctx.code_attribute(i).if_statment().ELSE()==null){
+               if(ctx.code_attribute(i).if_statment().ELSE_IF()==null){
                    symbolTable.put(MY_IFS, String.valueOf(i));
                }else{
                    if(!isDefined("IF")){
@@ -558,7 +577,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public Clicking visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
         Clicking clicking = new Clicking();
 
-        if (symbolTable.containsKey( MY_IDS )) {
+        if (isDefined(ctx.CHARS().getText())) {
             if (getValueSymbolTable(ctx.CHARS().getText()).equals(MY_IDS)) {
                 clicking.setClick(ctx.CHARS().getText());
                 ArrayList<Attribute_click> attribute_clicks = new ArrayList<>();
@@ -567,10 +586,10 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                 }
                 clicking.setAttribute_clickList(attribute_clicks);
             } else
-                errors.push("The variable " + ctx.CHARS().getText() + " inside contains key does not point to view");
+                errors.push("The variable " + ctx.CHARS().getText() + " must be initialize from getData()");
         }
         else
-            errors.push("The variable " + ctx.CHARS().getText() + " does not point to view");
+            errors.push( ctx.CHARS().getText() + " Undefined Variable");
         return clicking;
     }
 
@@ -725,7 +744,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             else
             {
                 getData.setDataValue(ctx.CHARS().getText());
-                symbolTable.put( ctx.CHARS().getText() , MY_IDS) ;
             }
 
         }
@@ -769,30 +787,56 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
-
-                if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
-                    errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                if(isDefined(ctx.CHARS(0).getText())) {
+                    if(getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS)){
+                        if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
+                            errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                        }
+                        else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                            STRING = true;
+                            errors.push( ctx.CHARS(0).getText() + " is variable number");
+                        }
+                    }else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS)){
+                        if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
+                            errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                        }
+                        else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                            number = true;
+                            errors.push(ctx.CHARS(0).getText() + " is variable string");
+                        }
+                    }else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS)){
+                        if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
+                            errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                        }
+                        else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                            STRING = true;
+                            errors.push( ctx.CHARS(0).getText() + " is variable ID");
+                        }
+                        else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                            number = true;
+                            errors.push(ctx.CHARS(0).getText() + " is variable ID");
+                        }
+                    }
+                }else{
+                    if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
+                        errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
+                    }
+                    else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                        number = true;
+                        symbolTable.put(ctx.CHARS(0).getText(),"Number");
+                    }
+                    else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                        STRING = true;
+                        symbolTable.put(ctx.CHARS(0).getText(),"String");
+                    }
+                    else if (STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                        errors.push(ctx.CHARS(i).getText()+" is not a String Variable!!");
+                    }
+                    else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
+                        errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
+                    }
                 }
-                else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
-                    number = true;
-                    symbolTable.put(ctx.CHARS(0).getText(),MY_NUMBERS);
-                }
-                else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
-                   STRING = true;
-                   symbolTable.put(ctx.CHARS(0).getText(),MY_STRINGS);
-
-
-                }
-                else if (STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
-                    errors.push(ctx.CHARS(i).getText()+" is not a String Variable!!");
-                }
-                else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
-                    errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
-                }
-
-
               }
-
             for(int i = 0 ;i<ctx.number_attribute().size();i++){
                 number_attributes.add(visitNumber_attribute(ctx.number_attribute(i)));
 
@@ -856,13 +900,13 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                     errors.push("The Variable " + ctx.CHARS(0).getText() + " is String one");
 
             }
-            else if(!isNumeric(ctx.CHARS(0).getText())) {
+            /*else if(!isNumeric(ctx.CHARS(0).getText())) {
                 fast_math.setName(ctx.CHARS(0).getText());
                 symbolTable.put(ctx.CHARS(0).getText() , MY_NUMBERS);
-            }
+            }*/
 
             else
-                errors.push(ctx.CHARS(0).getText() + " must be a variable not just a direct number");
+                errors.push(ctx.CHARS(0).getText() + " undefined variables");
 
 
             if (isDefined(ctx.CHARS(1).getText()))
@@ -1009,7 +1053,19 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         VariableGet variableGet =new VariableGet();
 
         if (ctx.CHARS()!=null)
-            variableGet.setGetName(ctx.CHARS().getText());
+            if (isDefined(ctx.CHARS().getText()))
+            {
+                if (getValueSymbolTable(ctx.CHARS().getText()).equals(MY_IDS))
+                {
+                    variableGet.setGetName(ctx.CHARS().getText());
+                }else
+                    errors.push("The variable " + ctx.CHARS().getText() + " must be ID variable ");
+            }else
+            {
+                variableGet.setGetName(ctx.CHARS().getText());
+                symbolTable.put(ctx.CHARS().getText() , MY_IDS);
+            }
+
 
         if (ctx.getdata()!=null)
             variableGet.setGetData(visitGetdata(ctx.getdata()));

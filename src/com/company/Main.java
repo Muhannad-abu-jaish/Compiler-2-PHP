@@ -188,19 +188,23 @@ public class Main {
                     System.out.println("}");
                 }
             }
-             else if (if_statement_inner != null) {
-                System.out.println("---------------IF Statement_inner--------------");
-                System.out.print(if_statement_inner.getName_statement() + "(" + if_statement_inner.getVariable_one());
-                if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
-                    System.out.print(" " + if_statement_inner.getOperationIFS().get(num_operation_IF_Statement).getOperation()+" ");
-                    num_operation_IF_Statement++;
-                }
-                System.out.println(if_statement_inner.getVariable_two() + "){");
-                if (if_statement_inner.getCode_attributes().size() > 0) {
-                    recursive_if(if_statement_inner);
-                    System.out.println("}");
-                }
-            }
+             else if(if_statement_inner!=null) {
+                 System.out.println("---------------IF Statement--------------");
+                 System.out.print(if_statement_inner.getName_statement() + "( ");
+                 for (int p = 0; p < if_statement_inner.getVariables_one().size(); p++) {
+                     System.out.print(if_statement_inner.getVariables_one().get(p));
+                     if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
+                         System.out.print(" " + if_statement_inner.getOperationIFS().get(num_operation_IF_Statement).getOperation());
+                         num_operation_IF_Statement++;
+                     }
+                     System.out.print(if_statement_inner.getVariables_two().get(p));
+                     if (if_statement_inner.getLogic_symbol().size() > 0 && num_logic_symbol_if < if_statement_inner.getLogic_symbol().size()) {
+                         System.out.print(" " + if_statement_inner.getLogic_symbol().get(num_logic_symbol_if).getSymbol());
+                         num_logic_symbol_if++;
+                     }
+                 }
+                 System.out.print(")");
+             }
              else if (print!=null){
                  System.out.println("--------PRINT--------");
                  System.out.print(print.getName_print()+"(");
@@ -321,7 +325,7 @@ public class Main {
 
             Print print = forStatement.getCode_attributes().get(i).getPrint();
             Clicking clicking = forStatement.getCode_attributes().get(i).getClicking();
-            If_Statement if_statement = forStatement.getCode_attributes().get(i).getIf_statement();
+            If_Statement if_statement_inner = forStatement.getCode_attributes().get(i).getIf_statement();
             Else_statement else_statement = forStatement.getCode_attributes().get(i).getElse_statement();
             if(clicking!=null)
             {
@@ -359,20 +363,22 @@ public class Main {
                     }
                 }
             }
-            else if(if_statement!=null){
+            else if(if_statement_inner!=null) {
                 System.out.println("---------------IF Statement--------------");
-                System.out.print(if_statement.getName_statement()+"("+if_statement.getVariable_one());
-                if(if_statement.getOperationIFS().size()>0&&num_operation_IF_Statement<if_statement.getOperationIFS().size()){
-                    System.out.print(" "+if_statement.getOperationIFS().get(num_operation_IF_Statement).getOperation());
-                    num_operation_IF_Statement++;
+                System.out.print(if_statement_inner.getName_statement() + "( ");
+                for (int p = 0; p < if_statement_inner.getVariables_one().size(); p++) {
+                    System.out.print(if_statement_inner.getVariables_one().get(p));
+                    if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
+                        System.out.print(" " + if_statement_inner.getOperationIFS().get(num_operation_IF_Statement).getOperation());
+                        num_operation_IF_Statement++;
+                    }
+                    System.out.print(if_statement_inner.getVariables_two().get(p));
+                    if (if_statement_inner.getLogic_symbol().size() > 0 && num_logic_symbol_if < if_statement_inner.getLogic_symbol().size()) {
+                        System.out.print(" " + if_statement_inner.getLogic_symbol().get(num_logic_symbol_if).getSymbol());
+                        num_logic_symbol_if++;
+                    }
                 }
-                System.out.println(if_statement.getVariable_two()+"){");
-                if(if_statement.getCode_attributes().size()>0){
-                    recursive_if(if_statement);
-                    System.out.println("}");
-                }
-
-
+                System.out.print(")");
             }
             else if (else_statement!=null){
                 System.out.println("-----------ELSE STATEMENT-----------");
@@ -536,19 +542,23 @@ public class Main {
                     }
                 }
             }
-            else if (if_statement_inner != null) {
-                System.out.println("---------------IF Statement_Inner--------------");
-                System.out.print(if_statement_inner.getName_statement() + "(" + if_statement_inner.getVariable_one());
-                if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
-                    System.out.print(" " + if_statement_inner.getOperationIFS().get(num_operation_IF_Statement).getOperation());
-                    num_operation_IF_Statement++;
-                }
-                System.out.println(if_statement.getVariable_two() + "){");
-                if (if_statement_inner.getCode_attributes().size() > 0) {
-                    recursive_if(if_statement_inner);
-                    System.out.println("}");
-                }
-            }
+             else if(if_statement_inner!=null) {
+                 System.out.println("---------------IF Statement--------------");
+                 System.out.print(if_statement_inner.getName_statement() + "( ");
+                 for (int p = 0; p < if_statement_inner.getVariables_one().size(); p++) {
+                     System.out.print(if_statement_inner.getVariables_one().get(p));
+                     if (if_statement_inner.getOperationIFS().size() > 0 && num_operation_IF_Statement < if_statement_inner.getOperationIFS().size()) {
+                         System.out.print(" " + if_statement_inner.getOperationIFS().get(num_operation_IF_Statement).getOperation());
+                         num_operation_IF_Statement++;
+                     }
+                     System.out.print(if_statement_inner.getVariables_two().get(p));
+                     if (if_statement_inner.getLogic_symbol().size() > 0 && num_logic_symbol_if < if_statement_inner.getLogic_symbol().size()) {
+                         System.out.print(" " + if_statement_inner.getLogic_symbol().get(num_logic_symbol_if).getSymbol());
+                         num_logic_symbol_if++;
+                     }
+                 }
+                 System.out.print(")");
+             }
             else if (else_statement_inner != null) {
                 System.out.println("---------------else Statement--------------");
                 System.out.println(else_statement_inner.getName_statement() + "{");
@@ -588,6 +598,7 @@ public class Main {
                 Variable_Numbers variable_numbers = program.getCode_attribuites().get(i).getVariables().getVariable_numbers();
                 TextInput textInput = program.getCode_attribuites().get(i).getVariables().getTextInput();
                 VariableGet variableGet = program.getCode_attribuites().get(i).getVariables().getVariableGet();
+
 
                 if(textInput!=null){
                     System.out.println("------------TEXT_INPUT---------");
@@ -744,16 +755,24 @@ public class Main {
             }
             else if(if_statement!=null){
                 System.out.println("---------------IF Statement--------------");
-                System.out.print(if_statement.getName_statement()+"("+if_statement.getVariable_one());
-                if(if_statement.getOperationIFS().size()>0&&num_operation_IF_Statement<if_statement.getOperationIFS().size()){
-                    System.out.print(" "+if_statement.getOperationIFS().get(num_operation_IF_Statement).getOperation());
-                    num_operation_IF_Statement++;
+                System.out.print(if_statement.getName_statement() + "( ");
+                for(int p = 0; p < if_statement.getVariables_one().size();p++){
+                    System.out.print(if_statement.getVariables_one().get(p));
+                    if(if_statement.getOperationIFS().size()>0&&num_operation_IF_Statement<if_statement.getOperationIFS().size()){
+                        System.out.print(" "+if_statement.getOperationIFS().get(num_operation_IF_Statement).getOperation());
+                        num_operation_IF_Statement++;
+                    }
+                    System.out.print(if_statement.getVariables_two().get(p));
+                    if(if_statement.getLogic_symbol().size()>0&&num_logic_symbol_if<if_statement.getLogic_symbol().size()){
+                        System.out.print(" "+if_statement.getLogic_symbol().get(num_logic_symbol_if).getSymbol());
+                        num_logic_symbol_if++;
+                    }
                 }
-                System.out.println(if_statement.getVariable_two()+"){");
+                 System.out.print("){");
                 if(if_statement.getCode_attributes().size()>0){
                     recursive_if(if_statement);
-                    System.out.println("}");
                 }
+                 System.out.println("}");
             }
             else if (else_statement!=null){
                 System.out.println("-----------ELSE STATEMENT-----------");

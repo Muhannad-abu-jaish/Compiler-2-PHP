@@ -25,6 +25,7 @@ MULTIPLY_EQUAL : '*=';
 NOT_EQUAL : '!=';
 IF : 'if';
 ELSE : 'else';
+ELSE_IF : 'else if';
 Array : 'array';
 DOUBLE_QUOTE : '"';
 SIZES : [0-9]+'px' | [0-9]+'rem' | [0-9]+'dp';

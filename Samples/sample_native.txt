@@ -1,10 +1,4 @@
 <controller>
-
-x = 'Hello';
-c = getData('ID');
-y = getData('ID2');
-c.onClick(){
-y.Color = x : x is not a Color{Red||Blue||Green||YelloW....}
-y.Bakground = x : x is not a Color{Red||Blue||Green||YelloW....}
-y.Width = x : x is not a Sizes{Num_dp|Num_px|Num_rem}
-};
+x=4;
+y = 5 ;
+if(x>4&&y<k||7>=8){}

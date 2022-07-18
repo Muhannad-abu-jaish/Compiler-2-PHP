@@ -1,9 +1,10 @@
 package com.company.ast.Nodes;
 import java.util.ArrayList;
 public class If_Statement {
-    String variable_one , variable_two , name_statement;
+    String  name_statement;
     ArrayList<Logic_symbol>logic_symbol;
     ArrayList<OperationIF>operationIFS;
+    ArrayList<String> variables_one , variables_two;
     ArrayList<Code_attribuite> code_attributes =new ArrayList<>();
 
     public ArrayList<Code_attribuite> getCode_attributes() {
@@ -38,19 +39,19 @@ public class If_Statement {
         this.operationIFS = operationIFS;
     }
 
-    public String getVariable_one() {
-        return variable_one;
+    public ArrayList<String> getVariables_one() {
+        return variables_one;
     }
 
-    public void setVariable_one(String variable_one) {
-        this.variable_one = variable_one;
+    public void setVariables_one(ArrayList<String> variables_one) {
+        this.variables_one = variables_one;
     }
 
-    public String getVariable_two() {
-        return variable_two;
+    public ArrayList<String> getVariables_two() {
+        return variables_two;
     }
 
-    public void setVariable_two(String variable_two) {
-        this.variable_two = variable_two;
+    public void setVariables_two(ArrayList<String> variables_two) {
+        this.variables_two = variables_two;
     }
 }
