@@ -593,7 +593,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public Clicking visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
         Clicking clicking = new Clicking();
-
         if (isDefined(ctx.CHARS().getText())) {
             if (getValueSymbolTable(ctx.CHARS().getText()).equals(MY_IDS)) {
                 clicking.setClick(ctx.CHARS().getText());
@@ -615,13 +614,31 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         Attribute_click attribute_click = new Attribute_click();
         if(ctx.text()!=null)
         {
-            attribute_click.setText(visitText(ctx.text()));
-            attribute_click.setName_attribute(ctx.text().CHARS().getText());
+            if(isDefined(ctx.text().CHARS().getText())){
+                if(getValueSymbolTable(ctx.text().CHARS().getText()).equals(MY_IDS)){
+                    attribute_click.setText(visitText(ctx.text()));
+                    attribute_click.setName_attribute(ctx.text().CHARS().getText());
+                }
+                else{
+                    errors.push("The variable " + ctx.text().CHARS().getText() + " must be initialize from getData()");
+                }
+            }else{
+                errors.push( ctx.text().CHARS().getText() + " Undefined Variable");
+            }
         }
        if(ctx.button()!=null)
        {
-           attribute_click.setName_attribute(ctx.button().CHARS().getText());
-           attribute_click.setButton(visitButton(ctx.button()));
+           if(isDefined(ctx.button().CHARS().getText())) {
+               if (getValueSymbolTable(ctx.button().CHARS().getText()).equals(MY_IDS)) {
+
+                   attribute_click.setName_attribute(ctx.button().CHARS().getText());
+                   attribute_click.setButton(visitButton(ctx.button()));
+               }    else{
+                   errors.push("The variable " + ctx.button().CHARS().getText() + " must be initialize from getData()");
+               }
+           }else{
+               errors.push( ctx.button().CHARS().getText() + " Undefined Variable");
+           }
        }
        return attribute_click;
     }

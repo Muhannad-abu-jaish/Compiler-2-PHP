@@ -1,3 +1,10 @@
 <controller>
-arr = array("hi","nabeel");
-for(i = 0 ; i < arr.count ; i++){}
+ID = 'gg';
+u = 5;
+x = getData(ID);
+x.onClick(){
+u.Color = 'Red',
+u.Content = 'kk',
+u.Width = '120dp',
+u.Background = 'Blue'
+};
