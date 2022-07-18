@@ -60,12 +60,11 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if (!isDefined(ctx.CHARS(0).getText()))
         {
             symbolTable.put(ctx.CHARS(0).getText() , MY_ARRAYS);
-
-            for(int i = 0 ;i<ctx.CHARS().size();i++){
+            array_statement.setName_Array(ctx.CHARS(0).getText());
+            for(int i = 1 ;i<ctx.CHARS().size();i++){
                 elements.add(ctx.CHARS(i).getText());
             }
         }
-
         else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
             errors.push(ctx.CHARS(0).getText() + " is a String variable ,,can't ba an array ");
 
@@ -74,7 +73,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
         else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS))
             errors.push(ctx.CHARS(0).getText() + " is a ID variable ,,can't ba an array ");
-
         array_statement.setElements(elements);
         return array_statement;
     }
