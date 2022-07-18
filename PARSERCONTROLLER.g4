@@ -2,7 +2,7 @@ parser grammar PARSERCONTROLLER;
 options {tokenVocab = LEXERCONTROLLER;}
 program: TAG_OPEN CONTROLLER TAG_CLOSE code_attribute+ ;
 code_attribute : variables | on_click |  print  | comment | if_statment | else_statment |for_statement;
-for_statement : FOR OPENTEXT (CHARS EQUAL CHARS)? SEMICOLON ( CHARS operation_if CHARS ) SEMICOLON for_statement_variable_number? CLOSETEXT CURLYOPEN code_attribute* CURLYCLOSE ;
+for_statement : FOR OPENTEXT (CHARS EQUAL CHARS)? SEMICOLON ( CHARS operation_if (CHARS | CHARS DOT COUNT) ) SEMICOLON for_statement_variable_number? CLOSETEXT CURLYOPEN code_attribute* CURLYCLOSE ;
 if_statment : ELSE? IF OPENTEXT ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE))
 (logical_sympol (CHARS|) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)))* CLOSETEXT CURLYOPEN
  code_attribute+ CURLYCLOSE ;

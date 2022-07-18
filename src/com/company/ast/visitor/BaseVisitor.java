@@ -15,6 +15,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
     public static final String MY_NUMBERS = "Number" ;
     public static final String MY_STRINGS = "String" ;
+    public static final String MY_ARRAYS = "array" ;
     public static final String MY_IDS = "ID" ;
     public static final String MY_ELSE_IFS = "Else IF" ;
     public static final String MY_IFS = "IF" ;
@@ -54,9 +55,26 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public Array_statement visitArray(PARSERCONTROLLER.ArrayContext ctx) {
         Array_statement array_statement = new Array_statement();
         ArrayList<String>elements = new ArrayList<>();
-        for(int i = 0 ;i<ctx.CHARS().size();i++){
-            elements.add(ctx.CHARS(i).getText());
+
+
+        if (!isDefined(ctx.CHARS(0).getText()))
+        {
+            symbolTable.put(ctx.CHARS(0).getText() , MY_ARRAYS);
+
+            for(int i = 0 ;i<ctx.CHARS().size();i++){
+                elements.add(ctx.CHARS(i).getText());
+            }
         }
+
+        else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_STRINGS))
+            errors.push(ctx.CHARS(0).getText() + " is a String variable ,,can't ba an array ");
+
+        else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS))
+            errors.push(ctx.CHARS(0).getText() + " is a number variable ,,can't ba an array ");
+
+        else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS))
+            errors.push(ctx.CHARS(0).getText() + " is a ID variable ,,can't ba an array ");
+
         array_statement.setElements(elements);
         return array_statement;
     }
@@ -129,7 +147,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
                 if (isDefined(ctx.CHARS(3).getText()))
                 {
-                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS))
+                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS) || getValueSymbolTable(ctx.CHARS(3).getText()).equals("array"))
                     {
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
 
@@ -140,13 +158,14 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                     if (isNumeric(ctx.CHARS(3).getText()))
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
 
+                    else if (ctx.COUNT().getText()!=null)
+                        errors.push("The array " + ctx.CHARS(3).getText() + " must be initialized to have a size");
                     else
                     {
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
                         symbolTable.put(ctx.CHARS(3).getText() , MY_NUMBERS) ;
                     }
                 }
-
 
             }
 
@@ -683,7 +702,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         Attribute_print attribute_print = new Attribute_print();
 
         if (ctx.CHARS()!=null){
-            if (!isDefined(ctx.CHARS().getText()))
+            if (!isDefined(ctx.CHARS().getText()) && !isNumeric(ctx.CHARS().getText()))
                 errors.push(ctx.CHARS().getText() +" Undefined Variable");
 
             else
