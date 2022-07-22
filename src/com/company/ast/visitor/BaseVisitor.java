@@ -145,9 +145,13 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
                 if (isDefined(ctx.CHARS(3).getText()))
                 {
-                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS) || getValueSymbolTable(ctx.CHARS(3).getText()).equals("array"))
+                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS) || getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_ARRAYS))
                     {
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
+                        if (ctx.COUNT()!=null)
+                        {
+                            forStatement.setCount(ctx.COUNT().getText());
+                        }
 
                     }else
                         errors.push("The compare variable " + ctx.CHARS(3).getText() + " must be a variable number") ;
@@ -156,12 +160,11 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                     if (isNumeric(ctx.CHARS(3).getText()))
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
 
-                    else if (ctx.COUNT().getText()!=null)
+                    else if (ctx.COUNT()!=null)
                         errors.push("The array " + ctx.CHARS(3).getText() + " must be initialized to have a size");
                     else
                     {
-                        forStatement.setCompareValue(ctx.CHARS(3).getText());
-                        symbolTable.put(ctx.CHARS(3).getText() , MY_NUMBERS) ;
+                       errors.push(ctx.CHARS(3).getText() + "  Undefined variable") ;
                     }
                 }
 
@@ -189,17 +192,28 @@ HashMap<String,String> SymbolTable = new HashMap<>();
 
             if (isDefined(ctx.CHARS(1).getText()))
             {
-                if (getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_NUMBERS))
+                if (getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_NUMBERS) || getValueSymbolTable(ctx.CHARS(1).getText()).equals(MY_ARRAYS))
                 {
                     forStatement.setCompareValue(ctx.CHARS(1).getText());
-                }else
-                    errors.push("The compare variable " + ctx.CHARS(1) + " must be number not character or string") ;
+                    if (ctx.COUNT()!=null)
+                    {
+                        forStatement.setCount(ctx.COUNT().getText());
+                    }
 
+                }else
+                    errors.push("The compare variable " + ctx.CHARS(1).getText() + " must be a variable number") ;
+            } else
+            {
+                if (isNumeric(ctx.CHARS(1).getText()))
+                    forStatement.setCompareValue(ctx.CHARS(1).getText());
+
+                else if (ctx.COUNT()!=null)
+                    errors.push("The array " + ctx.CHARS(1).getText() + " must be initialized to have a size");
+                else
+                {
+                    errors.push(ctx.CHARS(1).getText() + "  Undefined variable") ;
+                }
             }
-            else if(isNumeric(ctx.CHARS(1).getText()))
-                forStatement.setCompareValue(ctx.CHARS(1).getText());
-            else
-                errors.push( ctx.CHARS(1) + " Undefined Variable");
 
         }
 
@@ -760,24 +774,27 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if (ctx.GET_DATA()!=null)
             getData.setDataName(ctx.GET_DATA().getText());
 
-        if (ctx.CHARS()!=null) {
-            if (!isDefined(ctx.CHARS().getText())){
 
-                if (isNumeric((ctx.CHARS().getText())))
-                errors.push("The ID of getData must be variable not like this ( " + ctx.CHARS().getText() + " )");
-
-                else
-                    errors.push( ctx.CHARS().getText()+ "  Undefined Variable") ;
-            }
-
-            else if ( isNumber(ctx.CHARS().getText()) || getValueSymbolTable(ctx.CHARS().getText()).equals("Number") )
-            {
-                errors.push("The variable " + ctx.CHARS().getText() + " is number must be character");
-            }
-
-            else
-            {
+        if(ctx.SINGLE_QUOTE()!=null)
+        {
+            if (ctx.CHARS()!=null)
                 getData.setDataValue(ctx.CHARS().getText());
+        }else {
+
+            if (ctx.CHARS() != null) {
+                if (!isDefined(ctx.CHARS().getText())) {
+
+                    if (isNumeric((ctx.CHARS().getText())))
+                        errors.push("The ID of getData must be variable not like this ( " + ctx.CHARS().getText() + " )");
+
+                    else
+                        errors.push(ctx.CHARS().getText() + "  Undefined Variable");
+                } else if (isNumber(ctx.CHARS().getText()) || getValueSymbolTable(ctx.CHARS().getText()).equals("Number")) {
+                    errors.push("The variable " + ctx.CHARS().getText() + " is number must be character");
+                } else {
+                    getData.setDataValue(ctx.CHARS().getText());
+                }
+
             }
 
         }

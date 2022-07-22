@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ForStatement {
 
-    private String forID , idValue , secondID , compareValue  ;
+    private String forID , idValue , secondID , compareValue , count  ;
     OperationIF operationIF ;
     ArrayList<OperationIF> operationIFS ;
     ForStatementVariableNumber forStatementVariableNumber ;
@@ -76,4 +76,11 @@ public class ForStatement {
         this.compareValue = compareValue;
     }
 
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
 }

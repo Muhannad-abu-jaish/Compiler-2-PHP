@@ -663,22 +663,35 @@ public class Main {
                     if (forStatement.getForID()!=null && forStatement.getForStatementVariableNumber()!=null)
                     {
                         System.out.print("for ( " + forStatement.getForID() + " = " + forStatement.getIdValue() + " ; " + forStatement.getSecondID() + " ");
-                        System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; ");
+
+                        if (forStatement.getCount()!=null)
+                        System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " . "+ forStatement.getCount() + " ; ");
+                        else
+                            System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; ");
+
 
                         if (forStatement.getForStatementVariableNumber().getOneOperation() != null) {
+
                             System.out.print(forStatement.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
                             System.out.println( forStatement.getForStatementVariableNumber().getOneOperation().getOneOperation() + " )");
+
                         } else if (forStatement.getForStatementVariableNumber().getFast_math() != null) {
+
                             System.out.print(forStatement.getForStatementVariableNumber().getFast_math().getName() + forStatement.getForStatementVariableNumber().getFast_math().getOperation());
                             System.out.println(forStatement.getForStatementVariableNumber().getFast_math().getNumber() + " )");
+
                         } else if (forStatement.getForStatementVariableNumber().getThirdID() != null && forStatement.getForStatementVariableNumber().getCountValue() != null) {
+
                             System.out.println(forStatement.getForStatementVariableNumber().getThirdID() + " = " + forStatement.getForStatementVariableNumber().getCountValue() + " )");
                         }
                     }
 
                     else if (forStatement.getForID()==null && forStatement.getForStatementVariableNumber()!=null)
                     {
-                        System.out.print("for (  ; " + forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; " );
+                        if (forStatement.getCount()!=null)
+                        System.out.print("for (  ; " + forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " . " + forStatement.getCount() +  " ; " );
+                        else
+                            System.out.print("for (  ; " + forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; " );
 
                         if (forStatement.getForStatementVariableNumber().getOneOperation() != null) {
                             System.out.print(forStatement.getForStatementVariableNumber().getOneOperation().getNameOneOperation());
@@ -694,12 +707,19 @@ public class Main {
                     else if (forStatement.getForID()!=null && forStatement.getForStatementVariableNumber()==null)
                     {
                         System.out.print("for ( " + forStatement.getForID() + " = " + forStatement.getIdValue() + " ; " + forStatement.getSecondID() + " ");
-                        System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ;  )");
+                        if (forStatement.getCount()!=null)
+                        System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " . " + forStatement.getCount() + " ;  )");
+                        else
+                            System.out.print(forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ;  )");
                     }
 
                     else
                     {
-                        System.out.println("for (  ; " +  forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; )" );
+                        if (forStatement.getCount()!=null)
+                        System.out.println("for (  ; " +  forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() +" . " + forStatement.getCount() +  " ; )" );
+                        else
+                            System.out.println("for (  ; " +  forStatement.getSecondID() + " " +forStatement.getOperationIF().getOperation() + " " + forStatement.getCompareValue() + " ; )" );
+
                     }
                 System.out.println( "{ "  );
 

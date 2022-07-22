@@ -1,10 +1,10 @@
 <controller>
-ID = 'gg';
-u = 5;
-x = getData(ID);
-x.onClick(){
-u.Color = 'Red',
-u.Content = 'kk',
-u.Width = '120dp',
-u.Background = 'Blue'
-};
+
+v=9 ;
+U=9 ;
+arr = array("9" ,"9");
+for(i=9; v<arr.count ; U++ )
+{
+print(9);
+}
+
