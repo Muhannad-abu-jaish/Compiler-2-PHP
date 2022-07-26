@@ -58,66 +58,6 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComment(PARSERCONTROLLER.CommentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#on_click}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOn_click(PARSERCONTROLLER.On_clickContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#click_attribute}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitClick_attribute(PARSERCONTROLLER.Click_attributeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#text}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitText(PARSERCONTROLLER.TextContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#text_attribute}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitText_attribute(PARSERCONTROLLER.Text_attributeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#content}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitContent(PARSERCONTROLLER.ContentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#color}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitColor(PARSERCONTROLLER.ColorContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#button}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitButton(PARSERCONTROLLER.ButtonContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#button_attribute}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitButton_attribute(PARSERCONTROLLER.Button_attributeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#width}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWidth(PARSERCONTROLLER.WidthContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#background}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBackground(PARSERCONTROLLER.BackgroundContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PARSERCONTROLLER#print}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

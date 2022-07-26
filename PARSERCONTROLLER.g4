@@ -1,7 +1,7 @@
 parser grammar PARSERCONTROLLER;
 options {tokenVocab = LEXERCONTROLLER;}
 program: TAG_OPEN CONTROLLER TAG_CLOSE code_attribute+ ;
-code_attribute : variables | on_click |  print  | comment | if_statment | else_statment |for_statement;
+code_attribute : variables |  print  | comment | if_statment | else_statment |for_statement;
 for_statement : FOR OPENTEXT (CHARS EQUAL CHARS)? SEMICOLON ( CHARS operation_if (CHARS | CHARS DOT COUNT) ) SEMICOLON for_statement_variable_number? CLOSETEXT CURLYOPEN code_attribute* CURLYCLOSE ;
 if_statment : ((ELSE_IF)|(IF)) OPENTEXT ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE))
 (logical_sympol ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)))* CLOSETEXT CURLYOPEN
@@ -10,16 +10,6 @@ if_statment : ((ELSE_IF)|(IF)) OPENTEXT ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUO
 operation_if : EQUALEQUAL|TAG_CLOSE|TAG_OPEN|TAG_CLOSE_EQUAL|TAG_OPEN_EQUAL|NOT_EQUAL;
 else_statment : ELSE CURLYOPEN code_attribute* CURLYCLOSE ;
 comment: COMMENT CHARS;
-on_click : CHARS DOT ON_CLICK OPENTEXT CLOSETEXT CURLYOPEN ((click_attribute COMMA)* click_attribute)?CURLYCLOSE SEMICOLON;
-click_attribute : text | button ;
-text : CHARS DOT text_attribute;
-text_attribute : color | content  ;
-content : CONTENT EQUAL ((SINGLE_QUOTE CHARS SINGLE_QUOTE)|CHARS) ;
-color : COLOR EQUAL ((SINGLE_QUOTE COLORS SINGLE_QUOTE)|CHARS)  ;
-button : CHARS DOT button_attribute;
-button_attribute : width | background;
-width : WIDTH EQUAL ((SINGLE_QUOTE SIZES SINGLE_QUOTE)|CHARS)  ;
-background : BACKGROUND  EQUAL ((SINGLE_QUOTE COLORS SINGLE_QUOTE)|CHARS)  ;
 print : PRINT OPENTEXT (printattribute SUM)* printattribute CLOSETEXT SEMICOLON;
 printattribute : getdata | print_text |CHARS;
 getdata : GET_DATA OPENTEXT ((SINGLE_QUOTE CHARS SINGLE_QUOTE)|CHARS) CLOSETEXT;

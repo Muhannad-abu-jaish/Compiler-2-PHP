@@ -454,12 +454,12 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         for(int i = 0 ;i <ctx.CHARS().size();i++)
             {
                 if(!isNumber(ctx.CHARS(i).getText())&&ctx.SINGLE_QUOTE().size()==0){
-                    if(!isDefined(ctx.CHARS(i).getText())){
+                    if(!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
                         if(ctx.ELSE_IF()!=null){
-                            errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
+                                errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
                     }else{
-                            errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in IF Statement");
-                        }
+                                errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in IF Statement");
+                         }
                     }
                     else{
                         if(i%2==0){
@@ -573,13 +573,8 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     @Override
     public Code_attribuite visitCode_attribute(PARSERCONTROLLER.Code_attributeContext ctx) {
         Code_attribuite code_attribuite=new Code_attribuite();
-        if(ctx.variables()!=null)
-        {
+        if(ctx.variables()!=null) {
             code_attribuite.setVariables(visitVariables(ctx.variables()));
-        }
-         if(ctx.on_click()!=null)
-        {
-            code_attribuite.setClicking(visitOn_click(ctx.on_click()));
         }
          if (ctx.if_statment()!=null)
         {
@@ -603,118 +598,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public Object visitComment(PARSERCONTROLLER.CommentContext ctx) {
         return super.visitComment(ctx);
     }
-
-    @Override
-    public Clicking visitOn_click(PARSERCONTROLLER.On_clickContext ctx) {
-        Clicking clicking = new Clicking();
-        if (isDefined(ctx.CHARS().getText())) {
-            if (getValueSymbolTable(ctx.CHARS().getText()).equals(MY_IDS)) {
-                clicking.setClick(ctx.CHARS().getText());
-                ArrayList<Attribute_click> attribute_clicks = new ArrayList<>();
-                for (int i = 0; i < ctx.click_attribute().size(); i++) {
-                    attribute_clicks.add(visitClick_attribute(ctx.click_attribute(i)));
-                }
-                clicking.setAttribute_clickList(attribute_clicks);
-            } else
-                errors.push("The variable " + ctx.CHARS().getText() + " must be initialize from getData()");
-        }
-        else
-            errors.push( ctx.CHARS().getText() + " Undefined Variable");
-        return clicking;
-    }
-
-    @Override
-    public Attribute_click visitClick_attribute(PARSERCONTROLLER.Click_attributeContext ctx) {
-        Attribute_click attribute_click = new Attribute_click();
-        if(ctx.text()!=null)
-        {
-            if(isDefined(ctx.text().CHARS().getText())){
-                if(getValueSymbolTable(ctx.text().CHARS().getText()).equals(MY_IDS)){
-                    attribute_click.setText(visitText(ctx.text()));
-                    attribute_click.setName_attribute(ctx.text().CHARS().getText());
-                }
-                else{
-                    errors.push("The variable " + ctx.text().CHARS().getText() + " must be initialize from getData()");
-                }
-            }else{
-                errors.push( ctx.text().CHARS().getText() + " Undefined Variable");
-            }
-        }
-       if(ctx.button()!=null)
-       {
-           if(isDefined(ctx.button().CHARS().getText())) {
-               if (getValueSymbolTable(ctx.button().CHARS().getText()).equals(MY_IDS)) {
-
-                   attribute_click.setName_attribute(ctx.button().CHARS().getText());
-                   attribute_click.setButton(visitButton(ctx.button()));
-               }    else{
-                   errors.push("The variable " + ctx.button().CHARS().getText() + " must be initialize from getData()");
-               }
-           }else{
-               errors.push( ctx.button().CHARS().getText() + " Undefined Variable");
-           }
-       }
-       return attribute_click;
-    }
-
-    @Override
-    public Text visitText(PARSERCONTROLLER.TextContext ctx) {
-        Text text = new Text();
-        text.setName_text(ctx.CHARS().getText());
-        text.setText_attribute(visitText_attribute(ctx.text_attribute()));
-        return  text;
-    }
-
-    @Override
-    public Text_Attribute visitText_attribute(PARSERCONTROLLER.Text_attributeContext ctx) {
-      Text_Attribute text_attribute = new Text_Attribute();
-     if(ctx.color()!=null)
-      text_attribute.setColor(visitColor(ctx.color()));
-     if(ctx.content()!=null)
-      text_attribute.setContent(visitContent(ctx.content()));
-      return text_attribute;
-    }
-
-    @Override
-    public String visitContent(PARSERCONTROLLER.ContentContext ctx) {
-            return ctx.CHARS().getText();
-    }
-
-    @Override
-    public String visitColor(PARSERCONTROLLER.ColorContext ctx) {
-          return ctx.COLORS().getText();
-    }
-
-    @Override
-    public Button visitButton(PARSERCONTROLLER.ButtonContext ctx) {
-        Button button = new Button();
-        button.setName_button(ctx.CHARS().getText());
-        button.setButton_attribute(visitButton_attribute(ctx.button_attribute()));
-        return button;
-    }
-
-    @Override
-    public Button_Attribute visitButton_attribute(PARSERCONTROLLER.Button_attributeContext ctx) {
-        Button_Attribute button_attribute = new Button_Attribute();
-        if(ctx.width()!=null)
-        button_attribute.setWidth(visitWidth(ctx.width()));
-        if(ctx.background()!=null)
-        button_attribute.setBackground(visitBackground(ctx.background()));
-        return button_attribute;
-    }
-
-    @Override
-    public String visitWidth(PARSERCONTROLLER.WidthContext ctx) {
-
-        return ctx.SIZES().getText();
-    }
-
-    @Override
-    public String visitBackground(PARSERCONTROLLER.BackgroundContext ctx) {
-
-        return ctx.COLORS().getText();
-    }
-
     @Override
     public Print visitPrint(PARSERCONTROLLER.PrintContext ctx) {
         Print print = new Print();

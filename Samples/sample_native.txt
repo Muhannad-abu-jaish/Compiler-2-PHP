@@ -1,10 +1,10 @@
 <controller>
-
-v=9 ;
-U=9 ;
-arr = array("9" ,"9");
-for(i=9; v<arr.count ; U++ )
-{
-print(9);
+number1 = getData('num1');
+number2 = getData('num2');
+if(number1==EMPTY||number2==EMPTY){
+print("The field is required");
+}else{
+print(number1 + number2);
 }
+
 

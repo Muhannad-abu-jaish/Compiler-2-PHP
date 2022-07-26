@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class Code_attribuite {
 
     Variables variables;
-    Clicking clicking ;
     If_Statement if_statement;
     Else_statement else_statement;
     ForStatement forStatement;
@@ -45,13 +44,6 @@ public class Code_attribuite {
         this.if_statement = if_statement;
     }
 
-    public Clicking getClicking() {
-        return clicking;
-    }
-
-    public void setClicking(Clicking clicking) {
-        this.clicking = clicking;
-    }
 
     public Variables getVariables() {
         return variables;

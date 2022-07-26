@@ -30,17 +30,14 @@ Array : 'array';
 DOUBLE_QUOTE : '"';
 SIZES : [0-9]+'px' | [0-9]+'rem' | [0-9]+'dp';
 COMMA : ',' ;
-ON_CLICK : 'onClick';
-WIDTH :'Width';
 CONTENT : 'Content';
 COLOR :'Color';
 COUNT : 'count' ;
 TEXT_HINT : 'TextHint';
 COMMENT: '//';
-BACKGROUND : 'Background';
 TAG_OPEN : '<';
 TAG_OPEN_EQUAL : '<=';
-COLORS : 'Blue'| 'Red' | 'Purple' | 'Yellow' | 'Green'| 'White'| 'Black'| 'Brown';
+
 DOT: '.' ;
 GET_DATA : 'getData';
 PRINT :'print';
