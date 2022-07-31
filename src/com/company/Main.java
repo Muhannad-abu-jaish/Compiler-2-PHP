@@ -2,23 +2,23 @@ package com.company;
 
 import com.company.ast.Nodes.*;
 import com.company.ast.visitor.BaseVisitor;
-import com.company.ast.visitor.ForStatement;
+import com.company.ast.Nodes.ForStatement;
 import generated.LEXERCONTROLLER;
 import generated.PARSERCONTROLLER;
-import jdk.nashorn.internal.runtime.ParserException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.*;
 import java.io.FileWriter;
 
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
 public class Main {
-    static final String URL_FILE_PHP = "C:\\xampp\\htdocs\\code_math//my_generete_code_math.php";
+    static final String URL_FILE_PHP_MATH = "C:\\xampp\\htdocs\\code_math//my_generate_code_math.php";
+    static final String URL_FILE_PHP_LOGIN = "C:\\xampp\\htdocs\\form//my_generate_code_login.php";
+
     public static void main(String[] args) throws IOException {
 
         String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
@@ -37,7 +37,7 @@ public class Main {
     }
 
     private static void generateCode(Program program) throws IOException {
-    FileWriter fileWriter = new FileWriter(URL_FILE_PHP);
+    FileWriter fileWriter = new FileWriter(URL_FILE_PHP_LOGIN);
     fileWriter.write("<?php\n");
     for(int i = 0 ; i < program.getCode_attribuites().size();i++){
         if(program.getCode_attribuites().get(i).getVariables()!=null) {
@@ -365,6 +365,10 @@ public class Main {
                 }
             }
 
+            boolean Break = else_statement.getCode_attributes().get(i).isBreak();
+            if(Break){
+                System.out.println("break ;");
+            }
 
             //The Begin For Statement's Generate
             ForStatement forStatementInner = else_statement.getCode_attributes().get(i).getForStatement();
@@ -513,6 +517,11 @@ public class Main {
 
             }
 
+
+            boolean Break = forStatement.getCode_attributes().get(i).isBreak();
+            if(Break){
+                System.out.println("break ; ");
+            }
             //The Begin For Statement's Generate
             ForStatement forStatementInner = forStatement.getCode_attributes().get(i).getForStatement();
             if( forStatementInner!=null )
@@ -655,8 +664,10 @@ public class Main {
                 }
 
             }
-
-
+            boolean Break = if_statement.getCode_attributes().get(i).isBreak();
+            if(Break){
+                System.out.println("break ; ");
+            }
             //The Begin For Statement's Generate
             ForStatement forStatementInner = if_statement.getCode_attributes().get(i).getForStatement();
             if( forStatementInner!=null )
@@ -818,7 +829,10 @@ public class Main {
                     System.out.println(")");
                 }
             }
-
+            boolean Break = program.getCode_attribuites().get(i).isBreak();
+            if(Break){
+                System.out.println("break ; ");
+            }
             //The Begin For Statement's Generate
             ForStatement forStatement = program.getCode_attribuites().get(i).getForStatement();
 

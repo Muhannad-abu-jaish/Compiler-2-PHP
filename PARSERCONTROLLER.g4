@@ -1,12 +1,12 @@
 parser grammar PARSERCONTROLLER;
 options {tokenVocab = LEXERCONTROLLER;}
 program: TAG_OPEN CONTROLLER TAG_CLOSE code_attribute+ ;
-code_attribute : variables |  print  | comment | if_statment | else_statment |for_statement;
+code_attribute : variables |  print  | comment | if_statment | else_statment |for_statement|BREAK SEMICOLON;
 for_statement : FOR OPENTEXT (CHARS EQUAL CHARS)? SEMICOLON ( CHARS operation_if (CHARS | CHARS DOT COUNT) ) SEMICOLON for_statement_variable_number? CLOSETEXT CURLYOPEN code_attribute* CURLYCLOSE ;
 if_statment : ((ELSE_IF)|(IF)) OPENTEXT ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE))
 (logical_sympol ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)) operation_if ((CHARS)|( SINGLE_QUOTE CHARS SINGLE_QUOTE)))* CLOSETEXT CURLYOPEN
- code_attribute* CURLYCLOSE ;
- logical_sympol : OR | AND;
+code_attribute* CURLYCLOSE ;
+logical_sympol : OR | AND;
 operation_if : EQUALEQUAL|TAG_CLOSE|TAG_OPEN|TAG_CLOSE_EQUAL|TAG_OPEN_EQUAL|NOT_EQUAL;
 else_statment : ELSE CURLYOPEN code_attribute* CURLYCLOSE ;
 comment: COMMENT CHARS;

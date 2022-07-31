@@ -591,6 +591,9 @@ HashMap<String,String> SymbolTable = new HashMap<>();
          {
              code_attribuite.setForStatement(visitFor_statement(ctx.for_statement()));
          }
+         if(ctx.BREAK()!=null){
+             code_attribuite.setBreak(true);
+         }
         return code_attribuite;
     }
 

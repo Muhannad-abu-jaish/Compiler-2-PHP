@@ -37,7 +37,7 @@ TEXT_HINT : 'TextHint';
 COMMENT: '//';
 TAG_OPEN : '<';
 TAG_OPEN_EQUAL : '<=';
-
+BREAK : 'break';
 DOT: '.' ;
 GET_DATA : 'getData';
 PRINT :'print';

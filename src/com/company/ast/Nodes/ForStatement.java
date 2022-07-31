@@ -1,4 +1,4 @@
-package com.company.ast.visitor;
+package com.company.ast.Nodes;
 
 import com.company.ast.Nodes.*;
 
