@@ -159,16 +159,4 @@ public interface PARSERCONTROLLERVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariable_get(PARSERCONTROLLER.Variable_getContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#textinput}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTextinput(PARSERCONTROLLER.TextinputContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
 }

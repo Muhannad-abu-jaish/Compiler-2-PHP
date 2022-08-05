@@ -6,7 +6,6 @@ public class Variables {
 
     Variables_Text variables_text;
     Variable_Numbers variable_numbers;
-    TextInput textInput ;
     VariableGet variableGet;
     Array_statement array_statement;
 
@@ -24,14 +23,6 @@ public class Variables {
 
     public void setVariableGet(VariableGet variableGet) {
         this.variableGet = variableGet;
-    }
-
-    public TextInput getTextInput() {
-        return textInput;
-    }
-
-    public void setTextInput(TextInput textInput) {
-        this.textInput = textInput;
     }
 
     public Variable_Numbers getVariable_numbers() {

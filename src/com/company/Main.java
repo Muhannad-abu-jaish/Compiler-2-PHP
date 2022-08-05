@@ -43,7 +43,6 @@ public class Main {
         if(program.getCode_attribuites().get(i).getVariables()!=null) {
             Variables_Text variables_text = program.getCode_attribuites().get(i).getVariables().getVariables_text();
             Variable_Numbers variable_numbers = program.getCode_attribuites().get(i).getVariables().getVariable_numbers();
-            TextInput textInput = program.getCode_attribuites().get(i).getVariables().getTextInput();
             VariableGet variableGet = program.getCode_attribuites().get(i).getVariables().getVariableGet();
             Array_statement array_statement = program.getCode_attribuites().get(i).getVariables().getArray_statement();
             if (variableGet != null) {
@@ -131,7 +130,6 @@ public class Main {
             if(else_statement.getCode_attributes().get(i).getVariables()!=null) {
                 Variables_Text variables_text = else_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = else_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
-                TextInput textInput = else_statement.getCode_attributes().get(i).getVariables().getTextInput();
                 VariableGet variableGet = else_statement.getCode_attributes().get(i).getVariables().getVariableGet();
                 Array_statement array_statement = else_statement.getCode_attributes().get(i).getVariables().getArray_statement();
                 if (variableGet != null) {
@@ -216,7 +214,6 @@ public class Main {
             if(if_statement.getCode_attributes().get(i).getVariables()!=null) {
                 Variables_Text variables_text = if_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = if_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
-                TextInput textInput = if_statement.getCode_attributes().get(i).getVariables().getTextInput();
                 VariableGet variableGet = if_statement.getCode_attributes().get(i).getVariables().getVariableGet();
                 Array_statement array_statement = if_statement.getCode_attributes().get(i).getVariables().getArray_statement();
                 if (variableGet != null) {
@@ -318,12 +315,8 @@ public class Main {
             if(else_statement.getCode_attributes().get(i).getVariables()!=null) {
                 Variables_Text variables_text = else_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = else_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
-                TextInput textInput = else_statement.getCode_attributes().get(i).getVariables().getTextInput();
                 VariableGet variableGet =else_statement.getCode_attributes().get(i).getVariables().getVariableGet();
-                if (textInput != null) {
-                    System.out.println("------------TEXT_INPUT_ELSE---------");
-                    System.out.println(textInput.getKey() + "=" + textInput.getValue() + "." + textInput.getAttribute_textInput().getName_attribute_TextInput());
-                } else if (variables_text != null) {
+                  if (variables_text != null) {
                     System.out.println("--------------VARIABLE_TEXT_ELSE-----------");
                     System.out.print(variables_text.getName_variable() + " = ");
                     for (int j = 0; j < variables_text.getValues_variables().size(); j++) {
@@ -464,13 +457,9 @@ public class Main {
             if (forStatement.getCode_attributes().get(i).getVariables() != null) {
                 Variables_Text variables_text = forStatement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = forStatement.getCode_attributes().get(i).getVariables().getVariable_numbers();
-                TextInput textInput = forStatement.getCode_attributes().get(i).getVariables().getTextInput();
                 VariableGet variableGet = forStatement.getCode_attributes().get(i).getVariables().getVariableGet();
 
-                if (textInput != null) {
-                    System.out.println("------------TEXT_INPUT---------");
-                    System.out.println(textInput.getKey() + "=" + textInput.getValue() + "." + textInput.getAttribute_textInput().getName_attribute_TextInput());
-                } else if (variables_text != null) {
+                  if (variables_text != null) {
                     System.out.println("--------------VARIABLE_TEXT-----------");
                     System.out.print(variables_text.getName_variable() + " = ");
                     for (int j = 0; j < variables_text.getValues_variables().size(); j++) {
@@ -615,12 +604,7 @@ public class Main {
                 Variables_Text variables_text = if_statement.getCode_attributes().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = if_statement.getCode_attributes().get(i).getVariables().getVariable_numbers();
                 VariableGet variableGet =if_statement.getCode_attributes().get(i).getVariables().getVariableGet();
-                TextInput textInput = if_statement.getCode_attributes().get(i).getVariables().getTextInput();
-                if (textInput != null) {
-                    System.out.println("------------TEXT_INPUT---------");
-                    System.out.println(textInput.getKey() + "=" + textInput.getValue() + "." + textInput.getAttribute_textInput().getName_attribute_TextInput());
-                }
-                else if (variables_text != null) {
+               if (variables_text != null) {
                     System.out.println("--------------VARIABLE_TEXT-----------");
                     System.out.print(variables_text.getName_variable() + " = ");
                     for (int j = 0; j < variables_text.getValues_variables().size(); j++) {
@@ -761,14 +745,9 @@ public class Main {
             if(program.getCode_attribuites().get(i).getVariables()!=null) {
                 Variables_Text variables_text = program.getCode_attribuites().get(i).getVariables().getVariables_text();
                 Variable_Numbers variable_numbers = program.getCode_attribuites().get(i).getVariables().getVariable_numbers();
-                TextInput textInput = program.getCode_attribuites().get(i).getVariables().getTextInput();
                 VariableGet variableGet = program.getCode_attribuites().get(i).getVariables().getVariableGet();
                 Array_statement array_statement = program.getCode_attribuites().get(i).getVariables().getArray_statement();
-                if(textInput!=null){
-                    System.out.println("------------TEXT_INPUT---------");
-                    System.out.println(textInput.getKey()+ "=" + textInput.getValue() +"."+textInput.getAttribute_textInput().getName_attribute_TextInput());
-                }
-                else if(variables_text!=null){
+                if(variables_text!=null){
                     System.out.println("--------------VARIABLE_TEXT-----------");
                     System.out.print(variables_text.getName_variable() + " = ");
                     for(int j = 0 ; j < variables_text.getValues_variables().size();j++){

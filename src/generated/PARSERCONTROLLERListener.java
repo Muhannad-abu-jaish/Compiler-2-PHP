@@ -256,24 +256,4 @@ public interface PARSERCONTROLLERListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariable_get(PARSERCONTROLLER.Variable_getContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PARSERCONTROLLER#textinput}.
-	 * @param ctx the parse tree
-	 */
-	void enterTextinput(PARSERCONTROLLER.TextinputContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PARSERCONTROLLER#textinput}.
-	 * @param ctx the parse tree
-	 */
-	void exitTextinput(PARSERCONTROLLER.TextinputContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
-	 * @param ctx the parse tree
-	 */
-	void enterTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PARSERCONTROLLER#textinput_attribute}.
-	 * @param ctx the parse tree
-	 */
-	void exitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx);
 }

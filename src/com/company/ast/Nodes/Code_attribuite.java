@@ -1,6 +1,6 @@
 package com.company.ast.Nodes;
 
-public class Code_attribuite {
+public class    Code_attribuite {
 
     Variables variables;
     If_Statement if_statement;

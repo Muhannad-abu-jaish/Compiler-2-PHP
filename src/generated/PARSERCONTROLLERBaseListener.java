@@ -310,30 +310,6 @@ public class PARSERCONTROLLERBaseListener implements PARSERCONTROLLERListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariable_get(PARSERCONTROLLER.Variable_getContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTextinput(PARSERCONTROLLER.TextinputContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTextinput(PARSERCONTROLLER.TextinputContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

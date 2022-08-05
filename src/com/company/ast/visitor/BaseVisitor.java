@@ -702,9 +702,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         if(ctx.variable_number()!=null){
             variables.setVariable_numbers(visitVariable_number(ctx.variable_number()));
         }
-        if(ctx.textinput()!=null){
-            variables.setTextInput(visitTextinput(ctx.textinput()));
-        }
         if(ctx.array()!=null){
             variables.setArray_statement(visitArray(ctx.array()));
         }
@@ -1010,26 +1007,6 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         return variableGet ;
     }
 
-    @Override
-    public TextInput visitTextinput(PARSERCONTROLLER.TextinputContext ctx) {
-        TextInput textInput = new TextInput();
-        textInput.setKey(ctx.CHARS(0).getText());
-        textInput.setValue(ctx.CHARS(1).getText());
-        if(ctx.textinput_attribute()!=null) {
-            textInput.setAttribute_textInput(visitTextinput_attribute(ctx.textinput_attribute()));
-        }
-        return textInput;
-    }
-
-    @Override
-    public Attribute_TextInput visitTextinput_attribute(PARSERCONTROLLER.Textinput_attributeContext ctx) {
-       Attribute_TextInput attribute_textInput = new Attribute_TextInput();
-       if(ctx.COLOR()!=null)
-           attribute_textInput.setName_attribute_TextInput(ctx.COLOR().getText());
-       else if (ctx.CONTENT()!=null)
-           attribute_textInput.setName_attribute_TextInput(ctx.CONTENT().getText());
-        return attribute_textInput;
-    }
     @Override
     public Object visit(ParseTree tree) {
         return super.visit(tree);
