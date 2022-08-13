@@ -503,19 +503,20 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                             errors.push("The " + NAMEARRAY + " is not Array assignment!!");
                         }
                     }else
-                        errors.push("The " + NAMEARRAY + " is not defined!!");
-                    if(!isArray(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
-                        if(ctx.ELSE_IF()!=null){
+                    {
+                        if(!isArray(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
+                            if(ctx.ELSE_IF()!=null){
                                 errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
-                    }else{
+                            }else{
                                 errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in IF Statement");
-                         }
-                    }
-                    else{
-                        if(i%2==0){
-                            variablesOne.add(ctx.CHARS(i).getText());
-                        }else{
-                            variablesTwo.add(ctx.CHARS(i).getText());
+                            }
+                        }
+                        else{
+                            if(i%2==0){
+                                variablesOne.add(ctx.CHARS(i).getText());
+                            }else{
+                                variablesTwo.add(ctx.CHARS(i).getText());
+                            }
                         }
                     }
                 }else{
@@ -802,7 +803,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                     }
                 }
                 if(!isArray(NAMEARRAY)&&isDefined(ctx.CHARS(0).getText())) {
-                    if(getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_IDS)){
+                    if(!isNumeric(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_IDS)){
                         errors.push(ctx.CHARS(i).getText() + " aren't initialize with operations!!");
                     }
                     else if(getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS)){
