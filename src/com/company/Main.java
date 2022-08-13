@@ -21,14 +21,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String source = "C:\\Users\\muhannad\\IdeaProjects\\Compiler-2-2-\\Samples//sample_native.txt";
+        String source = "D:\\Compiler-PHP\\Samples//sample_native.txt";
         CharStream charStream = fromFileName(source);
         LEXERCONTROLLER lexer = new LEXERCONTROLLER(charStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         PARSERCONTROLLER parser = new PARSERCONTROLLER(tokenStream);
         ParseTree tree = parser.program();
         Program program = (Program) new BaseVisitor().visit(tree);
-
         ErrorHandling(program);
         generateCode(program);
 
@@ -37,7 +36,7 @@ public class Main {
     }
 
     private static void generateCode(Program program) throws IOException {
-    FileWriter fileWriter = new FileWriter(URL_FILE_PHP_LOGIN);
+    FileWriter fileWriter = new FileWriter(URL_FILE_PHP_MATH);
     fileWriter.write("<?php\n");
     for(int i = 0 ; i < program.getCode_attribuites().size();i++){
         if(program.getCode_attribuites().get(i).getVariables()!=null) {
@@ -106,7 +105,6 @@ public class Main {
                 fileWriter.write(";");
             }
         }
-
         else if (else_statement!=null){
             fileWriter.write(" "+else_statement.getName_statement()+"{\n");
             if(else_statement.getCode_attributes().size()>0){

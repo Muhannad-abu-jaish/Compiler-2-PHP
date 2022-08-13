@@ -13,7 +13,7 @@ comment: COMMENT CHARS;
 print : PRINT OPENTEXT (printattribute SUM)* printattribute CLOSETEXT SEMICOLON;
 printattribute : getdata | print_text |CHARS;
 getdata : GET_DATA OPENTEXT ((SINGLE_QUOTE CHARS SINGLE_QUOTE)|CHARS) CLOSETEXT;
-print_text : DOUBLE_QUOTE CHARS? DOUBLE_QUOTE;
+print_text : DOUBLE_QUOTE CHARS DOUBLE_QUOTE;
 variables : variable_number |  variable_text | variable_get  |array ;
 array : CHARS EQUAL Array OPENTEXT (DOUBLE_QUOTE CHARS DOUBLE_QUOTE COMMA)*DOUBLE_QUOTE CHARS DOUBLE_QUOTE CLOSETEXT SEMICOLON;
 for_statement_variable_number: (CHARS EQUAL  (CHARS | CHARS(number_attribute CHARS)+ ) ) | for_statement_adding_one | for_statement_minuss_one | for_statement_fast_math;

@@ -21,12 +21,28 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public static final String MY_IFS_Parent = "IF Parent" ;
     public static final String MY_ELSE_IFS_Inner = "Else IF Parent" ;
     public static final String MY_IFS_Inner = "IF Parent" ;
+    String NAMEARRAY = "";
     static  HashMap<String,String> symbolTable = new HashMap<>();
     static  Stack<String> errors = new Stack<>();
     public static HashMap<String, String> getSymbolTable() {
         return symbolTable;
     }
 
+    boolean isArray(String data){
+        for(int i = 0 ; i<data.length() ; i++){
+            if(data.charAt(i)=='['){
+                NAMEARRAY = data.substring(0,i);
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean isDefined(String text) {
+        if(symbolTable.containsKey(text)){
+            return true;
+        }
+        return false;
+    }
 
     public static Stack<String> getErrors() {
         return errors;
@@ -51,7 +67,9 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         }
         return true;
     }
-
+    private String getValueSymbolTable(String text) {
+        return symbolTable.get(text);
+    }
     @Override
     public Array_statement visitArray(PARSERCONTROLLER.ArrayContext ctx) {
         Array_statement array_statement = new Array_statement();
@@ -762,16 +780,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
     }
-    String NAMEARRAY = "";
-    boolean isArray(String data){
-        for(int i = 0 ; i<data.length() ; i++){
-            if(data.charAt(i)=='['){
-                NAMEARRAY = data.substring(0,i);
-                return true;
-            }
-        }
-        return false;
-    }
        @Override
     public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variable_Numbers variable_numbers = new Variable_Numbers();
@@ -793,7 +801,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                     errors.push("The " + NAMEARRAY + " is not defined!!");
                     }
                 }
-                else if(isDefined(ctx.CHARS(0).getText())) {
+                if(!isArray(NAMEARRAY)&&isDefined(ctx.CHARS(0).getText())) {
                     if(getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_IDS)){
                         errors.push(ctx.CHARS(i).getText() + " aren't initialize with operations!!");
                     }
@@ -876,17 +884,10 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         }
 
 
-    private String getValueSymbolTable(String text) {
-    return symbolTable.get(text);
-    }
 
 
-    private boolean isDefined(String text) {//هاد التابع بيفحص إذا السترينغ موجود من قبل ولا لاء
-     if(symbolTable.containsKey(text)){ // إذا كان موجود يعني متعرّف عليه
-         return true;
-     }
-     return false;
-    }
+
+
 
     @Override
     public Fast_math visitFast_math(PARSERCONTROLLER.Fast_mathContext ctx) {
