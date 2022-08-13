@@ -146,14 +146,13 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
                 if (isDefined(ctx.CHARS(3).getText()))
                 {
-                    if (getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS) || getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_ARRAYS))
+                    if (/*getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_NUMBERS) ||*/ getValueSymbolTable(ctx.CHARS(3).getText()).equals(MY_ARRAYS))
                     {
                         forStatement.setCompareValue(ctx.CHARS(3).getText());
                         if (ctx.COUNT()!=null)
                         {
                             forStatement.setCount(ctx.COUNT().getText());
                         }
-
                     }else
                         errors.push("The compare variable " + ctx.CHARS(3).getText() + " must be a variable number") ;
                 } else
@@ -480,8 +479,14 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         ArrayList<String>variablesTwo = new ArrayList<>();
         for(int i = 0 ;i <ctx.CHARS().size();i++)
             {
-                if(!isNumber(ctx.CHARS(i).getText())&&ctx.SINGLE_QUOTE().size()==0){
-                    if(!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
+                if(!isNumber(ctx.CHARS(i).getText())&&ctx.SINGLE_QUOTE().size()==0) {
+                    if (isArray(ctx.CHARS(i).getText())) {
+                        if (!getValueSymbolTable(NAMEARRAY).equals(MY_ARRAYS)) {
+                            errors.push("The " + NAMEARRAY + " is not Array assignment!!");
+                        }
+                    }else
+                        errors.push("The " + NAMEARRAY + " is not defined!!");
+                    if(!isArray(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
                         if(ctx.ELSE_IF()!=null){
                                 errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
                     }else{
@@ -599,7 +604,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                }else{
                    if(!isDefined(MY_IFS_Parent)){
                        errors.push("IF Statement is not Define!!");
-                   }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))){
+                   }else if(!getValueSymbolTable(MY_IFS_Parent).equals(String.valueOf(i-1))){
                        errors.push("Else IF Statement must be after IF statement!!");
                    }
                    symbolTable.put(MY_ELSE_IFS_Parent,String.valueOf(i));
@@ -712,20 +717,15 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
 
         if (ctx.GET_DATA()!=null)
             getData.setDataName(ctx.GET_DATA().getText());
-
-
-        if(ctx.SINGLE_QUOTE()!=null)
+        if(ctx.SINGLE_QUOTE().size()>0)
         {
             if (ctx.CHARS()!=null)
                 getData.setDataValue(ctx.CHARS().getText());
-        }else {
-
+        }else if(ctx.SINGLE_QUOTE().size()==0) {
             if (ctx.CHARS() != null) {
                 if (!isDefined(ctx.CHARS().getText())) {
-
                     if (isNumeric((ctx.CHARS().getText())))
                         errors.push("The ID of getData must be variable not like this ( " + ctx.CHARS().getText() + " )");
-
                     else
                         errors.push(ctx.CHARS().getText() + "  Undefined Variable");
                 } else if (isNumber(ctx.CHARS().getText()) || getValueSymbolTable(ctx.CHARS().getText()).equals("Number")) {
@@ -762,6 +762,16 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             variables.setVariableGet(visitVariable_get(ctx.variable_get()));
         return variables;
     }
+    String NAMEARRAY = "";
+    boolean isArray(String data){
+        for(int i = 0 ; i<data.length() ; i++){
+            if(data.charAt(i)=='['){
+                NAMEARRAY = data.substring(0,i);
+                return true;
+            }
+        }
+        return false;
+    }
        @Override
     public Variable_Numbers visitVariable_number(PARSERCONTROLLER.Variable_numberContext ctx) {
         Variable_Numbers variable_numbers = new Variable_Numbers();
@@ -774,12 +784,24 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             ArrayList<Number_Attribute>number_attributes = new ArrayList<>();
             for(int i = 1 ; i<ctx.CHARS().size();i++){
                 values_variables.add(ctx.CHARS(i).getText());
-                if(isDefined(ctx.CHARS(0).getText())) {
-                    if(getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS)){
+                if(isArray(ctx.CHARS(i).getText())){
+                    if(isDefined(NAMEARRAY)){
+                        if(!getValueSymbolTable(NAMEARRAY).equals(MY_ARRAYS)) {
+                            errors.push("The " + NAMEARRAY + " is not Array assignment!!");
+                        }
+                    }else{
+                    errors.push("The " + NAMEARRAY + " is not defined!!");
+                    }
+                }
+                else if(isDefined(ctx.CHARS(0).getText())) {
+                    if(getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_IDS)){
+                        errors.push(ctx.CHARS(i).getText() + " aren't initialize with operations!!");
+                    }
+                    else if(getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_NUMBERS)){
                         if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                             errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                         }
-                        else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                        else if (number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_STRINGS))){
                             STRING = true;
                             errors.push( ctx.CHARS(0).getText() + " is variable number");
                         }
@@ -787,39 +809,40 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                         if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                             errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                         }
-                        else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                        else if(STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_NUMBERS))){
                             number = true;
                             errors.push(ctx.CHARS(0).getText() + " is variable string");
                         }
-                    }else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS)){
+                        }else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS)){
                         if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                             errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                         }
-                        else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                        else if (number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_STRINGS))){
                             STRING = true;
                             errors.push( ctx.CHARS(0).getText() + " is variable ID");
                         }
-                        else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                        else if(STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
                             number = true;
                             errors.push(ctx.CHARS(0).getText() + " is variable ID");
                         }
                     }
-                }else{
+                }
+                else{
                     if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){
                         errors.push(ctx.CHARS(i).getText() +" Undefined Variable");
                     }
-                    else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                    else if(!STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_NUMBERS))){
                         number = true;
-                        symbolTable.put(ctx.CHARS(0).getText(),"Number");
+                        symbolTable.put(ctx.CHARS(0).getText(),MY_NUMBERS);
                     }
-                    else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String"))){
+                    else if (!number&&(!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_STRINGS))){
                         STRING = true;
-                        symbolTable.put(ctx.CHARS(0).getText(),"String");
+                        symbolTable.put(ctx.CHARS(0).getText(),MY_STRINGS);
                     }
-                    else if (STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals("Number"))){
+                    else if (STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_NUMBERS))){
                         errors.push(ctx.CHARS(i).getText()+" is not a String Variable!!");
                     }
-                    else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals("String")){
+                    else if (number&&!isNumber(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_STRINGS)){
                         errors.push(ctx.CHARS(i).getText()+" is not a number Variable!!");
                     }
                 }

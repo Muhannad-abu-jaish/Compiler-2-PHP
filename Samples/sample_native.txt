@@ -1,12 +1,8 @@
 <controller>
-x = 4 ;
-y = 5 ;
-if(x>y){
-if(x<y){}
-print(5);
-else if (x<y){}
-else {}
+x = array("Munnad","Nabeel","Yamen","Maen");
+for(i=0;i<5;i++){
+ if(x[i]>0){
+ print("hi");
+ }
 }
-
-
 
