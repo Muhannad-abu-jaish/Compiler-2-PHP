@@ -2,7 +2,6 @@
 message = 'hello';
 g = 5;
 u = 3;
-
 x = 45 + g + 6 -u * 9;
 char = 'c';
 ID = 'myText';

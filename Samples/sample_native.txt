@@ -1,13 +1,12 @@
 <controller>
-muhnnad = getData('num1');
-number2 = getData('num2');
-if(muhnnad==EMPTY||number2==EMPTY){
-print("The field is required");
-}else{
-print(muhnnad + number2);
+x = 4 ;
+y = 5 ;
+if(x>y){
+if(x<y){}
+print(5);
+else if (x<y){}
+else {}
 }
-for( i = 0 ; i < 5 ; i++){
-break;
-}
+
 
 

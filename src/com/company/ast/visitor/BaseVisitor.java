@@ -17,12 +17,13 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
     public static final String MY_STRINGS = "String" ;
     public static final String MY_ARRAYS = "array" ;
     public static final String MY_IDS = "ID" ;
-    public static final String MY_ELSE_IFS = "Else IF" ;
-    public static final String MY_IFS = "IF" ;
-HashMap<String,String> SymbolTable = new HashMap<>();
-    static  HashMap<String,String> symbolTable = new HashMap<>();//لتخزين اي شي بدي علمو واحفظو
-    static  Stack<String> errors = new Stack<>(); // ستاك لتخزين الاخطاء يلي لح تظهر
-    public static HashMap<String, String> getSymbolTable() { // منروح عالسطر 306 لنشوف المثال
+    public static final String MY_ELSE_IFS_Parent = "Else IF Parent" ;
+    public static final String MY_IFS_Parent = "IF Parent" ;
+    public static final String MY_ELSE_IFS_Inner = "Else IF Parent" ;
+    public static final String MY_IFS_Inner = "IF Parent" ;
+    static  HashMap<String,String> symbolTable = new HashMap<>();
+    static  Stack<String> errors = new Stack<>();
+    public static HashMap<String, String> getSymbolTable() {
         return symbolTable;
     }
 
@@ -30,7 +31,7 @@ HashMap<String,String> SymbolTable = new HashMap<>();
     public static Stack<String> getErrors() {
         return errors;
     }
-    private boolean isNumber(String data){ // تابع ليتحقق من انو السترينغ هو عبارة عن رقم
+    private boolean isNumber(String data){
         try {
             double d = Double.parseDouble(data);
         } catch (NumberFormatException nfe) {
@@ -227,22 +228,22 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             codeAttribuites.add(visitCode_attribute(ctx.code_attribute(i)));
             if (ctx.code_attribute(i).if_statment() != null) {
                 if (ctx.code_attribute(i).if_statment().ELSE_IF() == null) {
-                    symbolTable.put(MY_IFS, String.valueOf(i));
+                    symbolTable.put(MY_IFS_Parent, String.valueOf(i));
                 } else {
-                    if (!isDefined("IF")) {
+                    if (!isDefined(MY_IFS_Parent)) {
                         errors.push("IF Statement is not Define!!");
-                    } else if (!getValueSymbolTable("IF").equals(String.valueOf(i - 1))) {
+                    } else if (!getValueSymbolTable(MY_IFS_Parent).equals(String.valueOf(i - 1))) {
                         errors.push("Else IF Statement must be after IF statement!!");
                     }
-                    symbolTable.put(MY_ELSE_IFS, String.valueOf(i));
+                    symbolTable.put(MY_ELSE_IFS_Parent, String.valueOf(i));
                 }
             }
             if (ctx.code_attribute(i).else_statment() != null) {
-                if (!isDefined("IF")) {
+                if (!isDefined(MY_IFS_Parent)) {
                     errors.push("IF Statement is not Define!!");
-                } else if (!getValueSymbolTable("IF").equals(String.valueOf(i - 1))) {
+                } else if (!getValueSymbolTable(MY_IFS_Parent).equals(String.valueOf(i - 1))) {
                     if (isDefined("Else IF")) {
-                        if (!getValueSymbolTable("Else IF").equals(String.valueOf(i - 1))) {
+                        if (!getValueSymbolTable(MY_ELSE_IFS_Parent).equals(String.valueOf(i - 1))) {
                             errors.push("Else Statement must be after Else IF statement!!");
                         }
                     } else {
@@ -441,6 +442,32 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         ArrayList<Code_attribuite>code_attributes = new ArrayList<>();
         for(int i = 0;i<ctx.code_attribute().size();i++) {
             code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
+            if(ctx.code_attribute(i).if_statment()!=null){
+                if(ctx.code_attribute(i).if_statment().ELSE_IF()==null){
+                    symbolTable.put(MY_IFS_Inner, String.valueOf(i));
+                }else{
+                    if(!isDefined(MY_IFS_Inner)){
+                        errors.push("IF Statement Inner is not Define!!");
+                    }else if(!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i-1))){
+                        errors.push("Else IF Inner Statement must be after IF statement Inner!!");
+                    }
+                    symbolTable.put(MY_ELSE_IFS_Inner,String.valueOf(i));
+                }
+            }
+            if(ctx.code_attribute(i).else_statment()!=null){
+                if(!isDefined(MY_IFS_Inner)){
+                    errors.push("IF Statement Inner is not Define!!");
+                }else if(!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i-1))) {
+                    if (isDefined(MY_IFS_Inner)) {
+                        if (!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i - 1))) {
+                            errors.push("Else Statement Inner must be after Else IF statement Inner!!");
+                        }
+                    } else {
+                        errors.push("Else Statement Inner must be after IF statement Inner!!");
+                    }
+                }
+            }
+
         }
         if_statement.setCode_attributes(code_attributes);
         if(ctx.ELSE_IF()!=null){
@@ -528,6 +555,32 @@ HashMap<String,String> SymbolTable = new HashMap<>();
         for(int i = 0;i<ctx.code_attribute().size();i++)
         {
             code_attributes.add(visitCode_attribute(ctx.code_attribute(i)));
+            if(ctx.code_attribute(i).if_statment()!=null){
+                if(ctx.code_attribute(i).if_statment().ELSE_IF()==null){
+                    symbolTable.put(MY_IFS_Inner, String.valueOf(i));
+                }else{
+                    if(!isDefined(MY_IFS_Inner)){
+                        errors.push("IF Statement Inner is not Define!!");
+                    }else if(!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i-1))){
+                        errors.push("Else IF Inner Statement must be after IF statement Inner!!");
+                    }
+                    symbolTable.put(MY_ELSE_IFS_Inner,String.valueOf(i));
+                }
+            }
+            if(ctx.code_attribute(i).else_statment()!=null){
+                if(!isDefined(MY_IFS_Inner)){
+                    errors.push("IF Statement Inner is not Define!!");
+                }else if(!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i-1))) {
+                    if (isDefined(MY_IFS_Inner)) {
+                        if (!getValueSymbolTable(MY_IFS_Inner).equals(String.valueOf(i - 1))) {
+                            errors.push("Else Statement Inner must be after Else IF statement Inner!!");
+                        }
+                    } else {
+                        errors.push("Else Statement Inner must be after IF statement Inner!!");
+                    }
+                }
+            }
+
         }
         else_statement.setCode_attributes(code_attributes);
         return else_statement;
@@ -542,22 +595,22 @@ HashMap<String,String> SymbolTable = new HashMap<>();
             code_attribuites.add(visitCode_attribute(ctx.code_attribute(i)));
             if(ctx.code_attribute(i).if_statment()!=null){
                if(ctx.code_attribute(i).if_statment().ELSE_IF()==null){
-                   symbolTable.put(MY_IFS, String.valueOf(i));
+                   symbolTable.put(MY_IFS_Parent, String.valueOf(i));
                }else{
-                   if(!isDefined("IF")){
+                   if(!isDefined(MY_IFS_Parent)){
                        errors.push("IF Statement is not Define!!");
                    }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))){
                        errors.push("Else IF Statement must be after IF statement!!");
                    }
-                   symbolTable.put(MY_ELSE_IFS,String.valueOf(i));
+                   symbolTable.put(MY_ELSE_IFS_Parent,String.valueOf(i));
                }
             }
             if(ctx.code_attribute(i).else_statment()!=null){
-                if(!isDefined("IF")){
+                if(!isDefined(MY_IFS_Parent)){
                     errors.push("IF Statement is not Define!!");
-                }else if(!getValueSymbolTable("IF").equals(String.valueOf(i-1))) {
-                    if (isDefined("Else IF")) {
-                        if (!getValueSymbolTable("Else IF").equals(String.valueOf(i - 1))) {
+                }else if(!getValueSymbolTable(MY_IFS_Parent).equals(String.valueOf(i-1))) {
+                    if (isDefined(MY_IFS_Parent)) {
+                        if (!getValueSymbolTable(MY_IFS_Parent).equals(String.valueOf(i - 1))) {
                             errors.push("Else Statement must be after Else IF statement!!");
                         }
                     } else {
@@ -780,17 +833,10 @@ HashMap<String,String> SymbolTable = new HashMap<>();
                 }
             }
 
-                //هلئ هون انا بشيك بركي كنت عبأسند لمتحول مو معروف متل x=y فال y مالي مأسندها لحدا من قبل
-            //فلازم هون يعطيني ايرور انو ال y غير معرّفة فالشرط انا عبستعمل تابعين ال isNumber لأتحقق انو حرف ومو رقم
-            // و إذا كان مو موجود بالsymbolTable فهون معناتا مو معرّف فهون بفوت عالشرط وبعبي الستاك وبحط نص الايرور
-
 
             variable_numbers.setValues_variables(values_variables);
             variable_numbers.setName_attributes(number_attributes);
-            //String value = Result_Variable(values_variables,number_attributes);
-            //System.out.println("Value = " + value);
-            //منخزن المتغير يلي لح نأسندلو مثلا x=5 منخزن ال x والفاليو حطيتا True مؤقتا
-            }
+           }
 
 
            if (ctx.adding_one()!=null)
