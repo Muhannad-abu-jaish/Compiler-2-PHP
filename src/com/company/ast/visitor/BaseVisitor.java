@@ -484,7 +484,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                     }
                 }
             }
-
         }
         if_statement.setCode_attributes(code_attributes);
         if(ctx.ELSE_IF()!=null){
@@ -499,12 +498,20 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
             {
                 if(!isNumber(ctx.CHARS(i).getText())&&ctx.SINGLE_QUOTE().size()==0) {
                     if (isArray(ctx.CHARS(i).getText())) {
-                        if (!getValueSymbolTable(NAMEARRAY).equals(MY_ARRAYS)) {
-                            errors.push("The " + NAMEARRAY + " is not Array assignment!!");
+                        if(isDefined(NAMEARRAY)) {
+                            if (!getValueSymbolTable(NAMEARRAY).equals(MY_ARRAYS)) {
+                                errors.push("The " + NAMEARRAY + " is not Array assignment!!");
+                            }else{
+                                if(i%2==0){
+                                    variablesOne.add(ctx.CHARS(i).getText());
+                                }else{
+                                    variablesTwo.add(ctx.CHARS(i).getText());
+                                }
+                            }
+                        }else{
+                         errors.push("The " + NAMEARRAY + " is not define!!");
                         }
-                    }else
-                    {
-                        if(!isArray(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
+                    }else if(!isDefined(ctx.CHARS(i).getText())&&!ctx.CHARS(i).getText().equals("EMPTY")){
                             if(ctx.ELSE_IF()!=null){
                                 errors.push("The Variable " + ctx.CHARS(i).getText() + " is not defined in Else IF Statement");
                             }else{
@@ -518,7 +525,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                                 variablesTwo.add(ctx.CHARS(i).getText());
                             }
                         }
-                    }
                 }else{
                     if(i%2==0){
                         variablesOne.add(ctx.CHARS(i).getText());
@@ -758,12 +764,6 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
         }
         return getData ;
     }
-    /*@Override
-    public Print_text visitPrint_text(PARSERCONTROLLER.Print_textContext ctx) {
-        Print_text print_text = new Print_text();
-        print_text.setContent(ctx.CHARS().getText());
-        return  print_text;
-    }*/
 
     @Override
     public Variables visitVariables(PARSERCONTROLLER.VariablesContext ctx) {
@@ -802,7 +802,7 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                     errors.push("The " + NAMEARRAY + " is not defined!!");
                     }
                 }
-                if(!isArray(NAMEARRAY)&&isDefined(ctx.CHARS(0).getText())) {
+                else if(!isArray(NAMEARRAY)&&isDefined(ctx.CHARS(0).getText())) {
                     if(!isNumeric(ctx.CHARS(i).getText())&&getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_IDS)){
                         errors.push(ctx.CHARS(i).getText() + " aren't initialize with operations!!");
                     }
@@ -821,6 +821,11 @@ public class BaseVisitor extends PARSERCONTROLLERBaseVisitor{
                         else if(STRING&&(isNumber(ctx.CHARS(i).getText())||getValueSymbolTable(ctx.CHARS(i).getText()).equals(MY_NUMBERS))){
                             number = true;
                             errors.push(ctx.CHARS(0).getText() + " is variable string");
+                        }
+                        else if(getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_ARRAYS)) {
+                            if (isNumeric(ctx.CHARS(i).getText())) {
+                                errors.push("The " + ctx.CHARS(0).getText() + " is not a number variable");
+                            }
                         }
                         }else if (getValueSymbolTable(ctx.CHARS(0).getText()).equals(MY_IDS)){
                         if(!isNumber(ctx.CHARS(i).getText())&&!isDefined(ctx.CHARS(i).getText())){

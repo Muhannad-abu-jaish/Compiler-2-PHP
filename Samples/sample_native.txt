@@ -1,26 +1,19 @@
 <controller>
-
-add_num1 = getData('num1');
-add_num2 = getData('num2');
-add_result = add_num1 + add_num2 ;
-
-print(add_result);
-
-sub_num1 = getData('sub1');
-sub_num2 = getData('sub2');
-sub_result = sub_num1 + sub_num2 ;
-
-print(sub_result);
-
-mul_num1 = getData('mul1');
-mul_num2 = getData('mul2');
-mul_result = mul_num1 + mul_num2 ;
-
-print(mul_result);
-
-div_num1 = getData('div1');
-div_num2 = getData('div2');
-div_result = div_num1 + div_num2 ;
-
-print(div_result);
+userName = getData('email');
+userPassword = getData('password');
+username = array("majd" , "nour" , "ali");
+userpassword = array("1234","123","12345");
+login = 0 ;
+for(i = 0 ; i<username.count;i++){
+if(username[i]==userName && userpassword[i] == userPassword){
+login = 1;
+break;
+}
+}
+if(login ==1){
+print("You have successfully logged in");
+else{
+print("Sorry wrong information has been entered");
+}
+}
 

@@ -1122,13 +1122,13 @@ public class Main {
     }
 
     private static void ErrorHandling(Program program) {
-    Stack<String>stack = BaseVisitor.getErrors();// الحصول على ستاك الايرورات من داخل كلاس الفيزيتور
+    Stack<String>stack = BaseVisitor.getErrors();
     Stack<String>temp = new Stack<>();
-        if(stack.empty()){// إذا لم يوجد أي اخطاء
-        generateAst(program);// توليد شجرة ال ast
+        if(stack.empty()){
+        generateAst(program);
     }
-    else { // كان في اخطاء
-        while (!stack.empty()) { // منمشي عليهن خطأ خطأ
+    else {
+        while (!stack.empty()) {
             temp.push(stack.pop());
         }
         while(!temp.empty()){
@@ -1393,8 +1393,11 @@ public class Main {
                         System.out.print(" " + if_statement_inner.getLogic_symbol().get(num_logic_symbol_if).getSymbol());
                         num_logic_symbol_if++;
                     }
+                }System.out.print("){");
+                if(if_statement_inner.getCode_attributes().size()>0){
+                    recursive_if(if_statement_inner);
                 }
-                System.out.print(")");
+                System.out.println("}");
             }
             else if (else_statement!=null){
                 System.out.println("-----------ELSE STATEMENT-----------");
@@ -1427,6 +1430,7 @@ public class Main {
 
     public static void recursive_if(If_Statement if_statement) {
         int num_sums = 0, num_operation = 0, num_operation_IF_Statement = 0, num_logic_symbol_if = 0;
+        System.out.println("\n-------------------Code_attribute IF-------------------- ");
         for (int i = 0; i < if_statement.getCode_attributes().size(); i++) {
             if(if_statement.getCode_attributes().get(i).getVariables()!=null) {
                 Variables_Text variables_text = if_statement.getCode_attributes().get(i).getVariables().getVariables_text();

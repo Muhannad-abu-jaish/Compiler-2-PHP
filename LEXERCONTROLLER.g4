@@ -1,5 +1,4 @@
 lexer grammar  LEXERCONTROLLER;
-
 SPACE : ' ' -> skip;
 UN:'\n' ->skip;
 UT:'\t' ->skip;
@@ -48,7 +47,8 @@ EQUAL: '=' ;
 SINGLE_QUOTE : '\'';
 //NUMBER: [0-9]+;
 SEMICOLON : ';';
-CHARS : ([a-zA-Z0-9]+) (' ' | '_' [a-zA-Z0-9]+)* | ([a-zA-Z0-9]+'['[a-zA-Z0-9]+']')+  ;
+CHARS : ([a-zA-Z0-9]+(' '[a-zA-Z0-9]+)*)|([a-zA-Z0-9]+'['[a-zA-Z0-9]+']') ;
+
 //mode header;
 //mode body;
 //mode title;
