@@ -1,0 +1,32 @@
+<controller>
+userName = getData('email');
+userPassword = getData('password');
+username = array("majd" , "nour" , "ali");
+
+userpassword = array("1234","123","12345");
+login = 0 ;
+
+f='strin';
+t='int';
+w=f+t;
+
+i=login + 4 ;
+login+=login;
+login+=3;
+
+for(i = 0 ; i<username.count;i=login){
+if(username[i]==userName && userpassword[i] == userPassword){
+login = 1;
+break;
+}
+}
+if(login ==1){
+print("You have successfully logged in");
+else{
+print("Sorry wrong information has been entered");
+}
+}
+
+
+}
+
